@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.dreawer.account.domain.system.Sequence">
+	
+	<!-- 保存序列信息 -->
+	<insert id="save" parameterType="Sequence">
+        INSERT INTO aci_sequence(id, name, cre_tim, remark)
+        VALUES(#{id}, #{name}, #{createTime}, #{remark})
+    </insert>
+    
+    <!-- 更新序列信息 -->
+    <update id="update" parameterType="Sequence">
+        UPDATE aci_sequence
+        <set>
+        	<if test="value != null">value=#{value},</if>
+        	<if test="updateTime != null">upd_tim=#{updateTime},</if>
+        	<if test="remark != null">remark=#{remark},</if>
+        </set>
+        WHERE name = #{name}
+    </update>
+    
+    <!-- 查询指定的序列实例 -->
+	<select id="findSequenceByName" parameterType="Map" resultMap="sequenceResultMap">
+        SELECT * FROM aci_sequence
+		WHERE name = #{name}
+    </select>
+	
+	<!-- ================================================================================== -->
+	<!-- 结果集映射																			-->
+	<!-- ================================================================================== -->
+	
+	<!-- 序列号信息 -->
+	<resultMap id="sequenceResultMap" type="Sequence">
+		<result property="id" column="id" />
+		<result property="name" column="name" />
+		<result property="value" column="value" />
+		<result property="createTime" column="cre_tim" />
+		<result property="updateTime" column="upd_tim" />
+		<result property="remark" column="remark" />
+	</resultMap>
+</mapper>

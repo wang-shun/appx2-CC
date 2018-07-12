@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.dreawer.account.domain.log.SignInLog">
+	
+	<!-- 保存登录日志 -->
+	<insert id="save" parameterType="SignInLog">
+		INSERT INTO acl_signin(id, usr_id, ip, type, status, cause)
+		VALUES(#{id}, #{user.id}, #{ip}, #{type}, #{status}, #{cause})
+	</insert>
+	
+	<select id="selectlog" parameterType="Map" resultMap="signInLogResultMap">
+		SELECT s.id,s.ip, MAX(s.time) AS TIME 
+		FROM  acl_signin s ,qai_user u
+		WHERE u.id=#{id} AND s.username = u.username AND s.status='SUCCESS'
+	</select>
+	
+	<select id="selectLastSignInTime" parameterType="Map" resultMap="signInLogResultMap">
+		SELECT MAX(sign.time) AS TIME 
+		FROM  acl_signin AS sign, qai_user AS usr
+		WHERE usr.id = #{id} AND sign.username = usr.username AND sign.status='SUCCESS'
+	</select>
+	
+	<select id="findSigninCount" parameterType="Map" resultType="Integer">
+		SELECT COUNT(id) 
+		FROM  acl_signin
+		WHERE username = #{username} AND status='SUCCESS'
+	</select>
+	<!-- ================================================================================== -->
+	<!-- 结果集映射																			-->
+	<!-- ================================================================================== -->
+	
+	<!-- 登录日志信息 -->
+	<resultMap id="signInLogResultMap" type="SignInLog">
+		<id property="id" column="id" />
+		<result property="user.id" column="usr_id"/>
+		<result property="ip" column="ip" />
+		<result property="type" column="type" />
+		<result property="time" column="time" />
+		<result property="status" column="status" />
+		<result property="cause" column="cause" />
+		<result property="remark" column="remark" />
+	</resultMap>
+</mapper>

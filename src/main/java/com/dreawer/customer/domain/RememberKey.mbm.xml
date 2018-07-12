@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.dreawer.account.domain.system.RememberKey">
+	
+	<!-- 保存秘钥信息 -->
+	<insert id="save" parameterType="RememberKey">
+        INSERT INTO aci_rmbrkey(id, usr_id, value, cre_tim, lst_usetim)
+        VALUES(#{id}, #{user.id}, #{value}, #{createTime}, #{lastUseTime})
+    </insert>
+    
+    <!-- ================================================================================== -->
+	<!-- SQL语句（删除）																		-->
+	<!-- ================================================================================== -->
+	
+	<!-- 删除指定的秘钥 -->
+    <delete id="deleteKey" parameterType="RememberKey">
+        DELETE FROM aci_rmbrkey WHERE id = #{id}
+    </delete>
+	
+    <!-- 删除指定用户的所有秘钥 -->
+    <delete id="deleteKeyByUser" parameterType="User">
+        DELETE FROM aci_rmbrkey WHERE usr_id = #{id}
+    </delete>
+    
+    <!-- ================================================================================== -->
+	<!-- SQL语句（更新）																		-->
+	<!-- ================================================================================== -->
+	
+    <!-- 更新秘钥的最近使用时间 -->
+    <update id="updateLastUseTime" parameterType="RememberKey">
+        UPDATE aci_rmbrkey SET lst_usetim = #{lastUseTime}
+		WHERE usr_id = #{user.id}
+    </update>
+    
+    <!-- 更新秘钥的客户信息 -->
+    <update id="updateCustomer" parameterType="RememberKey">
+        UPDATE aci_rmbrkey SET usr_id = #{user.id}
+		WHERE id = #{id}
+    </update>
+    
+    <!-- ================================================================================== -->
+	<!-- SQL语句（查询）																		-->
+	<!-- ================================================================================== -->
+	
+    <!-- 查询指定秘钥 -->
+    <select id="findKeyByValue" parameterType="String" resultMap="rememberKeySimplifiedResultMap">
+        SELECT id, value, lst_usetim, usr_id
+        FROM aci_rmbrkey
+        WHERE value = #{value}
+    </select>
+    
+    <!-- ================================================================================== -->
+	<!-- 结果集映射																			-->
+	<!-- ================================================================================== -->
+	
+	<!-- 简化映射 -->
+	<resultMap id="rememberKeySimplifiedResultMap" type="RememberKey">
+		<result property="id" column="id" />
+		<result property="user.id" column="usr_id" />
+		<result property="value" column="value" />
+		<result property="createTime" column="cre_tim" />
+		<result property="lastUseTime" column="lst_usetim" />
+		<result property="remark" column="remark" />
+	</resultMap>
+	
+	<!-- 完整映射 -->
+	<resultMap id="rememberKeyFullResultMap" type="RememberKey">
+		<result property="id" column="id" />
+		<result property="value" column="value" />
+		<result property="createTime" column="cre_tim" />
+		<result property="lastUseTime" column="lst_usetim" />
+		<result property="remark" column="remark" />
+		<collection property="user" resultMap="com.dreawer.account.domain.User.userBaseResultMap" columnPrefix="usr_" />
+	</resultMap>
+</mapper>

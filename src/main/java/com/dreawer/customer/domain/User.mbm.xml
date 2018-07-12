@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.dreawer.account.domain.User">
+	
+	<!-- ================================================================================== -->
+	<!-- SQL语句（增加）																		-->
+	<!-- ================================================================================== -->
+	
+	<!-- 保存用户信息 -->
+	<insert id="save" parameterType="User">
+        INSERT INTO aci_user(id, appId, password, email, phoneNumber, status)
+        VALUES(#{id}, #{appId}, #{password}, #{email}, #{phoneNumber}, #{status})
+    </insert>
+    
+    <!-- ================================================================================== -->
+	<!-- SQL语句（更新）																		-->
+	<!-- ================================================================================== -->
+	
+    <!-- 更新用户状态-->
+    <update id="updateStatus" parameterType="Map">
+        UPDATE aci_user
+        SET	 status = #{status},
+        	 updr_id = #{user.updater}, upd_tim = #{user.updateTime}
+        WHERE id = #{user.id}
+    </update>
+    
+	<!-- 更新用户基本信息 -->
+    <update id="updatePassword" parameterType="User">
+        UPDATE aci_user
+        SET	 password = #{password},
+        	 updr_id = #{updater}, upd_tim = #{updateTime}
+        WHERE  id = #{id}
+    </update>
+    
+    <!-- 更新用户基本信息 -->
+    <update id="updateBasic" parameterType="User">
+        UPDATE aci_user
+        SET	 email = #{email}, phoneNumber = #{phoneNumber},
+        	 updr_id = #{updater}, upd_tim = #{updateTime}
+        WHERE  id = #{id}
+    </update>
+    
+    <!-- ================================================================================== -->
+	<!-- SQL语句（查询）																		-->
+	<!-- ================================================================================== -->
+	
+	<!-- 查询用户信息 -->
+    <select id="findUserById" parameterType="String" resultMap="userBaseResultMap">
+        SELECT <include refid="userBasicFields"/>
+        FROM aci_user
+		WHERE id = #{id}
+		AND status = 'ACTIVATED'
+    </select>
+    
+    <!-- 查询用户信息 -->
+    <select id="findUserByEmail" parameterType="Map" resultMap="userBaseResultMap">
+        SELECT <include refid="userBasicFields"/>
+        FROM aci_user
+		WHERE email = #{email}
+		AND appId = #{appId}
+    </select>
+    
+    <!-- 查询用户信息 -->
+    <select id="findUserByPhone" parameterType="Map" resultMap="userBaseResultMap">
+        SELECT <include refid="userBasicFields"/>
+        FROM aci_user
+		WHERE phoneNumber = #{phoneNumber}
+		AND appId = #{appId}
+    </select>
+    
+    <!-- ================================================================================== -->
+	<!-- 公用SQL定义																			-->
+	<!-- ================================================================================== -->
+    
+    <!-- 用户基本信息字段 -->
+	<sql id="userBasicFields">
+		id, appId, username, password, email, phoneNumber, status, cre_tim
+	</sql>
+	
+    <!-- ================================================================================== -->
+	<!-- 结果集映射																			    -->
+	<!-- ================================================================================== -->
+	
+	<!-- 用户基本信息 -->
+    <resultMap id="userBaseResultMap" type="User">
+		<id property="id" column="id" />
+		<result property="appId" column="appId" />
+		<result property="username" column="username" />
+		<result property="password" column="password" />
+		<result property="email" column="email" />
+		<result property="phoneNumber" column="phoneNumber" />
+		<result property="status" column="status" />
+		<result property="createTime" column="cre_tim" />
+	</resultMap>
+	
+</mapper>

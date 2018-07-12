@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.dreawer.account.domain.Customer">
+	
+	<!-- ================================================================================== -->
+	<!-- SQL语句（增加）																		-->
+	<!-- ================================================================================== -->
+	
+	<!-- 保存客户信息 -->
+	<insert id="save" parameterType="Customer">
+         INSERT INTO aci_customer(id, appId, pet_nam, alias, mugshot, category, status, crer_id)
+         VALUES(#{id}, #{appId}, #{petName}, #{alias}, #{mugshot}, #{category}, #{status}, #{creater})
+	</insert>
+    
+	<!-- ================================================================================== -->
+	<!-- SQL语句（删除）																		-->
+	<!-- ================================================================================== -->
+	
+    
+	<!-- ================================================================================== -->
+	<!-- SQL语句（更新）																		-->
+	<!-- ================================================================================== -->
+    
+	<!-- 更新客户状态 -->
+	<update id="updateStatus" parameterType="Map">
+        UPDATE aci_customer
+        SET status = #{status}, 
+        	upd_tim = #{customer.updateTime}, updr_id = #{customer.updater}
+        WHERE id = #{customer.id}
+	</update>
+    
+	<!-- 更新客户基本信息 -->
+	<update id="updateBasic" parameterType="Customer">
+        UPDATE aci_customer
+        SET pet_nam = #{petName}, alias = #{alias}, mugshot = #{photo},
+            upd_tim = #{updateTime}, updr_id = #{updater}
+        WHERE id = #{id}
+	</update>
+    
+	<!-- ================================================================================== -->
+	<!-- SQL语句（查询）																		-->
+	<!-- ================================================================================== -->
+	
+	<!-- 查询客户信息 -->
+	<select id="findCustomerById" parameterType="String" resultMap="customerResultMap">
+        SELECT <include refid="customerBasicFields"/>
+        FROM aci_customer
+		WHERE id = #{id}
+	</select>
+	
+	<!-- ================================================================================== -->
+	<!-- 公用SQL定义																			-->
+	<!-- ================================================================================== -->
+    
+    <!-- 用户基本信息字段 -->
+	<sql id="customerBasicFields">
+		id, appId, pet_nam, mugshot, category, cre_tim
+	</sql>
+	
+	<!-- ================================================================================== -->
+	<!-- 结果集映射																			-->
+	<!-- ================================================================================== -->
+	
+	<resultMap id="customerBaseResultMap" type="Customer">
+		<result property="id" column="id" />
+		<result property="appId" column="appId" />
+		<result property="name" column="name" />
+		<result property="pet_nam" column="pet_nam" />
+		<result property="alias" column="alias" />
+		<result property="slogan" column="slogan" />
+		<result property="intro" column="intro" />
+		<result property="homepage" column="homepage" />
+		<result property="email" column="email" />
+		<result property="phoneNumber" column="phoneNumber" />
+		<result property="mugshot" column="mugshot" />
+		<result property="category" column="category" />
+		<result property="status" column="status" />
+		<result property="createTime" column="cre_tim" />
+	</resultMap>
+</mapper>

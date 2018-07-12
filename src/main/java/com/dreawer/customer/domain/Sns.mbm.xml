@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.dreawer.account.domain.Sns">
+	
+	<!-- ================================================================================== -->
+	<!-- SQL语句（增加）																		-->
+	<!-- ================================================================================== -->
+	
+	<!-- 保存用户信息 -->
+	<insert id="save" parameterType="Sns">
+        INSERT INTO aci_sns(id, sns_uid, wx_id, app_id, app_ctg, pet_nam, type, token, tkn_duetim, usr_id, crer_id)
+        VALUES(#{id}, #{uid}, #{wxid}, #{app.id}, #{app.category}, #{petName}, #{type}, #{token},
+			#{overdueTime}, #{user.id}, #{user.id})
+    </insert>
+    
+    <!-- ================================================================================== -->
+	<!-- SQL语句（删除）																		-->
+	<!-- ================================================================================== -->
+    
+    <!-- ================================================================================== -->
+	<!-- SQL语句（更新）																		-->
+	<!-- ================================================================================== -->
+    
+	
+    <!-- ================================================================================== -->
+	<!-- SQL语句（查询）																		-->
+	<!-- ================================================================================== -->
+	
+	<!-- 查询用户信息 -->
+    <select id="findSnsByUid" parameterType="String" resultMap="snsBaseResultMap">
+        SELECT sns.id, sns.sns_uid, sns.wx_id, sns.app_id, sns.app_ctg, sns.pet_nam, sns.type, sns.token, sns.tkn_duetim, sns.cre_tim,
+        	usr.id AS usr_id, usr.username AS usr_username, usr.pet_nam AS usr_pet_nam, usr.alias AS usr_alias, 
+        	usr.slogan AS usr_slogan, usr.email AS usr_email, usr.mugshot AS usr_mugshot, usr.phoneNumber AS usr_phoneNumber
+        FROM aci_sns AS sns
+        LEFT JOIN aci_user AS usr ON usr.id = sns.usr_id
+		WHERE sns.sns_uid = #{id}
+		AND sns.type = #{type}
+    </select>
+    
+    <!-- 查询用户信息 -->
+    <select id="findSnsByWxid" parameterType="Map" resultMap="snsBaseResultMap">
+        SELECT sns.id, sns.sns_uid, sns.wx_id, sns.app_id, sns.app_ctg, sns.pet_nam, sns.type, sns.cre_tim,
+        	usr.id AS usr_id, usr.username AS usr_username, usr.pet_nam AS usr_pet_nam, usr.alias AS usr_alias, 
+        	usr.slogan AS usr_slogan, usr.email AS usr_email, usr.mugshot AS usr_mugshot, usr.phoneNumber AS usr_phoneNumber
+        FROM aci_sns AS sns
+        LEFT JOIN aci_user AS usr ON usr.id = sns.usr_id
+		WHERE sns.wx_id = #{id}
+		AND sns.type = #{type}
+    </select>
+    
+    <!-- ================================================================================== -->
+	<!-- 公用SQL定义																			-->
+	<!-- ================================================================================== -->
+    
+    <!-- 用户基本信息字段 -->
+	<sql id="snsBasicFields">
+		id, sns_uid, wx_id, app_id, app_ctg, pet_nam, type, token, tkn_duetim, cre_tim
+	</sql>
+	
+    <!-- ================================================================================== -->
+	<!-- 结果集映射																			    -->
+	<!-- ================================================================================== -->
+	
+	<!-- 用户基本信息 -->
+    <resultMap id="snsBaseResultMap" type="Sns">
+		<id property="id" column="id" />
+		<result property="uid" column="sns_uid" />
+		<result property="wxid" column="wx_id" />
+		<result property="app.id" column="app_id" />
+		<result property="app.category" column="app_ctg" />
+		<result property="petName" column="pet_nam" />
+		<result property="type" column="type" />
+		<result property="token" column="token" />
+		<result property="overdueTime" column="tkn_duetim" />
+		<result property="createTime" column="cre_tim" />
+		<collection property="user" resultMap="com.dreawer.account.domain.User.userBaseResultMap" columnPrefix="usr_" />
+	</resultMap>
+</mapper>

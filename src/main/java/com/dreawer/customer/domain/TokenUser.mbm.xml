@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.dreawer.account.domain.TokenUser">
+	
+	<!-- ================================================================================== -->
+	<!-- SQL语句（增加）																		-->
+	<!-- ================================================================================== -->
+    
+    <!-- ================================================================================== -->
+	<!-- SQL语句（更新）																		-->
+	<!-- ================================================================================== -->
+	
+    
+    <!-- ================================================================================== -->
+	<!-- SQL语句（查询）																		-->
+	<!-- ================================================================================== -->
+	
+	<!-- 查询用户信息 -->
+    <select id="findTokenUserById" parameterType="String" resultMap="tokenUserResultMap">
+        SELECT usr.id AS id, usr.appId AS appId, usr.password AS password, usr.email AS email, 
+        	usr.phoneNumber AS phoneNumber, cust.pet_nam AS pet_nam, cust.mugshot AS mugshot
+        FROM aci_user AS usr
+        LEFT JOIN aci_customer AS cust ON cust.id = usr.id
+		WHERE usr.id = #{id}
+		AND usr.status = 'ACTIVATED'
+    </select>
+    
+    <!-- 查询用户信息 -->
+    <select id="findTokenUserByEmail" parameterType="Map" resultMap="tokenUserResultMap">
+        SELECT usr.id AS id, usr.appId AS appId, usr.password AS password, usr.email AS email, 
+        	usr.phoneNumber AS phoneNumber, cust.pet_nam AS pet_nam, cust.mugshot AS mugshot
+        FROM aci_user AS usr
+        LEFT JOIN aci_customer AS cust ON cust.id = usr.id
+		WHERE usr.email = #{email}
+		AND usr.appId = #{appId}
+		AND usr.status = 'ACTIVATED'
+    </select>
+    
+    <!-- 查询用户信息 -->
+    <select id="findTokenUserByPhone" parameterType="Map" resultMap="tokenUserResultMap">
+        SELECT usr.id AS id, usr.appId AS appId, usr.password AS password, usr.email AS email, 
+        	usr.phoneNumber AS phoneNumber, cust.pet_nam AS pet_nam, cust.mugshot AS mugshot
+        FROM aci_user AS usr
+        LEFT JOIN aci_customer AS cust ON cust.id = usr.id
+		WHERE usr.phoneNumber = #{phoneNumber}
+		AND usr.appId = #{appId}
+		AND usr.status = 'ACTIVATED'
+    </select>
+    
+    <!-- ================================================================================== -->
+	<!-- 公用SQL定义																			-->
+	<!-- ================================================================================== -->
+    
+    <!-- 用户基本信息字段 -->
+	<sql id="userBasicFields">
+		id, appId, password, email, phoneNumber, pet_nam, mugshot
+	</sql>
+	
+    <!-- ================================================================================== -->
+	<!-- 结果集映射																			    -->
+	<!-- ================================================================================== -->
+	
+	<!-- 用户基本信息 -->
+    <resultMap id="tokenUserResultMap" type="TokenUser">
+		<id property="id" column="id" />
+		<result property="appId" column="appId" />
+		<result property="password" column="password" />
+		<result property="email" column="email" />
+		<result property="phoneNumber" column="phoneNumber" />
+		<result property="petName" column="pet_nam" />
+		<result property="mugshot" column="mugshot" />
+		<result property="createTime" column="cre_tim" />
+	</resultMap>
+	
+</mapper>
