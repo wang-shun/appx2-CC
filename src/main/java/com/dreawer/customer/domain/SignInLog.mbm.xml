@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.dreawer.account.domain.log.SignInLog">
+<mapper namespace="com.dreawer.customer.domain.SignInLog">
 	
 	<!-- 保存登录日志 -->
 	<insert id="save" parameterType="SignInLog">
 		INSERT INTO acl_signin(id, usr_id, ip, type, status, cause)
-		VALUES(#{id}, #{user.id}, #{ip}, #{type}, #{status}, #{cause})
+		VALUES(#{id}, #{userId}, #{ip}, #{type}, #{status}, #{cause})
 	</insert>
 	
 	<select id="selectlog" parameterType="Map" resultMap="signInLogResultMap">

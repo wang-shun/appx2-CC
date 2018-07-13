@@ -6,7 +6,7 @@ public class TokenUser extends BaseDomain{
 
 	private static final long serialVersionUID = 8650970185938005907L;
 
-    private String appId = null; // 应用id
+    private String organizeId = null; // 组织id
 
 	private String password = null; // 登录密码，有效长度：6~20
     
@@ -58,12 +58,13 @@ public class TokenUser extends BaseDomain{
 		this.mugshot = mugshot;
 	}
 
-	public String getAppId() {
-		return appId;
+	public String getOrganizeId() {
+		return organizeId;
 	}
 
-	public void setAppId(String appId) {
-		this.appId = appId;
+	public void setOrganizeId(String organizeId) {
+		this.organizeId = organizeId;
 	}
+
 	
 }

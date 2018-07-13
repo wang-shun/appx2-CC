@@ -3,7 +3,6 @@ package com.dreawer.customer.web;
 import static com.dreawer.customer.constants.ControllerConstants.*;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -11,7 +10,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.StringUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
@@ -45,12 +43,11 @@ import com.dreawer.customer.domain.Sequence;
 import com.dreawer.customer.domain.SignInLog;
 import com.dreawer.customer.domain.SystemInfo;
 import com.dreawer.customer.domain.TokenUser;
-import com.dreawer.customer.domain.User;
 import com.dreawer.customer.lang.ClientType;
 import com.dreawer.customer.lang.SignInStatus;
 import com.dreawer.customer.service.SequenceService;
 import com.dreawer.customer.service.SigninLogService;
-import com.dreawer.customer.service.UserService;
+import com.dreawer.customer.service.TokenUserService;
 import com.dreawer.customer.utils.PinyinUtils;
 import com.dreawer.customer.utils.RedisUtil;
 import com.dreawer.customer.utils.SystemUtils;
@@ -61,7 +58,7 @@ public class BaseController{
     private RedisUtil redisUtil; // redis信息服务
 	
     @Autowired
-    private UserService userService; // 用户信息服务
+    private TokenUserService tokenuserService; // 用户信息服务
     
     @Autowired
     private SequenceService sequenceService; // 业务序列号服务
@@ -74,7 +71,8 @@ public class BaseController{
      * @param req 用户请求。
      * @param user 用户。
      */
-    protected String signInUser(HttpServletRequest req, User user) {
+    protected String signInUser(HttpServletRequest req, String userId) {
+    	TokenUser tokenUser = tokenuserService.findTokenUserById(userId);
         String ip = getIpAddress(req);
         String mac = "unknow";
         String browser = SystemUtils.getBrowser(req);
@@ -83,12 +81,12 @@ public class BaseController{
         systemInfo.setMac(mac);
         systemInfo.setBrowser(browser);
         String token = UUID.randomUUID().toString().replace("-", "");
-    	redisUtil.setRedisUser(token, user);
+    	redisUtil.setTokenUser(token, tokenUser);
     	redisUtil.setRedisSystemInfo(token, systemInfo);
     	
 		// 保存登陆日志
 		SignInLog log = new SignInLog();
-		log.setUser(user);
+		log.setUserId(tokenUser.getId());
 		log.setIp(ip);
 		log.setStatus(SignInStatus.SUCCESS);
 		log.setType(ClientType.PAGE);
@@ -101,10 +99,10 @@ public class BaseController{
      * @param req 用户请求。
      */
     protected void updateSignInUser(HttpServletRequest req) {
-    	User oldUser = getSignInUser(req);
-    	User user = userService.findUserById(oldUser.getId());
+    	TokenUser oldUser = getSignInUser(req);
+    	TokenUser tokenUser = tokenuserService.findTokenUserById(oldUser.getId());
         String token = "";
-    	redisUtil.setRedisUser(token, user);
+    	redisUtil.setTokenUser(token, tokenUser);
     }
     
 	/**
@@ -112,18 +110,18 @@ public class BaseController{
 	 * @param req 用户请求。
 	 * @return 用户信息。
 	 */
-	protected User getSignInUser(HttpServletRequest req) {
-		User user = null;
-		String token = "";
+	protected TokenUser getSignInUser(HttpServletRequest req) {
+		TokenUser tokenUser = null;
+		String token = req.getHeader("token");
 		if(StringUtils.isNotBlank(token)){
-			user =  redisUtil.getRedisUser(token);
+			tokenUser =  redisUtil.getTokenUser(token);
 		}else{
 			token = req.getParameter("token");
 			if(StringUtils.isNotBlank(token)){
-				user =  redisUtil.getRedisUser(token);
+				tokenUser =  redisUtil.getTokenUser(token);
 			}
 		}
-        return user;
+        return tokenUser;
     }
 	
 	/**
@@ -131,28 +129,10 @@ public class BaseController{
 	 * @param req 用户请求。
 	 */
 	protected void removeSignInUser(HttpServletRequest req){
-		String token = req.getParameter("token");
+		String token = req.getHeader("token");
 		redisUtil.deleteRedisUser(token);
 	}
 	
-    /**
-     * 登陆后回调。
-     * @param req 用户请求。
-     * @param resp 服务器响应。
-     */
-    protected void signinCallback(HttpServletRequest req, HttpServletResponse resp) {
-    	try {
-			String url = (String) req.getSession().getAttribute(REQ_URL);
-			if(StringUtils.isNotBlank(url)){
-				resp.sendRedirect(URLDecoder.decode(url, "utf-8"));
-			}else {
-				resp.sendRedirect("/home.html");
-			}
-    	} catch (Exception e) {
-			e.printStackTrace();
-		}
-    }
-    
     /**
      * http的post请求。
      * @param url 请求的地址。
@@ -459,7 +439,7 @@ public class BaseController{
      * @param value 验证信息。
      * @throws ClientException
      */
-    protected SendSmsResponse sendSMSByAliyun(String phoneNumber, String templateCode, int value) throws ClientException{
+    protected SendSmsResponse sendSMSByAliyun(String phoneNumber, String templateCode, String value) throws ClientException{
     	
    	 	//可自助调整超时时间
     	// System.setProperty("sun.net.client.defaultConnectTimeout", "10000");
@@ -516,4 +496,38 @@ public class BaseController{
         Result result = webapi.mail().send(email);
     	return result;
     }
+    
+    /**
+	 * 生成四位数字验证码，并放置redis中。key为"captcha_"+手机号或者邮箱。
+	 * @param key 
+	 * @return
+	 */
+	public String createCaptcha(String key) {
+		String value = (int) Math.round(Math.random() * (9999-1000) +1000)+"";
+		redisUtil.put("captcha_"+key, value, 10*60L);
+		return value;
+	}
+	
+	/**
+	 * 通过key删除redis中的验证码。
+	 * @param key
+	 */
+	public void removeCaptcha(String key) {
+		redisUtil.delete("captcha_"+key);
+	}
+	
+	/**
+	 * 验证验证码是否正确。
+	 * @param key 验证的key。
+	 * @param captcha 输入的验证码。
+	 * @return 校验结果。如果正确返回ture，否则返回false。
+	 */
+	public boolean isCaptchaValid(String key, String captcha) {
+		String value = redisUtil.getString("captcha_"+key);
+		if(StringUtils.isBlank(value) || StringUtils.isBlank(captcha) || !captcha.equals(value)) {
+			return false;
+		}
+		return true;
+	}
+	
 }

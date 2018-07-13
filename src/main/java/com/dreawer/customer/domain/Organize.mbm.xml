@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.dreawer.customer.domain.Organize">
+	
+	<!-- ================================================================================== -->
+	<!-- SQL语句（增加）																		-->
+	<!-- ================================================================================== -->
+	
+	<!-- 保存用户信息 -->
+	<insert id="save" parameterType="Organize">
+        INSERT INTO aci_organize(id, name, app_id, app_ctg, status)
+        VALUES(#{id}, #{name}, #{appId}, #{category}, #{status})
+    </insert>
+    
+    <!-- ================================================================================== -->
+	<!-- SQL语句（删除）																		-->
+	<!-- ================================================================================== -->
+    
+    <!-- ================================================================================== -->
+	<!-- SQL语句（更新）																		-->
+	<!-- ================================================================================== -->
+    
+	
+    <!-- ================================================================================== -->
+	<!-- SQL语句（查询）																		-->
+	<!-- ================================================================================== -->
+	
+	<!-- 查询用户信息 -->
+    <select id="findOrganizeByAppId" parameterType="String" resultMap="organizeResultMap">
+       	SELECT <include refid="organizeBasicFields"/>
+        FROM aci_organize
+		WHERE id = #{id}
+		AND status = 'ACTIVATED'
+    </select>
+    
+    <!-- ================================================================================== -->
+	<!-- 公用SQL定义																			-->
+	<!-- ================================================================================== -->
+    
+    <!-- 用户基本信息字段 -->
+	<sql id="organizeBasicFields">
+		id, name, app_id, app_ctg, status, cre_tim
+	</sql>
+	
+    <!-- ================================================================================== -->
+	<!-- 结果集映射																			    -->
+	<!-- ================================================================================== -->
+	
+	<!-- 用户基本信息 -->
+    <resultMap id="organizeResultMap" type="Organize">
+		<id property="id" column="id" />
+		<result property="name" column="name" />
+		<result property="appId" column="app_id" />
+		<result property="category" column="app_ctg" />
+		<result property="status" column="status" />
+		<result property="createTime" column="cre_tim" />
+	</resultMap>
+</mapper>

@@ -13,7 +13,7 @@ public class SetEmailForm {
     private String captcha = null; // 验证码
 	
 	@NotEmpty(message="EntryError.EMPTY")
-	private String appid = null;
+	private String appId = null;
 	
 	public String getEmail() {
 		return email;
@@ -31,12 +31,12 @@ public class SetEmailForm {
 		this.captcha = captcha;
 	}
 
-	public String getAppid() {
-		return appid;
+	public String getAppId() {
+		return appId;
 	}
 
-	public void setAppid(String appid) {
-		this.appid = appid;
+	public void setAppId(String appId) {
+		this.appId = appId;
 	}
 
 }

@@ -1,7 +1,8 @@
 package com.dreawer.customer.domain;
 
 import static org.apache.commons.lang.StringUtils.*;
-import java.sql.Timestamp;
+import java.util.Date;
+
 import com.dreawer.customer.lang.UserStatus;
 import com.dreawer.domain.BaseDomain;
 
@@ -9,7 +10,7 @@ public class Customer extends BaseDomain{
 	
     private static final long serialVersionUID = -3980205475027276614L;
     
-    private String appId = null; // 应用id
+    private String organizeId = null; // 组织id
 
     private String name = null; // 名字（它可以是：个人的姓名或企业、团队、产品的全名）
     
@@ -35,11 +36,11 @@ public class Customer extends BaseDomain{
     
     private String creater = null; // 创建者
     
-    private Timestamp createTime = null; // 创建时间
+    private Date createTime = null; // 创建时间
     
     private String updater = null; // 更新者
     
-    private Timestamp updateTime = null; // 更新时间
+    private Date updateTime = null; // 更新时间
     
     // --------------------------------------------------------------------------------
     // 构造器
@@ -177,41 +178,6 @@ public class Customer extends BaseDomain{
         this.category = category;
     }
 
-    /**
-     * 获取属性 <TT>createTime</TT>（创建时间）的值。
-     * @return <TT>createTime</TT> 创建时间。
-     */
-    // @XmlJavaTypeAdapter(TimestampAdapter.class)
-    public Timestamp getCreateTime() {
-        return createTime;
-    }
-
-    /**
-     * 设置属性 <TT>createTime</TT>（创建时间）的值。
-     * @param createTime 创建时间。
-     */
-    // @XmlJavaTypeAdapter(TimestampAdapter.class)
-    public void setCreateTime(Timestamp createTime) {
-        this.createTime = createTime;
-    }
-    
-    /**
-     * 获取属性 <TT>updateTime</TT>（更新时间）的值。
-     * @return <TT>updateTime</TT> 更新时间。
-     */
-    public Timestamp getUpdateTime() {
-        return updateTime;
-    }
-
-    /**
-     * 设置属性 <TT>updateTime</TT>（更新时间）的值。
-     * @param updateTime 更新时间。
-     */
-    public void setUpdateTime(Timestamp updateTime) {
-        this.updateTime = updateTime;
-    }
-    
-    
     @Override
     public int hashCode() {
         // 防止拥有“相同基类”的“子类”之间进行比较，以降低equals方法调用频率
@@ -272,14 +238,6 @@ public class Customer extends BaseDomain{
 		this.phoneNumber = phoneNumber;
 	}
 
-	public String getAppId() {
-		return appId;
-	}
-
-	public void setAppId(String appId) {
-		this.appId = appId;
-	}
-
 	public String getPetName() {
 		return petName;
 	}
@@ -318,6 +276,30 @@ public class Customer extends BaseDomain{
 
 	public void setMugshot(String mugshot) {
 		this.mugshot = mugshot;
+	}
+
+	public Date getCreateTime() {
+		return createTime;
+	}
+
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
+	}
+
+	public Date getUpdateTime() {
+		return updateTime;
+	}
+
+	public void setUpdateTime(Date updateTime) {
+		this.updateTime = updateTime;
+	}
+
+	public String getOrganizeId() {
+		return organizeId;
+	}
+
+	public void setOrganizeId(String organizeId) {
+		this.organizeId = organizeId;
 	}
     
 }

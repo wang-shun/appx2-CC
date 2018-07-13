@@ -21,7 +21,7 @@ public class User extends BaseDomain {
 
     private String email = null; // E-Mail（注册邮箱）
     
-    private String appId = null; // 应用id
+    private String organizeId = null; // 组织id
     
     private UserStatus status = null; // 状态
     
@@ -94,14 +94,6 @@ public class User extends BaseDomain {
     public void setStatus(UserStatus status) {
         this.status = status;
     }
-    
-	public String getAppId() {
-		return appId;
-	}
-
-	public void setAppId(String appId) {
-		this.appId = appId;
-	}
 	
 	public String getUpdater() {
 		return updater;
@@ -174,6 +166,14 @@ public class User extends BaseDomain {
 
 	public void setUpdateTime(Date updateTime) {
 		this.updateTime = updateTime;
+	}
+
+	public String getOrganizeId() {
+		return organizeId;
+	}
+
+	public void setOrganizeId(String organizeId) {
+		this.organizeId = organizeId;
 	}
 
 }

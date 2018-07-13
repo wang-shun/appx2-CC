@@ -1,6 +1,6 @@
 package com.dreawer.customer.domain;
 
-import java.sql.Timestamp;
+import java.util.Date;
 
 import com.dreawer.domain.BaseDomain;
 
@@ -11,9 +11,9 @@ public class Sequence extends BaseDomain {
     
 	private Integer value = 0; // 值
 	
-    private Timestamp createTime = null; // 创建时间
+    private Date createTime = null; // 创建时间
     
-    private Timestamp updateTime = null; // 更新时间
+    private Date updateTime = null; // 更新时间
     
 	// --------------------------------------------------------------------------------
 	// 构造器
@@ -62,36 +62,20 @@ public class Sequence extends BaseDomain {
 		this.value = value;
 	}
 
-	/**
-     * 获取属性 <TT>createTime</TT>（创建时间）的值。
-     * @return <TT>createTime</TT> 创建时间。
-     */
-    public Timestamp getCreateTime() {
-        return createTime;
-    }
+	public Date getCreateTime() {
+		return createTime;
+	}
 
-    /**
-     * 设置属性 <TT>createTime</TT>（创建时间）的值。
-     * @param createTime 创建时间。
-     */
-    public void setCreateTime(Timestamp createTime) {
-        this.createTime = createTime;
-    }
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
+	}
 
-    /**
-     * 获取属性 <TT>updateTime</TT>（更新时间）的值。
-     * @return <TT>updateTime</TT> 更新时间。
-     */
-    public Timestamp getUpdateTime() {
-        return updateTime;
-    }
+	public Date getUpdateTime() {
+		return updateTime;
+	}
 
-    /**
-     * 设置属性 <TT>updateTime</TT>（更新时间）的值。
-     * @param updateTime 更新时间。
-     */
-    public void setUpdateTime(Timestamp updateTime) {
-        this.updateTime = updateTime;
-    }
-    
+	public void setUpdateTime(Date updateTime) {
+		this.updateTime = updateTime;
+	}
+
 }

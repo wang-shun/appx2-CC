@@ -3,20 +3,20 @@ package com.dreawer.customer.utils;
 import java.lang.reflect.Type;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-import javax.annotation.Resource;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
 import com.dreawer.customer.domain.SystemInfo;
-import com.dreawer.customer.domain.User;
+import com.dreawer.customer.domain.TokenUser;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 
-@Component("redisUtil")
+@Component
 public class RedisUtil {
 
-	@Resource(name="redisTemplate") 
+	@Autowired
     private StringRedisTemplate redisTemplate;//redis操作模板  
     
     private static final String userPrefix = "user_";
@@ -122,7 +122,7 @@ public class RedisUtil {
      * @param key 要取出数据的主键。
      * @return 用户信息。
      */
-    public User getRedisUser(String key){
+    public TokenUser getTokenUser(String key){
     	if(StringUtils.isBlank(key)){
             return null;  
     	}
@@ -130,7 +130,7 @@ public class RedisUtil {
     	if(StringUtils.isBlank(value)){  
             return null;  
         } 
-		return new Gson().fromJson(value, User.class);
+		return new Gson().fromJson(value, TokenUser.class);
     }
     
     
@@ -139,11 +139,11 @@ public class RedisUtil {
      * @param key 要存放数据的主键。
      * @param user 用户信息。
      */
-    public void setRedisUser(String key, User user) {
-    	if (StringUtils.isBlank(key) || user==null) {  
+    public void setTokenUser(String key, TokenUser tokenUser) {
+    	if (StringUtils.isBlank(key) || tokenUser==null) {  
             return;  
         } 
-        redisTemplate.opsForValue().set(userPrefix + key, new Gson().toJson(user), 20*60*60L, TimeUnit.SECONDS);  
+        redisTemplate.opsForValue().set(userPrefix + key, new Gson().toJson(tokenUser), 20*60*60L, TimeUnit.SECONDS);  
 	}
     
     /**

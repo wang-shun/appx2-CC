@@ -4,25 +4,24 @@ import static com.dreawer.customer.constants.ControllerConstants.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.dreawer.customer.domain.Organize;
 import com.dreawer.customer.domain.User;
+import com.dreawer.customer.service.OrganizeService;
 import com.dreawer.customer.service.UserService;
 import com.dreawer.customer.utils.MD5Utils;
 import com.dreawer.customer.web.form.BaseLoginForm;
 import com.dreawer.responsecode.rcdt.Error;
 import com.dreawer.responsecode.rcdt.ResponseCode;
 import com.dreawer.responsecode.rcdt.ResponseCodeRepository;
-import com.dreawer.responsecode.rcdt.RuleError;
 import com.dreawer.responsecode.rcdt.Success;
 
 @RestController
@@ -31,29 +30,12 @@ public class SignInController extends BaseController {
     @Autowired
 	private UserService userService; // 用户信息服务
     
+    @Autowired
+    private OrganizeService organizeService; // 用户信息服务
+    
     private Logger logger = Logger.getLogger(this.getClass()); // 日志记录器
 	
 
-	/**
-	 * 请求登录功能。
-	 * @param req 用户请求。
-	 * @param resp 服务器响应。
-	 */
-	@RequestMapping(REQ_LOGIN)
-	public void login(HttpServletRequest req, HttpServletResponse resp) {
-		try {
-			String url = req.getQueryString();
-			if(StringUtils.isNotBlank(url)&&url.startsWith("url=")){
-				url = url.substring(4);
-				req.getSession().setAttribute(REQ_URL, url);
-			}
-			// 进入登录授权流程
-			resp.sendRedirect(REQ_LOGIN_PAGE);
-		} catch (Exception e) {
-            logger.error(e);
-		}
-	}
-	
     /**
      * 通用登录。
      * @param req 用户请求。
@@ -69,18 +51,12 @@ public class SignInController extends BaseController {
         }
 		try {
 			
-			// 检查应用是否存在
-        	String mediaResult = httpGet("https://account.dreawer.com/app/detail", "appid="+form.getAppid());
-			if(StringUtils.isBlank(mediaResult)){
-				return Error.EXT_REQUEST("app");
+			// 检查组织是否存在
+			Organize organize = organizeService.findOrganizeByAppId(form.getAppId());
+			if(organize==null) {
+				return Error.BUSINESS("appId");
 			}
 			
-			JSONObject appJson = new JSONObject(mediaResult);
-			if(!appJson.getBoolean("status")){
-				return RuleError.NON_EXISTENT("app"); 
-			}
-            String appId = appJson.getJSONObject("data").getString("id");
-
             String flag = null;
 			String check = "^([a-z0-9A-Z]+[-|_|\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{2,}$";
 	        Pattern regex = Pattern.compile(check);
@@ -98,9 +74,9 @@ public class SignInController extends BaseController {
 	        
 	        User user = null;
 	        if("email".equals(flag)){
-				user = userService.findUserByEmail(form.getLoginName(), appId);
+				user = userService.findUserByEmail(form.getLoginName(), organize.getId());
 	        }else if("phone".equals(flag)){
-				user = userService.findUserByPhone(form.getLoginName(), appId);
+				user = userService.findUserByPhone(form.getLoginName(), organize.getId());
 	        }else{
 				return Error.BUSINESS("loginName");
 	        }
@@ -110,7 +86,7 @@ public class SignInController extends BaseController {
 			if(!MD5Utils.encrypt(form.getPassword(), "dreawer").equals(user.getPassword())){
 				return Error.BUSINESS("password");
 			}
-        	return Success.SUCCESS(signInUser(req, user));
+        	return Success.SUCCESS(signInUser(req, user.getId()));
 		}catch(Exception e){
 			 e.printStackTrace();
 	         logger.error(e);

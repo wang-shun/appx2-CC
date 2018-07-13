@@ -5,11 +5,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.dreawer.customer.domain.Customer;
-import com.dreawer.customer.domain.Sns;
+import com.dreawer.customer.domain.Organize;
 import com.dreawer.customer.domain.User;
 import com.dreawer.customer.lang.UserStatus;
 import com.dreawer.customer.persistence.CustomerDao;
-import com.dreawer.customer.persistence.SnsDao;
+import com.dreawer.customer.persistence.OrganizeDao;
 import com.dreawer.customer.persistence.UserDao;
 
 @Service
@@ -20,9 +20,9 @@ public class UserService {
     
     @Autowired
     private CustomerDao customerDao; // 客户信息DAO
-    
+
     @Autowired
-    private SnsDao snsDao;    //社交媒体dao
+    private OrganizeDao organizeDao;
     
     /**
      * 获取用户。
@@ -38,14 +38,13 @@ public class UserService {
      * @param sns 第三方媒体信息。
      * @param user 用户信息。
      */
-	public void addSnsUser(Sns sns, User user, Customer customer) {
-		// 组建用户权限
-		userDao.save(user);
+	public void addSnsUser(Organize organize, User user, Customer customer) {
 		
 		// 新建第三方用户信息
-		sns.setUser(user);
-		sns.setCreater(user);
-		snsDao.save(sns);
+		organizeDao.save(organize);
+		
+		// 组建用户权限
+		userDao.save(user);
 		
 		// 新建客户信息
 		customerDao.save(customer);
@@ -87,8 +86,8 @@ public class UserService {
 	 * @param email
 	 * @return
 	 */
-	public User findUserByEmail(String email, String appId) {
-		return userDao.findUserByEmail(email, appId);
+	public User findUserByEmail(String email, String organizeId) {
+		return userDao.findUserByEmail(email, organizeId);
 	}
 
 	/**
@@ -109,8 +108,8 @@ public class UserService {
 	 * @param appId 
 	 * @return
 	 */
-	public User findUserByPhone(String phoneNumber, String appId) {
-		return userDao.findUserByPhone(phoneNumber, appId);
+	public User findUserByPhone(String phoneNumber, String organizeId) {
+		return userDao.findUserByPhone(phoneNumber, organizeId);
 	}
 
 

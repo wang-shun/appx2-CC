@@ -13,7 +13,7 @@ public class EmailBaseForm {
     private String type = null; // 类型
 
 	@NotEmpty(message="EntryError.EMPTY")
-	private String appid = null;
+	private String appId = null;
 	
 	public String getEmail() {
 		return email;
@@ -31,12 +31,13 @@ public class EmailBaseForm {
 		this.type = type;
 	}
 
-	public String getAppid() {
-		return appid;
+	public String getAppId() {
+		return appId;
 	}
 
-	public void setAppid(String appid) {
-		this.appid = appid;
+	public void setAppId(String appId) {
+		this.appId = appId;
 	}
+
 	
 }

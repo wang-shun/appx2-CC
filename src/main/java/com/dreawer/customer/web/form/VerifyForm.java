@@ -19,7 +19,7 @@ public class VerifyForm {
     private String email = null; // 邮箱
 
 	@NotEmpty(message="EntryError.EMPTY")
-	private String appid = null;
+	private String appId = null;
 	
 	public VerifyType getType() {
 		return type;
@@ -45,12 +45,13 @@ public class VerifyForm {
 		this.phone = phone;
 	}
 
-	public String getAppid() {
-		return appid;
+	public String getAppId() {
+		return appId;
 	}
 
-	public void setAppid(String appid) {
-		this.appid = appid;
+	public void setAppId(String appId) {
+		this.appId = appId;
 	}
+
 
 }

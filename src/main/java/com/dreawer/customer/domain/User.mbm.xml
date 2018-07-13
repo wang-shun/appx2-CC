@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.dreawer.account.domain.User">
+<mapper namespace="com.dreawer.customer.domain.User">
 	
 	<!-- ================================================================================== -->
 	<!-- SQL语句（增加）																		-->
@@ -9,8 +9,8 @@
 	
 	<!-- 保存用户信息 -->
 	<insert id="save" parameterType="User">
-        INSERT INTO aci_user(id, appId, password, email, phoneNumber, status)
-        VALUES(#{id}, #{appId}, #{password}, #{email}, #{phoneNumber}, #{status})
+        INSERT INTO aci_user(id, org_Id, password, email, phoneNumber, status)
+        VALUES(#{id}, #{organizeId}, #{password}, #{email}, #{phoneNumber}, #{status})
     </insert>
     
     <!-- ================================================================================== -->
@@ -58,7 +58,7 @@
         SELECT <include refid="userBasicFields"/>
         FROM aci_user
 		WHERE email = #{email}
-		AND appId = #{appId}
+		AND org_Id = #{organizeId}
     </select>
     
     <!-- 查询用户信息 -->
@@ -66,7 +66,7 @@
         SELECT <include refid="userBasicFields"/>
         FROM aci_user
 		WHERE phoneNumber = #{phoneNumber}
-		AND appId = #{appId}
+		AND org_Id = #{organizeId}
     </select>
     
     <!-- ================================================================================== -->
@@ -75,7 +75,7 @@
     
     <!-- 用户基本信息字段 -->
 	<sql id="userBasicFields">
-		id, appId, username, password, email, phoneNumber, status, cre_tim
+		id, org_Id, username, password, email, phoneNumber, status, cre_tim
 	</sql>
 	
     <!-- ================================================================================== -->
@@ -85,7 +85,7 @@
 	<!-- 用户基本信息 -->
     <resultMap id="userBaseResultMap" type="User">
 		<id property="id" column="id" />
-		<result property="appId" column="appId" />
+		<result property="organizeId" column="org_Id" />
 		<result property="username" column="username" />
 		<result property="password" column="password" />
 		<result property="email" column="email" />

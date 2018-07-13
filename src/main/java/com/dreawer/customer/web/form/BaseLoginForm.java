@@ -12,7 +12,7 @@ public class BaseLoginForm {
 	private String password = null; // 密码
 	
 	@NotEmpty(message="EntryError.EMPTY")
-	private String appid = null; // 名称
+	private String appId = null; // 名称
 
 	public String getPassword() {
 		return password;
@@ -30,12 +30,13 @@ public class BaseLoginForm {
 		this.loginName = loginName;
 	}
 
-	public String getAppid() {
-		return appid;
+	public String getAppId() {
+		return appId;
 	}
 
-	public void setAppid(String appid) {
-		this.appid = appid;
+	public void setAppId(String appId) {
+		this.appId = appId;
 	}
+
 	
 }

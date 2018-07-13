@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.dreawer.customer.domain.Address;
-import com.dreawer.customer.domain.User;
+import com.dreawer.customer.domain.TokenUser;
 import com.dreawer.customer.utils.RedisUtil;
 import com.dreawer.customer.web.form.AddAddressForm;
 import com.dreawer.customer.web.form.EditAddressForm;
@@ -65,7 +65,7 @@ public class AddressController extends BaseController{
 			JSONObject city = data.getJSONObject("city");
 			JSONObject area = data.getJSONObject("area");
 			
-			User user = getSignInUser(req);
+			TokenUser tokenUser = getSignInUser(req);
             String id = UUID.randomUUID().toString().replace("-", "");
             Address address = new Address();
             address.setId(id);
@@ -78,23 +78,23 @@ public class AddressController extends BaseController{
             address.setArea(area.getString("id"));
             address.setAreaName(area.getString("name"));
             address.setDetail(form.getDetail());
-            address.setUserId(user.getId());
+            address.setUserId(tokenUser.getId());
             Long now = System.currentTimeMillis();
             address.setCreateTime(now);
             address.setUpdateTime(now);
-            List<Address> addresses =  redisUtil.getJsonArray("addr_"+user.getId(), Address.class);
+            List<Address> addresses =  redisUtil.getJsonArray("addr_"+tokenUser.getId(), Address.class);
             if(addresses==null || addresses.size()<=0){
             	// 把地址添加到缓存
                 address.setStatus("DEFAULT");
             	addresses = new ArrayList<>();
             	addresses.add(address);
-            	redisUtil.put("addr_"+user.getId(), addresses);
+            	redisUtil.put("addr_"+tokenUser.getId(), addresses);
             }else{
             	// 同步缓存 
                 address.setStatus("USED");
             	addresses.add(address);
             	sort(addresses);
-            	redisUtil.put("addr_"+user.getId(), addresses);
+            	redisUtil.put("addr_"+tokenUser.getId(), addresses);
             }
 			return Success.SUCCESS;
 		} catch (Exception e) {
@@ -116,8 +116,8 @@ public class AddressController extends BaseController{
         }
 		try {
 			// 校验收货地址
-			User user = getSignInUser(req);
-			String key = "addr_"+user.getId();
+			TokenUser tokenUser = getSignInUser(req);
+			String key = "addr_"+tokenUser.getId();
             List<Address> addresses =  redisUtil.getJsonArray(key, Address.class);
             if(addresses==null){
 				return RuleError.NON_EXISTENT("address"); 
@@ -182,8 +182,8 @@ public class AddressController extends BaseController{
     		@RequestParam("id") String id) {
 		try {
 			// 校验收货地址
-			User user = getSignInUser(req);
-			String key = "addr_"+user.getId();
+			TokenUser tokenUser = getSignInUser(req);
+			String key = "addr_"+tokenUser.getId();
             List<Address> addresses =  redisUtil.getJsonArray(key, Address.class);
             if(addresses==null){
 				return RuleError.NON_EXISTENT("address"); 
@@ -222,8 +222,8 @@ public class AddressController extends BaseController{
     @RequestMapping(value="/address/list", method=RequestMethod.GET)
 	public ResponseCode list(HttpServletRequest req) {
 		try {
-			User user = getSignInUser(req);
-			String key = "addr_"+user.getId();
+			TokenUser tokenUser = getSignInUser(req);
+			String key = "addr_"+tokenUser.getId();
             List<Address> addresses =  redisUtil.getJsonArray(key, Address.class);
 			Map<String, Object> params = new HashMap<>();
 			params.put("addresses", addresses);
@@ -243,8 +243,8 @@ public class AddressController extends BaseController{
 	public ResponseCode detail(HttpServletRequest req, 
     		@RequestParam("id") String id) {
 		try {
-			User user = getSignInUser(req);
-			String key = "addr_"+user.getId();
+			TokenUser tokenUser = getSignInUser(req);
+			String key = "addr_"+tokenUser.getId();
             List<Address> addresses =  redisUtil.getJsonArray(key, Address.class);
             if(addresses==null){
 				return RuleError.NON_EXISTENT("address"); 
@@ -277,8 +277,8 @@ public class AddressController extends BaseController{
 	public ResponseCode setDefault(HttpServletRequest req, 
     		@RequestParam("id") String id) {
 		try {
-			User user = getSignInUser(req);
-			String key = "addr_"+user.getId();
+			TokenUser tokenUser = getSignInUser(req);
+			String key = "addr_"+tokenUser.getId();
             List<Address> addresses =  redisUtil.getJsonArray(key, Address.class);
             if(addresses==null){
 				return RuleError.NON_EXISTENT("address"); 
@@ -322,8 +322,8 @@ public class AddressController extends BaseController{
     @RequestMapping(value="/address/getDefault", method=RequestMethod.GET)
 	public ResponseCode getDefault(HttpServletRequest req) {
 		try {
-			User user = getSignInUser(req);
-			String key = "addr_"+user.getId();
+			TokenUser tokenUser = getSignInUser(req);
+			String key = "addr_"+tokenUser.getId();
             List<Address> addresses =  redisUtil.getJsonArray(key, Address.class);
             if(addresses==null){
     			return Success.SUCCESS;

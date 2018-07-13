@@ -23,7 +23,7 @@ public class PhoneSignUpForm {
 	private String password = null; // 密码
 	
 	@NotEmpty(message="EntryError.EMPTY")
-	private String appid = null;
+	private String appId = null;
 	
 	@NotEmpty(message="EntryError.EMPTY")
 	private String captcha = null; // 验证码
@@ -68,12 +68,12 @@ public class PhoneSignUpForm {
 		this.captcha = captcha;
 	}
 
-	public String getAppid() {
-		return appid;
+	public String getAppId() {
+		return appId;
 	}
 
-	public void setAppid(String appid) {
-		this.appid = appid;
+	public void setAppId(String appId) {
+		this.appId = appId;
 	}
 
 }

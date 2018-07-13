@@ -63,10 +63,10 @@ public class UserDao extends MyBatisBaseDao<User> {
 	 * @param email
 	 * @return
 	 */
-	public User findUserByEmail(String email, String appId) {
+	public User findUserByEmail(String email, String organizeId) {
 		Map<String, Object> params = new HashMap<String, Object>();
         params.put("email", email);
-        params.put("appId", appId);
+        params.put("organizeId", organizeId);
 		return selectOne("findUserByEmail", params);
 	}
 
@@ -76,10 +76,10 @@ public class UserDao extends MyBatisBaseDao<User> {
 	 * @param appId 
 	 * @return
 	 */
-	public User findUserByPhone(String phoneNumber, String appId) {
+	public User findUserByPhone(String phoneNumber, String organizeId) {
 		Map<String, Object> params = new HashMap<String, Object>();
         params.put("phoneNumber", phoneNumber);
-        params.put("appId", appId);
+        params.put("organizeId", organizeId);
 		return selectOne("findUserByPhone", params);
 	}
 

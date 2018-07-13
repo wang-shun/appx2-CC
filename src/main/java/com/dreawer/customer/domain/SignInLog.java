@@ -1,6 +1,6 @@
 package com.dreawer.customer.domain;
 
-import java.sql.Timestamp;
+import java.util.Date;
 
 import com.dreawer.customer.lang.ClientType;
 import com.dreawer.customer.lang.SignInFailCause;
@@ -10,7 +10,7 @@ import com.dreawer.domain.BaseDomain;
 public class SignInLog extends BaseDomain{
     private static final long serialVersionUID = -7788528035675069861L;
 
-    private User user = null; // 用户
+    private String userId = null; // 用户
     
 	private ClientType type = null; // 登录方式
 	
@@ -20,7 +20,7 @@ public class SignInLog extends BaseDomain{
     
     private SignInFailCause cause = null; // 登录失败的原因
     
-    private Timestamp time = null; // 创建时间
+    private Date time = null; // 创建时间
 	
 	/**
 	 * 默认构造器。
@@ -93,28 +93,20 @@ public class SignInLog extends BaseDomain{
         this.cause = cause;
     }
     
-    /**
-     * 获取属性 <TT>time</TT>（创建时间）的值。如果不设置则默认为：插入数据的时间。
-     * @return <TT>time</TT> 创建时间。
-     */
-    public Timestamp getTime() {
-        return time;
-    }
-
-    /**
-     * 设置 <TT>time</TT>（创建时间）的值。
-     * @param time 创建时间。
-     */
-    public void setTime(Timestamp time) {
-        this.time = time;
-    }
-
-	public User getUser() {
-		return user;
+	public String getUserId() {
+		return userId;
 	}
 
-	public void setUser(User user) {
-		this.user = user;
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+
+	public Date getTime() {
+		return time;
+	}
+
+	public void setTime(Date time) {
+		this.time = time;
 	}
 	
 }

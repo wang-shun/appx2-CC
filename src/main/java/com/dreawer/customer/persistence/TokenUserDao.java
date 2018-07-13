@@ -15,17 +15,17 @@ public class TokenUserDao extends MyBatisBaseDao<TokenUser>{
 		return selectOne("findTokenUserById", id);
 	}
 
-	public TokenUser findTokenUserByEmail(String email, String appId) {
+	public TokenUser findTokenUserByEmail(String email, String organizeId) {
 		Map<String, Object> params = new HashMap<>();
 		params.put("email", email);
-		params.put("appId", appId);
+		params.put("organizeId", organizeId);
 		return selectOne("findTokenUserByEmail", params);
 	}
 
-	public TokenUser findTokenUserByPhone(String phoneNumber, String appId) {
+	public TokenUser findTokenUserByPhone(String phoneNumber, String organizeId) {
 		Map<String, Object> params = new HashMap<>();
 		params.put("phoneNumber", phoneNumber);
-		params.put("appId", appId);
+		params.put("organizeId", organizeId);
 		return selectOne("findTokenUserByPhone", params);
 	}
 	

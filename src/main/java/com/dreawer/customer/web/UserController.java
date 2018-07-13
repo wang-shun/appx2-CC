@@ -8,7 +8,6 @@ import javax.validation.Valid;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,11 +15,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.dreawer.customer.domain.Customer;
+import com.dreawer.customer.domain.Organize;
+import com.dreawer.customer.domain.TokenUser;
 import com.dreawer.customer.domain.User;
-import com.dreawer.customer.domain.Verify;
 import com.dreawer.customer.service.CustomerService;
+import com.dreawer.customer.service.OrganizeService;
 import com.dreawer.customer.service.UserService;
-import com.dreawer.customer.service.VerifyService;
 import com.dreawer.customer.utils.MD5Utils;
 import com.dreawer.customer.web.form.EditUserForm;
 import com.dreawer.customer.web.form.SetBasicForm;
@@ -30,7 +30,6 @@ import com.dreawer.responsecode.rcdt.EntryError;
 import com.dreawer.responsecode.rcdt.Error;
 import com.dreawer.responsecode.rcdt.ResponseCode;
 import com.dreawer.responsecode.rcdt.ResponseCodeRepository;
-import com.dreawer.responsecode.rcdt.RuleError;
 import com.dreawer.responsecode.rcdt.Success;
 
 @RestController
@@ -43,7 +42,7 @@ public class UserController extends BaseController {
     private CustomerService customerService;
     
     @Autowired
-	private VerifyService verifyService; // 认证信息服务
+    private OrganizeService organizeService; // 用户信息服务
     
     private Logger logger = Logger.getLogger(this.getClass()); // 日志记录器
     
@@ -59,12 +58,12 @@ public class UserController extends BaseController {
             return ResponseCodeRepository.fetch(result.getFieldError().getDefaultMessage(), result.getFieldError().getField(), Error.ENTRY);
         }
 		try {
-	    	User user = getSignInUser(req);
-	    	if(StringUtils.isNotBlank(user.getPassword())){
+			TokenUser tokenUser = getSignInUser(req);
+	    	if(StringUtils.isNotBlank(tokenUser.getPassword())){
 	    		if(StringUtils.isBlank(form.getOldPassword())){
 					return EntryError.EMPTY("password");
 	    		}
-	    		if(!user.getPassword().equals(MD5Utils.encrypt(form.getOldPassword(), "dreawer"))){
+	    		if(!tokenUser.getPassword().equals(MD5Utils.encrypt(form.getOldPassword(), "dreawer"))){
 					return Error.BUSINESS("password");
 	    		}
 	    		if(form.getPassword().equals(form.getOldPassword())){
@@ -72,6 +71,8 @@ public class UserController extends BaseController {
 	    		}
 	    	}
 	    	//修改用户信息
+	    	User user = new User();
+	    	user.setId(tokenUser.getId());
 	    	user.setPassword(MD5Utils.encrypt(form.getPassword(), "dreawer"));
 	    	user.setUpdater(user.getId());
 	    	user.setUpdateTime(new Timestamp(System.currentTimeMillis()));
@@ -100,8 +101,8 @@ public class UserController extends BaseController {
 		
 		try {
 		    // 获取用户及客户信息
-	        User user = getSignInUser(req);
-	        Customer customer = customerService.findCustomerById(user.getId());
+			TokenUser tokenUser = getSignInUser(req);
+	        Customer customer = customerService.findCustomerById(tokenUser.getId());
 	        if(!customer.getPetName().equals(form.getPetName())){
 	        	customer.setPetName(form.getPetName());
 	        	customer.setAlias(getAlias(form.getPetName()));
@@ -110,7 +111,7 @@ public class UserController extends BaseController {
 	        	customer.setMugshot(form.getMugshot());
 	        }
 	        customer.setSlogan(form.getSlogan());
-	        customer.setUpdater(user.getId());
+	        customer.setUpdater(tokenUser.getId());
 	        customer.setUpdateTime(new Timestamp(System.currentTimeMillis()));
 	        customerService.updateBasic(customer);
 			// 更新用户登录信息
@@ -138,33 +139,30 @@ public class UserController extends BaseController {
 		}
 		try {
 			
-			// 检查应用是否存在
-        	String mediaResult = httpGet("https://account.dreawer.com/app/detail", "appid="+form.getAppid());
-			if(StringUtils.isBlank(mediaResult)){
-				return Error.EXT_REQUEST("app");
+			// 检查组织是否存在
+			Organize organize = organizeService.findOrganizeByAppId(form.getAppId());
+			if(organize==null) {
+				return Error.BUSINESS("appId");
 			}
 			
-			JSONObject appJson = new JSONObject(mediaResult);
-			if(!appJson.getBoolean("status")){
-				return RuleError.NON_EXISTENT("app"); 
-			}
-            String appId = appJson.getJSONObject("data").getString("id");
-            
 			// 判断邮箱是否已注册
-			User user = userService.findUserByEmail(form.getEmail(), appId);
-            if(user!=null){
+			User existsUser = userService.findUserByEmail(form.getEmail(), organize.getId());
+            if(existsUser!=null){
 				return Error.BUSINESS("email");
             }
 		    // 获取用户及客户信息
-	        user = getSignInUser(req);
+			TokenUser tokenUser = getSignInUser(req);
 	        
-            Verify verify = verifyService.findVerifyByEmail(form.getEmail(), form.getCaptcha());
-			if(verify==null){
-				return Error.BUSINESS("code");
-			}
-			verifyService.delete(verify);
+			// 校验验证码
+            if(isCaptchaValid(form.getEmail(), form.getCaptcha())) {
+            	removeCaptcha(form.getEmail());
+            }else {
+				return Error.BUSINESS("captcha");
+            }
 			
 			// 更新邮箱
+			User user = new User();
+	    	user.setId(tokenUser.getId());
 			user.setEmail(form.getEmail());
 			userService.updateBasic(user);
 			
@@ -194,33 +192,30 @@ public class UserController extends BaseController {
 		}
 		try {
 			
-			// 检查应用是否存在
-        	String mediaResult = httpGet("https://account.dreawer.com/app/detail", "appid="+form.getAppid());
-			if(StringUtils.isBlank(mediaResult)){
-				return Error.EXT_REQUEST("app");
+			// 检查组织是否存在
+			Organize organize = organizeService.findOrganizeByAppId(form.getAppId());
+			if(organize==null) {
+				return Error.BUSINESS("appId");
 			}
 			
-			JSONObject appJson = new JSONObject(mediaResult);
-			if(!appJson.getBoolean("status")){
-				return RuleError.NON_EXISTENT("app"); 
-			}
-            String appId = appJson.getJSONObject("data").getString("id");
-            
 			// 判断手机是否已注册
-			User user = userService.findUserByPhone(form.getPhone(), appId);
-            if(user!=null){
+			User existsUser = userService.findUserByPhone(form.getPhone(), organize.getId());
+            if(existsUser!=null){
 				return Error.BUSINESS("phone");
             }
 		    // 获取用户及客户信息
-	        user = getSignInUser(req);
+			TokenUser tokenUser = getSignInUser(req);
 	        
-	        Verify verify = verifyService.findVerifyByPhone(form.getPhone(), form.getCaptcha());
-			if(verify==null){
-				return Error.BUSINESS("code");
-			}
-			verifyService.delete(verify);
+			// 校验验证码
+            if(isCaptchaValid(form.getPhone(), form.getCaptcha())) {
+            	removeCaptcha(form.getPhone());
+            }else {
+				return Error.BUSINESS("captcha");
+            }
 			
 			// 更新邮箱
+			User user = new User();
+	    	user.setId(tokenUser.getId());
 			user.setPhoneNumber(form.getPhone());
 			userService.updateBasic(user);
 			// 更新用户登录信息

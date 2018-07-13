@@ -16,12 +16,12 @@ public class TokenUserService {
 		return tokenUserDao.findTokenUserById(id);
 	}
 	
-	public TokenUser findTokenUserByEmail(String email, String appId) {
-		return tokenUserDao.findTokenUserByEmail(email, appId);
+	public TokenUser findTokenUserByEmail(String email, String organizeId) {
+		return tokenUserDao.findTokenUserByEmail(email, organizeId);
 	}
 	
-	public TokenUser findTokenUserByPhone(String phoneNumber, String appId) {
-		return tokenUserDao.findTokenUserByPhone(phoneNumber, appId);
+	public TokenUser findTokenUserByPhone(String phoneNumber, String organizeId) {
+		return tokenUserDao.findTokenUserByPhone(phoneNumber, organizeId);
 	}
 	
 	
