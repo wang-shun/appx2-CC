@@ -24,11 +24,11 @@ import com.dreawer.customer.service.OrganizeService;
 import com.dreawer.customer.service.TokenUserService;
 import com.dreawer.customer.service.UserService;
 import com.dreawer.customer.utils.MD5Utils;
+import com.dreawer.customer.web.form.CheckCaptchaForm;
 import com.dreawer.customer.web.form.EmailBaseForm;
 import com.dreawer.customer.web.form.PhoneBaseForm;
 import com.dreawer.customer.web.form.PhoneSignUpForm;
 import com.dreawer.customer.web.form.ResetPasswordForm;
-import com.dreawer.customer.web.form.SetPhoneForm;
 import com.dreawer.customer.web.form.VerifyForm;
 import com.dreawer.responsecode.rcdt.EntryError;
 import com.dreawer.responsecode.rcdt.Error;
@@ -310,22 +310,22 @@ public class SignUpController extends BaseController {
     }
     
     /**
-     * 用户校验手机号。
+     * 用户校验验证码。
      * @param req 用户请求。
      * @param form 手机号校验表单。
      * @param result 表单校验结果。
      * @return
      */
-    @RequestMapping(value=REQ_VERIFY_PHONE_COMMEN, method=RequestMethod.POST)
-	public ResponseCode phoneVerify(HttpServletRequest req, 
-	        @Valid SetPhoneForm form, BindingResult result) {
+    @RequestMapping(value=REQ_VERIFY_CAPTCHA_COMMEN, method=RequestMethod.POST)
+	public ResponseCode checkCaptcha(HttpServletRequest req, 
+	        @Valid CheckCaptchaForm form, BindingResult result) {
 		if (result.hasErrors()) {
             return ResponseCodeRepository.fetch(result.getFieldError().getDefaultMessage(), result.getFieldError().getField(), Error.ENTRY);
 		}
 		try {
 			// 校验验证码
-            if(isCaptchaValid(form.getPhone(), form.getCaptcha())) {
-            	removeCaptcha(form.getPhone());
+            if(isCaptchaValid(form.getValue(), form.getCaptcha())) {
+            	removeCaptcha(form.getValue());
             }else {
 				return Error.BUSINESS("captcha");
             }

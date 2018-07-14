@@ -17,6 +17,9 @@ public class SetPhoneForm {
 	@NotEmpty(message="EntryError.EMPTY")
 	private String appId = null;
 	
+	@NotEmpty(message="EntryError.EMPTY")
+	private String userId = null;
+	
 	public String getPhone() {
 		return phone;
 	}
@@ -39,6 +42,14 @@ public class SetPhoneForm {
 
 	public void setAppId(String appId) {
 		this.appId = appId;
+	}
+
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
 	}
 
 	

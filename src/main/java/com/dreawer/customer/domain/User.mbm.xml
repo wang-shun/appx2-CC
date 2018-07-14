@@ -36,9 +36,14 @@
     <!-- 更新用户基本信息 -->
     <update id="updateBasic" parameterType="User">
         UPDATE aci_user
-        SET	 email = #{email}, phoneNumber = #{phoneNumber},
-        	 updr_id = #{updater}, upd_tim = #{updateTime}
-        WHERE  id = #{id}
+        SET <if test="email != null">
+	        	email = #{email},
+	        </if>
+	        <if test="phoneNumber != null">
+	        	phoneNumber = #{phoneNumber},
+	        </if>
+        	updr_id = #{updater}, upd_tim = #{updateTime}
+        WHERE id = #{id}
     </update>
     
     <!-- ================================================================================== -->

@@ -15,6 +15,9 @@ public class SetEmailForm {
 	@NotEmpty(message="EntryError.EMPTY")
 	private String appId = null;
 	
+	@NotEmpty(message="EntryError.EMPTY")
+	private String userId = null;
+	
 	public String getEmail() {
 		return email;
 	}
@@ -37,6 +40,14 @@ public class SetEmailForm {
 
 	public void setAppId(String appId) {
 		this.appId = appId;
+	}
+
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
 	}
 
 }

@@ -22,9 +22,9 @@ import com.dreawer.customer.service.CustomerService;
 import com.dreawer.customer.service.OrganizeService;
 import com.dreawer.customer.service.UserService;
 import com.dreawer.customer.utils.MD5Utils;
-import com.dreawer.customer.web.form.EditUserForm;
 import com.dreawer.customer.web.form.SetBasicForm;
 import com.dreawer.customer.web.form.SetEmailForm;
+import com.dreawer.customer.web.form.SetPasswordForm;
 import com.dreawer.customer.web.form.SetPhoneForm;
 import com.dreawer.responsecode.rcdt.EntryError;
 import com.dreawer.responsecode.rcdt.Error;
@@ -53,17 +53,17 @@ public class UserController extends BaseController {
      */
     @RequestMapping(value=REQ_SET_PASSWORD, method=RequestMethod.POST)
     public ResponseCode setPassword(HttpServletRequest req,
-    		@Valid EditUserForm form, BindingResult result) {
+    		@Valid SetPasswordForm form, BindingResult result) {
     	if (result.hasErrors()) {
             return ResponseCodeRepository.fetch(result.getFieldError().getDefaultMessage(), result.getFieldError().getField(), Error.ENTRY);
         }
 		try {
-			TokenUser tokenUser = getSignInUser(req);
-	    	if(StringUtils.isNotBlank(tokenUser.getPassword())){
+			User user = userService.findUserById(form.getUserId());
+	    	if(StringUtils.isNotBlank(user.getPassword())){
 	    		if(StringUtils.isBlank(form.getOldPassword())){
 					return EntryError.EMPTY("password");
 	    		}
-	    		if(!tokenUser.getPassword().equals(MD5Utils.encrypt(form.getOldPassword(), "dreawer"))){
+	    		if(!user.getPassword().equals(MD5Utils.encrypt(form.getOldPassword(), "dreawer"))){
 					return Error.BUSINESS("password");
 	    		}
 	    		if(form.getPassword().equals(form.getOldPassword())){
@@ -71,11 +71,9 @@ public class UserController extends BaseController {
 	    		}
 	    	}
 	    	//修改用户信息
-	    	User user = new User();
-	    	user.setId(tokenUser.getId());
 	    	user.setPassword(MD5Utils.encrypt(form.getPassword(), "dreawer"));
 	    	user.setUpdater(user.getId());
-	    	user.setUpdateTime(new Timestamp(System.currentTimeMillis()));
+	    	user.setUpdateTime(getNow());
 	    	userService.updatePassword(user);
         	return Success.SUCCESS;
 		}catch(Exception e){
@@ -150,8 +148,6 @@ public class UserController extends BaseController {
             if(existsUser!=null){
 				return Error.BUSINESS("email");
             }
-		    // 获取用户及客户信息
-			TokenUser tokenUser = getSignInUser(req);
 	        
 			// 校验验证码
             if(isCaptchaValid(form.getEmail(), form.getCaptcha())) {
@@ -162,11 +158,13 @@ public class UserController extends BaseController {
 			
 			// 更新邮箱
 			User user = new User();
-	    	user.setId(tokenUser.getId());
+	    	user.setId(form.getUserId());
 			user.setEmail(form.getEmail());
+			user.setUpdater(form.getUserId());
+			user.setUpdateTime(getNow());
 			userService.updateBasic(user);
 			
-			// 更新用户登录信息
+			// TODO 更新用户登录信息
 			updateSignInUser(req);
         	return Success.SUCCESS;
 		} catch (Exception e) {
@@ -203,8 +201,6 @@ public class UserController extends BaseController {
             if(existsUser!=null){
 				return Error.BUSINESS("phone");
             }
-		    // 获取用户及客户信息
-			TokenUser tokenUser = getSignInUser(req);
 	        
 			// 校验验证码
             if(isCaptchaValid(form.getPhone(), form.getCaptcha())) {
@@ -215,10 +211,12 @@ public class UserController extends BaseController {
 			
 			// 更新邮箱
 			User user = new User();
-	    	user.setId(tokenUser.getId());
+	    	user.setId(form.getUserId());
 			user.setPhoneNumber(form.getPhone());
+			user.setUpdater(form.getUserId());
+			user.setUpdateTime(getNow());
 			userService.updateBasic(user);
-			// 更新用户登录信息
+			// TODO 更新用户登录信息
 			updateSignInUser(req);
         	return Success.SUCCESS;
 		} catch (Exception e) {

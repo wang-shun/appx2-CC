@@ -198,7 +198,7 @@ public final class ControllerConstants {
     public static final String REQ_SIGNUP_USER_EXISTS = "/signup/isUserExists";
     
     /** 用户验证手机*/
-    public static final String REQ_VERIFY_PHONE_COMMEN = "/verify/phone/commen";
+    public static final String REQ_VERIFY_CAPTCHA_COMMEN = "/verify/captcha/commen";
     
     // --------------------------------------------------------------------------------
     // 常量信息
