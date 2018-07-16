@@ -30,6 +30,7 @@ import com.dreawer.customer.web.form.PhoneBaseForm;
 import com.dreawer.customer.web.form.PhoneSignUpForm;
 import com.dreawer.customer.web.form.ResetPasswordForm;
 import com.dreawer.customer.web.form.VerifyForm;
+import com.dreawer.customer.web.form.WxappSignUpForm;
 import com.dreawer.responsecode.rcdt.EntryError;
 import com.dreawer.responsecode.rcdt.Error;
 import com.dreawer.responsecode.rcdt.ResponseCode;
@@ -105,6 +106,48 @@ public class SignUpController extends BaseController {
     }
     
     /**
+     * 小程序用户注册。
+     * @param req 用户请求。
+     * @param form 用户注册表单。
+     * @param result 表单校验结果。
+     * @return 注册成功，返回令牌信息和用户id。失败返回错误原因。
+     */
+    @RequestMapping(value=REQ_SIGNUP_WXAPP, method=RequestMethod.POST)
+    public ResponseCode wxappSignUp(HttpServletRequest req, 
+    		@Valid WxappSignUpForm form, BindingResult result) {
+    	if (result.hasErrors()) {
+            return ResponseCodeRepository.fetch(result.getFieldError().getDefaultMessage(), result.getFieldError().getField(), Error.ENTRY);
+        }
+		try {
+			// 检查组织是否存在
+			Organize organize = organizeService.findOrganizeByAppId(form.getAppId());
+			if(organize==null) {
+				return Error.BUSINESS("appId");
+			}
+            
+            User user = new User();
+            user.setOrganizeId(organize.getId());
+            user.setStatus(UserStatus.ACTIVATED);
+            Customer customer = new Customer();
+            customer.setOrganizeId(organize.getId());
+            customer.setCategory("person");
+            customer.setPetName(form.getPetName());
+            customer.setAlias(getAlias(form.getPetName()));
+            customer.setCreater(user.getId());
+            customer.setStatus(UserStatus.ACTIVATED);
+            userService.addUser(user, customer);
+            Map<String, String> params = new HashMap<>();
+            params.put("id", user.getId());
+            params.put("token", signInUser(req, user.getId()));
+        	return Success.SUCCESS(params);
+		}catch(Exception e){
+			 e.printStackTrace();
+	         logger.error(e);
+	         return Error.APPSERVER;
+		}
+    }
+    
+    /**
      * 发送验证邮件接口。
      * @param req 用户请求。
      * @return
@@ -142,7 +185,7 @@ public class SignUpController extends BaseController {
 		    	map.put("photo", tokenUser.getMugshot());
 			}else if("resetemail".equals(form.getType())){
 		        params.put(RECEIVE_TEMPLATE, SENDCLOUD_RESET_EMAIL);
-		        tokenUser = getSignInUser(req);
+		        tokenUser = tokenUserService.findTokenUserById(form.getUserId());
 		        if(tokenUser==null){
 		        	req.getRequestDispatcher(REQ_UNLOGIN).forward(req, resp);
 		        }
@@ -185,13 +228,19 @@ public class SignUpController extends BaseController {
             return ResponseCodeRepository.fetch(result.getFieldError().getDefaultMessage(), result.getFieldError().getField(), Error.ENTRY);
         }
 		try {
+			// 检查组织是否存在
+			Organize organize = organizeService.findOrganizeByAppId(form.getAppId());
+			if(organize==null) {
+				return Error.BUSINESS("appId");
+			}
+			
 	        TokenUser tokenUser = null;
 	        String templateCode = null;
 			if("signup".equals(form.getType())){
 				templateCode="SMS_116568043";
 			}else if("resetphone".equals(form.getType())){
 				templateCode="SMS_116593125";
-		        tokenUser = getSignInUser(req);
+		        tokenUser = tokenUserService.findTokenUserByPhone(form.getPhone(), organize.getId());
 		        if(tokenUser==null){
 		        	req.getRequestDispatcher(REQ_UNLOGIN).forward(req, resp);
 		        }

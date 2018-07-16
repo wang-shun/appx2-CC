@@ -14,6 +14,16 @@ public class EmailBaseForm {
 
 	@NotEmpty(message="EntryError.EMPTY")
 	private String appId = null;
+
+	private String userId = null;
+	
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
 	
 	public String getEmail() {
 		return email;

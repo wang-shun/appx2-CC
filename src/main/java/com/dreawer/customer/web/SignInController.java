@@ -19,6 +19,7 @@ import com.dreawer.customer.service.OrganizeService;
 import com.dreawer.customer.service.UserService;
 import com.dreawer.customer.utils.MD5Utils;
 import com.dreawer.customer.web.form.BaseLoginForm;
+import com.dreawer.customer.web.form.UserBaseForm;
 import com.dreawer.responsecode.rcdt.Error;
 import com.dreawer.responsecode.rcdt.ResponseCode;
 import com.dreawer.responsecode.rcdt.ResponseCodeRepository;
@@ -94,4 +95,25 @@ public class SignInController extends BaseController {
 		}
     }
     
+    /**
+     * 小程序用户登陆。
+     * @param req 用户请求。
+     * @param form 登录表单。
+     * @param result 表单校验结果。
+     * @return 登录成功返回令牌信息。
+     */
+    @RequestMapping(value=REQ_LOGIN_WXAPP, method=RequestMethod.POST)
+    public ResponseCode loginByWxappp(HttpServletRequest req, 
+    		@Valid UserBaseForm form, BindingResult result) {
+    	if (result.hasErrors()) {
+            return ResponseCodeRepository.fetch(result.getFieldError().getDefaultMessage(), result.getFieldError().getField(), Error.ENTRY);
+        }
+		try {
+        	return Success.SUCCESS(signInUser(req, form.getUserId()));
+		}catch(Exception e){
+			 e.printStackTrace();
+	         logger.error(e);
+	         return Error.APPSERVER;
+		}
+    }
 }

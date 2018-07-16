@@ -176,11 +176,11 @@ public final class ControllerConstants {
     /** 请求“总数” */
     public static final String REQ_COUNT = "/count";
     
-    /** 用户邮箱注册 */
-    public static final String REQ_SIGNUP_EMAIL = "/signup/email";
-    
-    /** 用户手机注册 */
+    /** 手机用户注册 */
     public static final String REQ_SIGNUP_PHONE = "/signup/phone";
+    
+    /** 小程序用户注册 */
+    public static final String REQ_SIGNUP_WXAPP = "/signup/wxapp";
     
     /** 用户验证邮箱*/
     public static final String REQ_VERIFY_EMAIL = "/verify/email";

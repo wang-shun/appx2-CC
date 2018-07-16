@@ -15,6 +15,17 @@ public class SetBasicForm {
 	
 	private String mugshot = null; // 头像
     
+	@NotEmpty(message="EntryError.EMPTY")
+	private String userId = null;
+	
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+	
     /**
      * 获取属性 <TT>petName</TT>（昵称）的值。
      * @return <TT>petName</TT> 昵称。

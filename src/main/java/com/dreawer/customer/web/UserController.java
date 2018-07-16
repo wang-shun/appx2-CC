@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.dreawer.customer.domain.Customer;
 import com.dreawer.customer.domain.Organize;
-import com.dreawer.customer.domain.TokenUser;
 import com.dreawer.customer.domain.User;
 import com.dreawer.customer.service.CustomerService;
 import com.dreawer.customer.service.OrganizeService;
@@ -42,7 +41,7 @@ public class UserController extends BaseController {
     private CustomerService customerService;
     
     @Autowired
-    private OrganizeService organizeService; // 用户信息服务
+    private OrganizeService organizeService; // 组织信息服务
     
     private Logger logger = Logger.getLogger(this.getClass()); // 日志记录器
     
@@ -63,10 +62,10 @@ public class UserController extends BaseController {
 	    		if(StringUtils.isBlank(form.getOldPassword())){
 					return EntryError.EMPTY("password");
 	    		}
-	    		if(!user.getPassword().equals(MD5Utils.encrypt(form.getOldPassword(), "dreawer"))){
+	    		if(form.getPassword().equals(form.getOldPassword())){
 					return Error.BUSINESS("password");
 	    		}
-	    		if(form.getPassword().equals(form.getOldPassword())){
+	    		if(!user.getPassword().equals(MD5Utils.encrypt(form.getOldPassword(), "dreawer"))){
 					return Error.BUSINESS("password");
 	    		}
 	    	}
@@ -99,8 +98,7 @@ public class UserController extends BaseController {
 		
 		try {
 		    // 获取用户及客户信息
-			TokenUser tokenUser = getSignInUser(req);
-	        Customer customer = customerService.findCustomerById(tokenUser.getId());
+	        Customer customer = customerService.findCustomerById(form.getUserId());
 	        if(!customer.getPetName().equals(form.getPetName())){
 	        	customer.setPetName(form.getPetName());
 	        	customer.setAlias(getAlias(form.getPetName()));
@@ -109,7 +107,7 @@ public class UserController extends BaseController {
 	        	customer.setMugshot(form.getMugshot());
 	        }
 	        customer.setSlogan(form.getSlogan());
-	        customer.setUpdater(tokenUser.getId());
+	        customer.setUpdater(form.getUserId());
 	        customer.setUpdateTime(new Timestamp(System.currentTimeMillis()));
 	        customerService.updateBasic(customer);
 			// 更新用户登录信息

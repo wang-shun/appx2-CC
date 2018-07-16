@@ -33,6 +33,17 @@ public class AddAddressForm {
     @Length(min=2, max=200, message="EntryError.OVERRANGE")
     private String detail = null; // 详细地址
 
+	@NotEmpty(message="EntryError.EMPTY")
+	private String userId = null;
+	
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+	
 	public String getProvince() {
 		return province;
 	}
@@ -80,5 +91,5 @@ public class AddAddressForm {
 	public void setPhone(String phone) {
 		this.phone = phone;
 	}
-	
+
 }

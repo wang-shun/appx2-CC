@@ -18,7 +18,7 @@
 	
 	<!-- 查询用户信息 -->
     <select id="findTokenUserById" parameterType="String" resultMap="tokenUserResultMap">
-        SELECT usr.id AS id, usr.org_Id AS organizeId, usr.password AS password, usr.email AS email, 
+        SELECT usr.id AS id, usr.org_id AS organizeId, usr.password AS password, usr.email AS email, 
         	usr.phoneNumber AS phoneNumber, cust.pet_nam AS pet_nam, cust.mugshot AS mugshot
         FROM aci_user AS usr
         LEFT JOIN aci_customer AS cust ON cust.id = usr.id
@@ -28,23 +28,23 @@
     
     <!-- 查询用户信息 -->
     <select id="findTokenUserByEmail" parameterType="Map" resultMap="tokenUserResultMap">
-        SELECT usr.id AS id, usr.org_Id AS organizeId, usr.password AS password, usr.email AS email, 
+        SELECT usr.id AS id, usr.org_id AS organizeId, usr.password AS password, usr.email AS email, 
         	usr.phoneNumber AS phoneNumber, cust.pet_nam AS pet_nam, cust.mugshot AS mugshot
         FROM aci_user AS usr
         LEFT JOIN aci_customer AS cust ON cust.id = usr.id
 		WHERE usr.email = #{email}
-		AND usr.org_Id = #{organizeId}
+		AND usr.org_id = #{organizeId}
 		AND usr.status = 'ACTIVATED'
     </select>
     
     <!-- 查询用户信息 -->
     <select id="findTokenUserByPhone" parameterType="Map" resultMap="tokenUserResultMap">
-        SELECT usr.id AS id, usr.org_Id AS organizeId, usr.password AS password, usr.email AS email, 
+        SELECT usr.id AS id, usr.org_id AS organizeId, usr.password AS password, usr.email AS email, 
         	usr.phoneNumber AS phoneNumber, cust.pet_nam AS pet_nam, cust.mugshot AS mugshot
         FROM aci_user AS usr
         LEFT JOIN aci_customer AS cust ON cust.id = usr.id
 		WHERE usr.phoneNumber = #{phoneNumber}
-		AND usr.org_Id = #{organizeId}
+		AND usr.org_id = #{organizeId}
 		AND usr.status = 'ACTIVATED'
     </select>
     
@@ -54,7 +54,7 @@
     
     <!-- 用户基本信息字段 -->
 	<sql id="userBasicFields">
-		id, org_Id, password, email, phoneNumber, pet_nam, mugshot
+		id, org_id, password, email, phoneNumber, pet_nam, mugshot
 	</sql>
 	
     <!-- ================================================================================== -->
@@ -64,7 +64,7 @@
 	<!-- 用户基本信息 -->
     <resultMap id="tokenUserResultMap" type="TokenUser">
 		<id property="id" column="id" />
-		<result property="organizeId" column="org_Id" />
+		<result property="organizeId" column="org_id" />
 		<result property="password" column="password" />
 		<result property="email" column="email" />
 		<result property="phoneNumber" column="phoneNumber" />

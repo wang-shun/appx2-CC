@@ -14,6 +14,19 @@ public class PhoneBaseForm {
 	@NotEmpty(message="EntryError.EMPTY")
     private String type = null; // 类型
 
+	@NotEmpty(message="EntryError.EMPTY")
+	private String appId = null;
+	
+	private String userId = null;
+	
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+	
 	public String getType() {
 		return type;
 	}
@@ -28,6 +41,14 @@ public class PhoneBaseForm {
 
 	public void setPhone(String phone) {
 		this.phone = phone;
+	}
+
+	public String getAppId() {
+		return appId;
+	}
+
+	public void setAppId(String appId) {
+		this.appId = appId;
 	}
 	
 }

@@ -1,15 +1,14 @@
 package com.dreawer.customer.web.form;
 
+import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 
-public class EditAddressForm extends AddAddressForm{
-	
-	@NotEmpty(message="EntryError.EMPTY")
-	private String id = null;
+public class UserBaseForm {
 
 	@NotEmpty(message="EntryError.EMPTY")
+    @Length(min=32, max=32, message="EntryError.OVERRANGE")
 	private String userId = null;
-	
+
 	public String getUserId() {
 		return userId;
 	}
@@ -17,14 +16,5 @@ public class EditAddressForm extends AddAddressForm{
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-	
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
-	}
-	
 	
 }

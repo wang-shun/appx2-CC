@@ -9,7 +9,7 @@
 	
 	<!-- 保存用户信息 -->
 	<insert id="save" parameterType="User">
-        INSERT INTO aci_user(id, org_Id, password, email, phoneNumber, status)
+        INSERT INTO aci_user(id, org_id, password, email, phoneNumber, status)
         VALUES(#{id}, #{organizeId}, #{password}, #{email}, #{phoneNumber}, #{status})
     </insert>
     
@@ -63,7 +63,7 @@
         SELECT <include refid="userBasicFields"/>
         FROM aci_user
 		WHERE email = #{email}
-		AND org_Id = #{organizeId}
+		AND org_id = #{organizeId}
     </select>
     
     <!-- 查询用户信息 -->
@@ -71,7 +71,7 @@
         SELECT <include refid="userBasicFields"/>
         FROM aci_user
 		WHERE phoneNumber = #{phoneNumber}
-		AND org_Id = #{organizeId}
+		AND org_id = #{organizeId}
     </select>
     
     <!-- ================================================================================== -->
@@ -80,7 +80,7 @@
     
     <!-- 用户基本信息字段 -->
 	<sql id="userBasicFields">
-		id, org_Id, username, password, email, phoneNumber, status, cre_tim
+		id, org_id, username, password, email, phoneNumber, status, cre_tim
 	</sql>
 	
     <!-- ================================================================================== -->
@@ -90,7 +90,7 @@
 	<!-- 用户基本信息 -->
     <resultMap id="userBaseResultMap" type="User">
 		<id property="id" column="id" />
-		<result property="organizeId" column="org_Id" />
+		<result property="organizeId" column="org_id" />
 		<result property="username" column="username" />
 		<result property="password" column="password" />
 		<result property="email" column="email" />

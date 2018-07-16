@@ -9,7 +9,7 @@
 	
 	<!-- 保存客户信息 -->
 	<insert id="save" parameterType="Customer">
-         INSERT INTO aci_customer(id, org_Id, pet_nam, alias, mugshot, category, status, crer_id)
+         INSERT INTO aci_customer(id, org_id, pet_nam, alias, mugshot, category, status, crer_id)
          VALUES(#{id}, #{organizeId}, #{petName}, #{alias}, #{mugshot}, #{category}, #{status}, #{creater})
 	</insert>
     
@@ -55,7 +55,7 @@
     
     <!-- 用户基本信息字段 -->
 	<sql id="customerBasicFields">
-		id, org_Id, pet_nam, mugshot, category, cre_tim
+		id, org_id, pet_nam, mugshot, category, cre_tim
 	</sql>
 	
 	<!-- ================================================================================== -->
@@ -64,7 +64,7 @@
 	
 	<resultMap id="customerBaseResultMap" type="Customer">
 		<result property="id" column="id" />
-		<result property="organizeId" column="org_Id" />
+		<result property="organizeId" column="org_id" />
 		<result property="name" column="name" />
 		<result property="pet_nam" column="pet_nam" />
 		<result property="alias" column="alias" />

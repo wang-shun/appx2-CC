@@ -4,14 +4,14 @@
 DROP TABLE IF EXISTS aci_organize;
 CREATE TABLE aci_organize (
 	id 				CHAR(32) NOT NULL COMMENT 'ID序列号',
-	name 			VARCHAR(60) COMMENT '名称',
-	app_id 			VARCHAR(32) NOT NULL COMMENT '应用id',
-	app_ctg 		CHAR(32) COMMENT '应用分类',
-	status 			CHAR(32) NOT NULL DEFAULT 'ACTIVATED' COMMENT '组织状态',
+	name 			VARCHAR(20) COMMENT '名称',
+	app_id 			CHAR(32) NOT NULL COMMENT '应用id',
+	app_ctg 		CHAR(20) COMMENT '应用分类',
+	status 			CHAR(20) NOT NULL DEFAULT 'ACTIVATED' COMMENT '组织状态',
 	cre_tim 		TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
 	PRIMARY KEY (id)
 ) COMMENT='组织信息表' ENGINE=InnoDB;
-CREATE UNIQUE INDEX uniq_idx_org_app_id ON aci_organize (username);
+CREATE UNIQUE INDEX uniq_idx_org_app_id ON aci_organize (app_id);
 
 -- ==================================================
 -- 用户信息表
@@ -23,7 +23,7 @@ CREATE TABLE aci_user (
 	password 		CHAR(32) COMMENT '登录密码',
 	email 			VARCHAR(255) COMMENT '注册邮箱',
 	phoneNumber		VARCHAR(20) COMMENT '手机号码',
-	org_Id			CHAR(32) NOT NULL COMMENT '应用id',
+	org_id			CHAR(32) NOT NULL COMMENT '应用id',
 	status 			CHAR(32) NOT NULL DEFAULT 'ACTIVATED' COMMENT '用户状态（SIGNUPED-已签约、ACTIVATED-已激活、DORMANCY-已休眠、BLOCKED-已冻结、BLACKED-黑名单、DELETED-已删除）',
 	cre_tim 		TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '注册时间',
 	updr_id 		CHAR(32) COMMENT '更新者用户ID号',
@@ -41,7 +41,7 @@ CREATE INDEX idx_user_phoneNumber ON aci_user (phoneNumber);
 DROP TABLE IF EXISTS aci_customer;
 CREATE TABLE aci_customer (
 	id 				CHAR(32) NOT NULL COMMENT 'ID序列号',
-	org_Id			CHAR(32) NOT NULL COMMENT '应用id',
+	org_id			CHAR(32) NOT NULL COMMENT '应用id',
 	name 			VARCHAR(60) COMMENT '名字（个人的真实姓名或企业、团队、产品的全名）',
 	pet_nam 		VARCHAR(20) NOT NULL COMMENT '昵称（个人的昵称或企业、团队、产品的简称）',
 	alias 			VARCHAR(35) NOT NULL COMMENT '别名（它可以是昵称的拼音+编号、昵称的拼音+英文字母+编号两种形式）',
