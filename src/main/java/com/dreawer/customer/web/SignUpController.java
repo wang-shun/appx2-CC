@@ -1,6 +1,8 @@
 package com.dreawer.customer.web;
 
 import static com.dreawer.customer.constants.ControllerConstants.*;
+
+import java.io.BufferedReader;
 import java.util.HashMap;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
@@ -384,6 +386,27 @@ public class SignUpController extends BaseController {
             // 返回失败标志及信息
 	        return Error.APPSERVER;
         }
+	}
+    
+    @RequestMapping(value="/hello")
+	public String hello(HttpServletRequest req) {
+    	try {
+    		String query = req.getQueryString();
+        	StringBuilder sb = new StringBuilder();
+            BufferedReader in = req.getReader();
+            String line;
+            while ((line = in.readLine()) != null) {
+                sb.append(line);
+            }
+            String userId = req.getHeader("userid");
+            System.out.print("query="+query);
+            System.out.print("body="+sb.toString());
+            System.out.print("userId="+userId);
+        	return "hello";
+    	}catch(Exception e){
+    		return "error";
+    	}
+    	
 	}
     
 }
