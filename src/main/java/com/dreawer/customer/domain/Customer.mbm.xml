@@ -62,7 +62,7 @@
 	<!-- 结果集映射																			-->
 	<!-- ================================================================================== -->
 	
-	<resultMap id="customerBaseResultMap" type="Customer">
+	<resultMap id="customerResultMap" type="Customer">
 		<result property="id" column="id" />
 		<result property="organizeId" column="org_id" />
 		<result property="name" column="name" />

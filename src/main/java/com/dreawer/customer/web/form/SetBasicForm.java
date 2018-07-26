@@ -1,31 +1,20 @@
 package com.dreawer.customer.web.form;
 
 import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.constraints.NotEmpty;
 
 public class SetBasicForm {
 
-	@NotEmpty(message="EntryError.EMPTY")
+	//@NotEmpty(message="EntryError.EMPTY")
 	@Length(min=2, max=20, message="EntryError.OVERRANGE")
 	private String petName = null; // 昵称
 	
-	@NotEmpty(message="EntryError.EMPTY")
+	//@NotEmpty(message="EntryError.EMPTY")
 	@Length(min=8, max=50, message="EntryError.OVERRANGE")
     String slogan = null; // 宣传语（品牌口号）
 	
+	@Length(min=2, max=250, message="EntryError.OVERRANGE")
 	private String mugshot = null; // 头像
     
-	@NotEmpty(message="EntryError.EMPTY")
-	private String userId = null;
-	
-	public String getUserId() {
-		return userId;
-	}
-
-	public void setUserId(String userId) {
-		this.userId = userId;
-	}
-	
     /**
      * 获取属性 <TT>petName</TT>（昵称）的值。
      * @return <TT>petName</TT> 昵称。

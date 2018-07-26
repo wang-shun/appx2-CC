@@ -46,7 +46,7 @@ public class UserController extends BaseController {
     private Logger logger = Logger.getLogger(this.getClass()); // 日志记录器
     
     /**
-     * 修改用户信息。
+     * 修改用户密码。
      * @param req 用户请求。
      * @return 执行结果，成功为true，否则为false。
      */
@@ -57,12 +57,13 @@ public class UserController extends BaseController {
             return ResponseCodeRepository.fetch(result.getFieldError().getDefaultMessage(), result.getFieldError().getField(), Error.ENTRY);
         }
 		try {
-			User user = userService.findUserById(form.getUserId());
+			String userId = req.getHeader("userid");
+			User user = userService.findUserById(userId);
 	    	if(StringUtils.isNotBlank(user.getPassword())){
-	    		if(StringUtils.isBlank(form.getOldPassword())){
+	    		if(!form.getNewPassword().equals(form.getConfirmPassword())){
 					return EntryError.EMPTY("password");
 	    		}
-	    		if(form.getPassword().equals(form.getOldPassword())){
+	    		if(form.getNewPassword().equals(form.getOldPassword())){
 					return Error.BUSINESS("password");
 	    		}
 	    		if(!user.getPassword().equals(MD5Utils.encrypt(form.getOldPassword(), "dreawer"))){
@@ -70,7 +71,7 @@ public class UserController extends BaseController {
 	    		}
 	    	}
 	    	//修改用户信息
-	    	user.setPassword(MD5Utils.encrypt(form.getPassword(), "dreawer"));
+	    	user.setPassword(MD5Utils.encrypt(form.getNewPassword(), "dreawer"));
 	    	user.setUpdater(user.getId());
 	    	user.setUpdateTime(getNow());
 	    	userService.updatePassword(user);
@@ -98,7 +99,11 @@ public class UserController extends BaseController {
 		
 		try {
 		    // 获取用户及客户信息
-	        Customer customer = customerService.findCustomerById(form.getUserId());
+			String userId = req.getHeader("userid");
+	        Customer customer = customerService.findCustomerById(userId);
+	        if(customer==null) {
+	        	return Error.BUSINESS("user");
+	        }
 	        if(!customer.getPetName().equals(form.getPetName())){
 	        	customer.setPetName(form.getPetName());
 	        	customer.setAlias(getAlias(form.getPetName()));
@@ -107,10 +112,10 @@ public class UserController extends BaseController {
 	        	customer.setMugshot(form.getMugshot());
 	        }
 	        customer.setSlogan(form.getSlogan());
-	        customer.setUpdater(form.getUserId());
+	        customer.setUpdater(userId);
 	        customer.setUpdateTime(new Timestamp(System.currentTimeMillis()));
 	        customerService.updateBasic(customer);
-			// 更新用户登录信息
+			// TODO 更新用户登录信息
 			updateSignInUser(req);
         	return Success.SUCCESS;
 		} catch (Exception e) {
@@ -121,7 +126,7 @@ public class UserController extends BaseController {
 	}
 	
 	/**
-	 * 用户更改邮箱。
+	 * 用户设置邮箱。
 	 * @param req 用户请求。
 	 * @param form 更改邮箱表单。
 	 * @param result 表单校验结果。
@@ -134,7 +139,8 @@ public class UserController extends BaseController {
             return ResponseCodeRepository.fetch(result.getFieldError().getDefaultMessage(), result.getFieldError().getField(), Error.ENTRY);
 		}
 		try {
-			
+			String userId = req.getHeader("userid");
+
 			// 检查组织是否存在
 			Organize organize = organizeService.findOrganizeByAppId(form.getAppId());
 			if(organize==null) {
@@ -147,7 +153,7 @@ public class UserController extends BaseController {
 				return Error.BUSINESS("email");
             }
 	        
-			// 校验验证码
+			// TODO 校验验证码 换成通知中心校验
             if(isCaptchaValid(form.getEmail(), form.getCaptcha())) {
             	removeCaptcha(form.getEmail());
             }else {
@@ -156,9 +162,9 @@ public class UserController extends BaseController {
 			
 			// 更新邮箱
 			User user = new User();
-	    	user.setId(form.getUserId());
+	    	user.setId(userId);
 			user.setEmail(form.getEmail());
-			user.setUpdater(form.getUserId());
+			user.setUpdater(userId);
 			user.setUpdateTime(getNow());
 			userService.updateBasic(user);
 			
@@ -174,7 +180,7 @@ public class UserController extends BaseController {
 	}
 	
 	/**
-	 * 设置手机号。
+	 * 修改手机号。
 	 * @param req 用户请求。
 	 * @param form 验证手机号表单。
 	 * @param result 表单校验结果。
@@ -200,7 +206,7 @@ public class UserController extends BaseController {
 				return Error.BUSINESS("phone");
             }
 	        
-			// 校验验证码
+			// TODO 校验验证码 换成通知中心校验
             if(isCaptchaValid(form.getPhone(), form.getCaptcha())) {
             	removeCaptcha(form.getPhone());
             }else {

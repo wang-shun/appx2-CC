@@ -4,11 +4,11 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.dreawer</groupId>
-	<artifactId>pay</artifactId>
+	<artifactId>cc</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
-	<name>order_boot</name>
+	<name>cc_boot</name>
 	<description>Demo project for Spring Boot</description>
 
 	<parent>
@@ -79,21 +79,6 @@
 			<groupId>com.dreawer.responsecode</groupId>
 			<artifactId>rcdt</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
-		</dependency>
-		<dependency>
-    		<groupId>com.github.wxpay</groupId>
-    		<artifactId>wxpay-sdk</artifactId>
-    		<version>0.0.3</version>
-		</dependency>
-		<dependency>
-    		<groupId>com.google.zxing</groupId>
-    		<artifactId>core</artifactId>
-    		<version>3.2.1</version>
-		</dependency>
-		<dependency>
-    		<groupId>com.google.zxing</groupId>
-    		<artifactId>javase</artifactId>
-    		<version>3.2.1</version>
 		</dependency>
 		<dependency>
     		<groupId>org.apache.commons</groupId>

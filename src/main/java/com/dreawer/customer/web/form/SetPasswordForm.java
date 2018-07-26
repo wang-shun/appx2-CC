@@ -1,25 +1,22 @@
 package com.dreawer.customer.web.form;
 
+import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 
 public class SetPasswordForm {
 	
+	@NotEmpty(message="EntryError.EMPTY")
+	@Length(min=6, max=20, message="EntryError.OVERRANGE")
     private String oldPassword = null; // 原密码
 
 	@NotEmpty(message="EntryError.EMPTY")
-    private String password = null; // 密码
+	@Length(min=6, max=20, message="EntryError.OVERRANGE")
+    private String newPassword = null; // 密码
 
 	@NotEmpty(message="EntryError.EMPTY")
-	private String userId = null;
+	@Length(min=6, max=20, message="EntryError.OVERRANGE")
+    private String confirmPassword = null; // 确认密码
 	
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
 	public String getOldPassword() {
 		return oldPassword;
 	}
@@ -28,12 +25,20 @@ public class SetPasswordForm {
 		this.oldPassword = oldPassword;
 	}
 
-	public String getUserId() {
-		return userId;
+	public String getNewPassword() {
+		return newPassword;
 	}
 
-	public void setUserId(String userId) {
-		this.userId = userId;
+	public void setNewPassword(String newPassword) {
+		this.newPassword = newPassword;
 	}
-    
+
+	public String getConfirmPassword() {
+		return confirmPassword;
+	}
+
+	public void setConfirmPassword(String confirmPassword) {
+		this.confirmPassword = confirmPassword;
+	}
+
 }
