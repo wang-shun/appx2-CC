@@ -11,7 +11,7 @@ public class PhoneSignUpForm {
 
 	@NotEmpty(message="EntryError.EMPTY")
 	@Pattern(regexp="^1(3[0-9]|4[57]|5[0-35-9]|7[0135678]|8[0-9])\\d{8}$",
-		message="EntryError.FORMAT")    
+		message="EntryError.FORMAT")
 	private String phone = null; // 手机号
 	
 	@NotEmpty(message="EntryError.EMPTY")
