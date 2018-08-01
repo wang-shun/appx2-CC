@@ -11,6 +11,7 @@ import javax.validation.Valid;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -64,7 +65,7 @@ public class SignUpController extends BaseController {
      */
     @RequestMapping(value=REQ_SIGNUP_PHONE, method=RequestMethod.POST)
     public ResponseCode phoneSignUp(HttpServletRequest req, 
-    		@Valid PhoneSignUpForm form, BindingResult result) {
+    		@RequestBody @Valid PhoneSignUpForm form, BindingResult result) {
     	if (result.hasErrors()) {
             return ResponseCodeRepository.fetch(result.getFieldError().getDefaultMessage(), result.getFieldError().getField(), Error.ENTRY);
         }
@@ -116,7 +117,7 @@ public class SignUpController extends BaseController {
      */
     @RequestMapping(value=REQ_SIGNUP_WXAPP, method=RequestMethod.POST)
     public ResponseCode wxappSignUp(HttpServletRequest req, 
-    		@Valid WxappSignUpForm form, BindingResult result) {
+    		@RequestBody @Valid WxappSignUpForm form, BindingResult result) {
     	if (result.hasErrors()) {
             return ResponseCodeRepository.fetch(result.getFieldError().getDefaultMessage(), result.getFieldError().getField(), Error.ENTRY);
         }
@@ -156,7 +157,7 @@ public class SignUpController extends BaseController {
      */
     @RequestMapping(value=REQ_VERIFY_EMAIL, method=RequestMethod.POST)
     public ResponseCode sendEmail(HttpServletRequest req, HttpServletResponse resp,
-    		@Valid EmailBaseForm form, BindingResult result) {
+    		@RequestBody @Valid EmailBaseForm form, BindingResult result) {
     	if (result.hasErrors()) {
             return ResponseCodeRepository.fetch(result.getFieldError().getDefaultMessage(), result.getFieldError().getField(), Error.ENTRY);
         }
@@ -225,7 +226,7 @@ public class SignUpController extends BaseController {
      */
     @RequestMapping(value=REQ_VERIFY_PHONE, method=RequestMethod.POST)
     public ResponseCode sendSMS(HttpServletRequest req, HttpServletResponse resp, 
-    		@Valid PhoneBaseForm form, BindingResult result) {
+    		@RequestBody @Valid PhoneBaseForm form, BindingResult result) {
     	if (result.hasErrors()) {
             return ResponseCodeRepository.fetch(result.getFieldError().getDefaultMessage(), result.getFieldError().getField(), Error.ENTRY);
         }
@@ -279,7 +280,7 @@ public class SignUpController extends BaseController {
      */
     @RequestMapping(value=REQ_PASSWORD_RESET, method=RequestMethod.POST)
     public ResponseCode reset(HttpServletRequest req, 
-    		@Valid ResetPasswordForm form, BindingResult result) {
+    		@RequestBody @Valid ResetPasswordForm form, BindingResult result) {
     	if (result.hasErrors()) {
             return ResponseCodeRepository.fetch(result.getFieldError().getDefaultMessage(), result.getFieldError().getField(), Error.ENTRY);
         }
@@ -330,7 +331,7 @@ public class SignUpController extends BaseController {
      */
     @RequestMapping(value=REQ_SIGNUP_USER_EXISTS, method=RequestMethod.POST)
     public ResponseCode isUserExists(HttpServletRequest req, 
-    		@Valid VerifyForm form, BindingResult result) {
+    		@RequestBody @Valid VerifyForm form, BindingResult result) {
     	if (result.hasErrors()) {
             return ResponseCodeRepository.fetch(result.getFieldError().getDefaultMessage(), result.getFieldError().getField(), Error.ENTRY);
         }
@@ -369,7 +370,7 @@ public class SignUpController extends BaseController {
      */
     @RequestMapping(value=REQ_VERIFY_CAPTCHA_COMMEN, method=RequestMethod.POST)
 	public ResponseCode checkCaptcha(HttpServletRequest req, 
-	        @Valid CheckCaptchaForm form, BindingResult result) {
+			@RequestBody @Valid CheckCaptchaForm form, BindingResult result) {
 		if (result.hasErrors()) {
             return ResponseCodeRepository.fetch(result.getFieldError().getDefaultMessage(), result.getFieldError().getField(), Error.ENTRY);
 		}

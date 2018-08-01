@@ -5,6 +5,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -33,7 +34,7 @@ public class OrganizeController {
      */
     @RequestMapping(value="/orgaize/add", method=RequestMethod.POST)
     public ResponseCode addOrganize(HttpServletRequest req,
-    		@Valid AddOrganizeForm form, BindingResult result) {
+    		@RequestBody @Valid AddOrganizeForm form, BindingResult result) {
     	if (result.hasErrors()) {
             return ResponseCodeRepository.fetch(result.getFieldError().getDefaultMessage(), result.getFieldError().getField(), Error.ENTRY);
         }

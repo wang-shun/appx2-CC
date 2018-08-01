@@ -10,6 +10,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -52,7 +53,7 @@ public class UserController extends BaseController {
      */
     @RequestMapping(value=REQ_SET_PASSWORD, method=RequestMethod.POST)
     public ResponseCode setPassword(HttpServletRequest req,
-    		@Valid SetPasswordForm form, BindingResult result) {
+    		@RequestBody @Valid SetPasswordForm form, BindingResult result) {
     	if (result.hasErrors()) {
             return ResponseCodeRepository.fetch(result.getFieldError().getDefaultMessage(), result.getFieldError().getField(), Error.ENTRY);
         }
@@ -92,7 +93,7 @@ public class UserController extends BaseController {
 	 */
 	@RequestMapping(value=REQ_SET_BASIC, method=RequestMethod.POST)
 	public ResponseCode setBasic(HttpServletRequest req, 
-	        @Valid SetBasicForm form, BindingResult result) {
+			@RequestBody @Valid SetBasicForm form, BindingResult result) {
 		if (result.hasErrors()) {
             return ResponseCodeRepository.fetch(result.getFieldError().getDefaultMessage(), result.getFieldError().getField(), Error.ENTRY);
 		}
@@ -134,7 +135,7 @@ public class UserController extends BaseController {
 	 */
 	@RequestMapping(value=REQ_SET_EMAIL, method=RequestMethod.POST)
 	public ResponseCode setEmail(HttpServletRequest req, 
-	        @Valid SetEmailForm form, BindingResult result) {
+			@RequestBody @Valid SetEmailForm form, BindingResult result) {
 		if (result.hasErrors()) {
             return ResponseCodeRepository.fetch(result.getFieldError().getDefaultMessage(), result.getFieldError().getField(), Error.ENTRY);
 		}
@@ -188,7 +189,7 @@ public class UserController extends BaseController {
 	 */
 	@RequestMapping(value=REQ_SET_PHONE, method=RequestMethod.POST)
 	public ResponseCode setPhone(HttpServletRequest req, 
-	        @Valid SetPhoneForm form, BindingResult result) {
+			@RequestBody @Valid SetPhoneForm form, BindingResult result) {
 		if (result.hasErrors()) {
             return ResponseCodeRepository.fetch(result.getFieldError().getDefaultMessage(), result.getFieldError().getField(), Error.ENTRY);
 		}
