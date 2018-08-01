@@ -30,7 +30,7 @@
     <select id="findOrganizeByAppId" parameterType="String" resultMap="organizeResultMap">
        	SELECT <include refid="organizeBasicFields"/>
         FROM aci_organize
-		WHERE appId = #{appId}
+		WHERE app_id = #{appId}
 		AND status = 'ACTIVATED'
     </select>
     
