@@ -120,7 +120,7 @@ public final class ControllerConstants {
     public static final String REQ_ADD_ADMIN = "/user/addAdmin";
     
     /** 获取用户信息 */
-    public static final String REQ_USERINFO = "/user/getUserInfo";
+    public static final String REQ_USERINFO = "/user/userInfo";
     
     /** 获取用户身份信息 */
     public static final String REQ_IDENTITIES = "/user/getIdentities";

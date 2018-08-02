@@ -17,11 +17,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.dreawer.customer.domain.Customer;
 import com.dreawer.customer.domain.Organize;
+import com.dreawer.customer.domain.TokenUser;
 import com.dreawer.customer.domain.User;
 import com.dreawer.customer.service.CustomerService;
 import com.dreawer.customer.service.OrganizeService;
 import com.dreawer.customer.service.UserService;
 import com.dreawer.customer.utils.MD5Utils;
+import com.dreawer.customer.utils.RedisUtil;
 import com.dreawer.customer.web.form.SetBasicForm;
 import com.dreawer.customer.web.form.SetEmailForm;
 import com.dreawer.customer.web.form.SetPasswordForm;
@@ -43,6 +45,9 @@ public class UserController extends BaseController {
     
     @Autowired
     private OrganizeService organizeService; // 组织信息服务
+    
+	@Autowired
+	private RedisUtil redisUtil;
     
     private Logger logger = Logger.getLogger(this.getClass()); // 日志记录器
     
@@ -232,4 +237,22 @@ public class UserController extends BaseController {
         }
 	}
 	
+	/**
+	 * 获取用户信息。
+	 * @param req
+	 * @return
+	 */
+	@RequestMapping(value=REQ_USERINFO, method=RequestMethod.GET)
+	public ResponseCode userInfo(HttpServletRequest req) {
+		try {
+			String token = req.getHeader("token");
+	        TokenUser tokenUser = redisUtil.getTokenUser(token);
+        	return Success.SUCCESS(tokenUser);
+		} catch (Exception e) {
+            logger.error(e);
+            
+            // 返回失败标志及信息
+		    return Error.APPSERVER;
+        }
+	}
 }
