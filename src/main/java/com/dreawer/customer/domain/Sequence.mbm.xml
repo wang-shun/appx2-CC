@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.dreawer.customer.domain.system.Sequence">
+<mapper namespace="com.dreawer.customer.domain.Sequence">
 	
 	<!-- 保存序列信息 -->
 	<insert id="save" parameterType="Sequence">
-        INSERT INTO aci_sequence(id, name, cre_tim, remark)
-        VALUES(#{id}, #{name}, #{createTime}, #{remark})
+        INSERT INTO aci_sequence(id, name, cre_tim)
+        VALUES(#{id}, #{name}, #{createTime})
     </insert>
     
     <!-- 更新序列信息 -->
@@ -15,7 +15,6 @@
         <set>
         	<if test="value != null">value=#{value},</if>
         	<if test="updateTime != null">upd_tim=#{updateTime},</if>
-        	<if test="remark != null">remark=#{remark},</if>
         </set>
         WHERE name = #{name}
     </update>
@@ -37,6 +36,5 @@
 		<result property="value" column="value" />
 		<result property="createTime" column="cre_tim" />
 		<result property="updateTime" column="upd_tim" />
-		<result property="remark" column="remark" />
 	</resultMap>
 </mapper>

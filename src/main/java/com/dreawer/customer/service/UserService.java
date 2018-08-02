@@ -60,6 +60,7 @@ public class UserService {
 		
 		// 新建客户信息
 		customer.setId(user.getId());
+		customer.setCreater(user.getId());
 		customerDao.save(customer);
 	}
 	
