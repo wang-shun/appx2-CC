@@ -66,7 +66,7 @@
 		<result property="id" column="id" />
 		<result property="organizeId" column="org_id" />
 		<result property="name" column="name" />
-		<result property="pet_nam" column="pet_nam" />
+		<result property="petName" column="pet_nam" />
 		<result property="alias" column="alias" />
 		<result property="slogan" column="slogan" />
 		<result property="intro" column="intro" />
