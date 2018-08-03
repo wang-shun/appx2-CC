@@ -33,7 +33,7 @@
 	<!-- 更新客户基本信息 -->
 	<update id="updateBasic" parameterType="Customer">
         UPDATE aci_customer
-        SET pet_nam = #{petName}, alias = #{alias}, mugshot = #{photo},
+        SET pet_nam = #{petName}, alias = #{alias}, mugshot = #{mugshot},
             upd_tim = #{updateTime}, updr_id = #{updater}
         WHERE id = #{id}
 	</update>
