@@ -1,5 +1,8 @@
 package com.dreawer.customer.service;
 
+import java.sql.Timestamp;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +26,11 @@ public class TokenUserService {
 	public TokenUser findTokenUserByPhone(String phoneNumber, String organizeId) {
 		return tokenUserDao.findTokenUserByPhone(phoneNumber, organizeId);
 	}
-	
+
+	public List<TokenUser> findUsers(String organizeId, String query, int start, int pageSize, Timestamp startTime,
+			Timestamp endTime) {
+		return tokenUserDao.findUsers(organizeId, query, start, pageSize, startTime, endTime);
+	}
 	
 	
 }

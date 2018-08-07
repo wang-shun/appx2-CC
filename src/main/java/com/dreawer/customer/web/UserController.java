@@ -3,6 +3,8 @@ package com.dreawer.customer.web;
 import static com.dreawer.customer.constants.ControllerConstants.*;
 
 import java.sql.Timestamp;
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
@@ -21,6 +23,7 @@ import com.dreawer.customer.domain.TokenUser;
 import com.dreawer.customer.domain.User;
 import com.dreawer.customer.service.CustomerService;
 import com.dreawer.customer.service.OrganizeService;
+import com.dreawer.customer.service.TokenUserService;
 import com.dreawer.customer.service.UserService;
 import com.dreawer.customer.utils.MD5Utils;
 import com.dreawer.customer.utils.RedisUtil;
@@ -28,6 +31,7 @@ import com.dreawer.customer.web.form.SetBasicForm;
 import com.dreawer.customer.web.form.SetEmailForm;
 import com.dreawer.customer.web.form.SetPasswordForm;
 import com.dreawer.customer.web.form.SetPhoneForm;
+import com.dreawer.customer.web.form.UserQueryForm;
 import com.dreawer.responsecode.rcdt.EntryError;
 import com.dreawer.responsecode.rcdt.Error;
 import com.dreawer.responsecode.rcdt.ResponseCode;
@@ -48,6 +52,9 @@ public class UserController extends BaseController {
     
 	@Autowired
 	private RedisUtil redisUtil;
+    
+    @Autowired
+    private TokenUserService tokenUserService; // 用户信息服务
     
     private Logger logger = Logger.getLogger(this.getClass()); // 日志记录器
     
@@ -248,6 +255,48 @@ public class UserController extends BaseController {
 			String token = req.getHeader("token");
 	        TokenUser tokenUser = redisUtil.getTokenUser(token);
         	return Success.SUCCESS(tokenUser);
+		} catch (Exception e) {
+            logger.error(e);
+            
+            // 返回失败标志及信息
+		    return Error.APPSERVER;
+        }
+	}
+	
+	/**
+	 * 获取用户信息。
+	 * @param req
+	 * @return
+	 */
+	@RequestMapping(value="/manage/user", method=RequestMethod.GET)
+	public ResponseCode userList(HttpServletRequest req, 
+			@Valid UserQueryForm form, BindingResult result) {
+    	if (result.hasErrors()) {
+            return ResponseCodeRepository.fetch(result.getFieldError().getDefaultMessage(), result.getFieldError().getField(), Error.ENTRY);
+        }
+		try {
+			String appId = req.getHeader("appid");
+			
+			Timestamp startTime = null;
+    		Timestamp endTime = null;
+    		if(form.getStartTime()!=null){
+    			startTime = new Timestamp(form.getStartTime());
+    		}
+    		if(form.getEndTime()!=null){
+    			endTime = new Timestamp(form.getEndTime());
+    		}
+    		int pageNo = 1;
+    		int pageSize = 5;
+    		if(form.getPageNo()!=null && form.getPageNo()>0){
+    			pageNo = form.getPageNo();
+    		}
+    		if(form.getPageSize()!=null && form.getPageSize()>0){
+    			pageSize = form.getPageSize();
+    		}
+    		int start = (pageNo-1)*pageSize;
+    		
+    		List<TokenUser> users = tokenUserService.findUsers(appId, form.getQuery(), start, pageSize, startTime, endTime);
+			return Success.SUCCESS(users);
 		} catch (Exception e) {
             logger.error(e);
             

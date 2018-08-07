@@ -48,6 +48,27 @@
 		AND usr.status = 'ACTIVATED'
     </select>
     
+    <!-- 查询用户信息 -->
+    <select id="findUsers" parameterType="Map" resultMap="tokenUserResultMap">
+        SELECT usr.id AS id, usr.org_id AS organizeId, usr.password AS password, usr.email AS email, 
+        	usr.phoneNumber AS phoneNumber, usr.cre_tim AS cre_tim, cust.pet_nam AS pet_nam, cust.mugshot AS mugshot
+        FROM aci_user AS usr
+        LEFT JOIN aci_customer AS cust ON cust.id = usr.id
+		WHERE usr.org_id = #{organizeId}
+		AND usr.status = 'ACTIVATED'
+		<if test="startTime != null">
+			AND usr.cre_tim &gt;= #{startTime}
+		</if>
+		<if test="endTime != null">
+			AND usr.cre_tim &lt;= #{endTime}
+		</if>
+		<if test="query != null">
+			AND usr.phoneNumber = #{query}
+		</if>
+		ORDER BY usr.cre_tim DESC
+		LIMIT #{start}, #{pageSize}
+    </select>
+    
     <!-- ================================================================================== -->
 	<!-- 公用SQL定义																			-->
 	<!-- ================================================================================== -->
