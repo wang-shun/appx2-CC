@@ -275,7 +275,7 @@ public class UserController extends BaseController {
             return ResponseCodeRepository.fetch(result.getFieldError().getDefaultMessage(), result.getFieldError().getField(), Error.ENTRY);
         }
 		try {
-			String appId = req.getHeader("appid");
+			//String appId = req.getHeader("appid");
 			
 			Timestamp startTime = null;
     		Timestamp endTime = null;
@@ -295,7 +295,7 @@ public class UserController extends BaseController {
     		}
     		int start = (pageNo-1)*pageSize;
     		
-    		List<TokenUser> users = tokenUserService.findUsers(appId, form.getQuery(), start, pageSize, startTime, endTime);
+    		List<TokenUser> users = tokenUserService.findUsers(form.getAppId(), form.getQuery(), start, pageSize, startTime, endTime);
 			return Success.SUCCESS(users);
 		} catch (Exception e) {
             logger.error(e);
