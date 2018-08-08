@@ -270,7 +270,7 @@ public class MemberController extends BaseController {
         	}
 
         	Map<String, Object> result = new HashMap<>();
-        	result.put("result", jsonObject.toString());
+        	result.put("result", jsonObject);
         	
 			return Success.SUCCESS(result);
         	
