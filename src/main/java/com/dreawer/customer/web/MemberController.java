@@ -14,7 +14,6 @@ import com.dreawer.customer.lang.record.Type;
 import com.dreawer.customer.manager.MemberManager;
 import com.dreawer.customer.service.HierarchyService;
 import com.dreawer.customer.service.MemberService;
-import com.dreawer.customer.utils.ProduceFactory;
 import com.dreawer.customer.utils.RedisUtil;
 import com.dreawer.customer.web.form.GoodsInfoForm;
 import com.dreawer.responsecode.rcdt.EntryError;
@@ -53,9 +52,6 @@ public class MemberController extends BaseController {
 
 	@Autowired
 	private RedisUtil redisUtil;
-	
-	@Autowired
-	private ProduceFactory produceFactory;
 
 	@Autowired
 	private MemberManager memberManager;

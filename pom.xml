@@ -5,7 +5,7 @@
 
 	<groupId>com.dreawer</groupId>
 	<artifactId>cc</artifactId>
-	<version>0.0.11-SNAPSHOT</version>
+	<version>0.0.12-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
 	<name>cc_boot</name>
@@ -141,6 +141,11 @@
 		    <groupId>com.belerweb</groupId>
 		    <artifactId>pinyin4j</artifactId>
 		    <version>2.5.0</version>
+		</dependency>
+		<dependency>
+			<groupId>net.logstash.logback</groupId>
+			<artifactId>logstash-logback-encoder</artifactId>
+			<version>4.7</version>
 		</dependency>
 
 	</dependencies>
