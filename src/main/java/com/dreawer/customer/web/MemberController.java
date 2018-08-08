@@ -268,12 +268,7 @@ public class MemberController extends BaseController {
         	}else{
         		jsonObject = redisUtil.getJsonObject("member_"+userId+"_"+storeId);
         	}
-        	
-        	//判断查询结果是否为空
-        	if(jsonObject == null){
-        		return com.dreawer.responsecode.rcdt.Error.APPSERVER;
-        	}
-        	
+
         	Map<String, Object> result = new HashMap<>();
         	result.put("result", jsonObject.toString());
         	
