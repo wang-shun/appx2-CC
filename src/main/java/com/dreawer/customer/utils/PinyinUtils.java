@@ -1,17 +1,17 @@
 package com.dreawer.customer.utils;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import static org.apache.commons.lang.StringUtils.isNotBlank;
-
-import org.apache.commons.lang.StringUtils;
 import net.sourceforge.pinyin4j.PinyinHelper;
 import net.sourceforge.pinyin4j.format.HanyuPinyinCaseType;
 import net.sourceforge.pinyin4j.format.HanyuPinyinOutputFormat;
 import net.sourceforge.pinyin4j.format.HanyuPinyinToneType;
 import net.sourceforge.pinyin4j.format.HanyuPinyinVCharType;
 import net.sourceforge.pinyin4j.format.exception.BadHanyuPinyinOutputFormatCombination;
+import org.apache.commons.lang.StringUtils;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import static org.apache.commons.lang.StringUtils.isNotBlank;
 
 public class PinyinUtils {
 
@@ -131,11 +131,6 @@ public class PinyinUtils {
     /**
      * 根据用户指定的正则表达式以及匹配模式对字符串进行有效验证。
      * <pre>
-     * MatchUtils.validate("abcdefg", "^[A-Z]*$", {@link Pattern.CASE_INSENSITIVE}); // 返回 true
-     * MatchUtils.validate("ABCDEFG", "^[a-z]*$", {@link Pattern.CASE_INSENSITIVE}); // 返回 true
-     * 
-     * MatchUtils.validate("abcdefg", "^[A-Z]*$", {@link Pattern.UNICODE_CASE}); // 返回 false
-     * MatchUtils.validate("ABCDEFG", "^[a-z]*$", {@link Pattern.UNICODE_CASE}); // 返回 false
      * </pre>
      * @param str 目标字符串。
      * @param regex 正则表达式。

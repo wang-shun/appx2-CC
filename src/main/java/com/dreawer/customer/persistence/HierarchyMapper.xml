@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.dreawer.customer.persistence.HierarchyMapper">
+
+    <!-- ================================================================================== -->
+    <!-- SQL新增																				-->
+    <!-- ================================================================================== -->
+    <insert id="insert" parameterType="Hierarchy">
+        INSERT INTO mem_hier
+        (id,sto_id,name,sequence,gro_val,fre_ship,discnt,dis_amo,expiration,period,exp_deduction,status,cre_tim)
+        VALUES (
+        #{id},
+        #{storeId},
+        #{name},
+        #{sequence},
+        #{growthValue},
+        #{freeShipping},
+        #{discount},
+        #{discountAmount},
+        #{expiration},
+        #{period},
+        #{expireDeduction},
+        #{status},
+        #{createTime}
+        )
+    </insert>
+
+
+    <!-- ================================================================================== -->
+    <!-- SQL删除																				-->
+    <!-- ================================================================================== -->
+
+    <!-- ================================================================================== -->
+    <!-- SQL更新																				-->
+    <!-- ================================================================================== -->
+
+    <update id="update" parameterType="Hierarchy">
+        UPDATE mem_hier
+        SET
+        <if test="name!=null">
+            name = #{name},
+        </if>
+        <if test="sequence!=null">
+            sequence = #{sequence},
+        </if>
+        <if test="growthValue!=null">
+            gro_val =#{growthValue},
+        </if>
+        <if test="freeShipping!=null">
+            fre_ship =#{freeShipping},
+        </if>
+        <if test="discount!=null">
+            discnt =#{discount},
+        </if>
+            dis_amo =#{discountAmount},
+        <if test="expiration!=null">
+            expiration = #{expiration},
+        </if>
+        <if test="period!=null">
+            period = #{period},
+        </if>
+        <if test="expireDeduction!=null">
+            exp_deduction=#{expireDeduction},
+        </if>
+        <if test="status!=null">
+            status=#{status},
+        </if>
+            upd_tim = #{updateTime}
+        WHERE id = #{id}
+    </update>
+
+    <!-- ================================================================================== -->
+    <!-- SQL查询																				-->
+    <!-- ================================================================================== -->
+    <!-- 根据StoreId查询店铺下所有会员等级列表 -->
+    <select id="findByStoreId" parameterType="String" resultMap="hierarchyResultMap">
+        SELECT
+        <include refid="basicFields"/>
+        FROM mem_hier
+        WHERE sto_id = #{id}
+        ORDER BY sequence ASC
+    </select>
+
+    <select id="findById" parameterType="String" resultMap="hierarchyResultMap">
+        SELECT
+        <include refid="basicFields"/>
+        FROM mem_hier
+        WHERE id = #{id}
+    </select>
+
+    <select id="findAllStores" resultType="String">
+        SELECT sto_id
+        FROM mem_hier
+        GROUP BY sto_id
+    </select>
+
+    <!-- ================================================================================== -->
+    <!-- 公用SQL定义																			-->
+    <!-- ================================================================================== -->
+
+    <!-- 基本信息 -->
+    <sql id="basicFields">
+        id,sto_id,name,sequence,gro_val,fre_ship,discnt,dis_amo,expiration,period,exp_deduction,status,cre_tim
+    </sql>
+
+    <!-- ================================================================================== -->
+    <!-- 结果集映射																			-->
+    <!-- ================================================================================== -->
+
+    <!-- 基本结果映射 -->
+    <resultMap id="hierarchyResultMap" type="Hierarchy">
+        <result property="id" column="id"/>
+        <result property="storeId" column="sto_id"/>
+        <result property="name" column="name"/>
+        <result property="sequence" column="sequence"/>
+        <result property="growthValue" column="gro_val"/>
+        <result property="freeShipping" column="fre_ship"/>
+        <result property="discount" column="discnt"/>
+        <result property="discountAmount" column="dis_amo"/>
+        <result property="expiration" column="expiration"/>
+        <result property="period" column="period"/>
+        <result property="expireDeduction" column="exp_deduction"/>
+        <result property="status" column="status"/>
+        <result property="createTime" column="cre_tim"/>
+        <result property="updateTime" column="upd_tim"/>
+    </resultMap>
+
+</mapper>

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.dreawer.customer.persistence.PointRecordMapper">
+
+    <!-- ================================================================================== -->
+    <!-- SQL新增																				-->
+    <!-- ================================================================================== -->
+    <insert id="insert" parameterType="PointRecord">
+        INSERT INTO mem_poi_rec
+        (id,type,value,source,custid,sto_id,cre_tim
+        )
+        VALUES (
+        #{id},
+        #{type},
+        #{value},
+        #{source},
+        #{customerId},
+        #{storeId},
+        #{createTime}
+        )
+    </insert>
+
+    <select id="recordQueryCount" parameterType="Map" resultType="Integer">
+        SELECT
+          COUNT(1)
+        FROM mem_poi_rec
+        WHERE
+            sto_id = #{storeId}
+        AND custid =#{customerId}
+    </select>
+
+    <select id="recordQuery" parameterType="Map" resultMap="pointRecordResultMap">
+        SELECT
+            <include refid="basicFields"/>
+        FROM mem_poi_rec
+        WHERE
+        sto_id = #{storeId}
+        AND custid =#{customerId}
+        ORDER BY cre_tim DESC
+        LIMIT #{start}, #{pageSize}
+    </select>
+
+
+    <!-- ================================================================================== -->
+    <!-- SQL删除																				-->
+    <!-- ================================================================================== -->
+
+    <!-- ================================================================================== -->
+    <!-- SQL更新																				-->
+    <!-- ================================================================================== -->
+
+    <!-- ================================================================================== -->
+    <!-- SQL查询																				-->
+    <!-- ================================================================================== -->
+    <!-- 根据customerId查询用户所有成长值记录列表 -->
+    <select id="findByCustomerId" parameterType="String" resultMap="pointRecordResultMap">
+        SELECT
+        <include refid="basicFields"/>
+        FROM mem_poi_rec
+        WHERE custid = #{customerId}
+    </select>
+
+    <!-- ================================================================================== -->
+    <!-- 公用SQL定义																			-->
+    <!-- ================================================================================== -->
+
+    <!-- 基本信息 -->
+    <sql id="basicFields">
+        id,type,value,source,custid,sto_id,cre_tim
+    </sql>
+
+    <!-- ================================================================================== -->
+    <!-- 结果集映射																			-->
+    <!-- ================================================================================== -->
+
+    <!-- 基本结果映射 -->
+    <resultMap id="pointRecordResultMap" type="PointRecord">
+        <result property="id" column="id"/>
+        <result property="type" column="type"/>
+        <result property="value" column="value"/>
+        <result property="source" column="source"/>
+        <result property="customerId" column="custid"/>
+        <result property="storeId" column="sto_id"/>
+        <result property="createTime" column="cre_tim"/>
+    </resultMap>
+
+</mapper>

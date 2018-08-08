@@ -1,14 +1,13 @@
 package com.dreawer.customer.persistence;
 
+import com.dreawer.customer.domain.TokenUser;
+import com.dreawer.persistence.mybatis.MyBatisBaseDao;
+import org.springframework.stereotype.Repository;
+
 import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.springframework.stereotype.Repository;
-
-import com.dreawer.customer.domain.TokenUser;
-import com.dreawer.persistence.mybatis.MyBatisBaseDao;
 
 @Repository
 public class TokenUserDao extends MyBatisBaseDao<TokenUser>{

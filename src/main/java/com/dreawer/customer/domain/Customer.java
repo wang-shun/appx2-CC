@@ -1,10 +1,11 @@
 package com.dreawer.customer.domain;
 
-import static org.apache.commons.lang.StringUtils.*;
-import java.util.Date;
-
 import com.dreawer.customer.lang.UserStatus;
 import com.dreawer.domain.BaseDomain;
+
+import java.util.Date;
+
+import static org.apache.commons.lang.StringUtils.isBlank;
 
 public class Customer extends BaseDomain{
 	

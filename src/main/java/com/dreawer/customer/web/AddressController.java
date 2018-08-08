@@ -1,37 +1,27 @@
 package com.dreawer.customer.web;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
-
-import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang.StringUtils;
-import org.json.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.dreawer.customer.domain.Address;
 import com.dreawer.customer.utils.RedisUtil;
 import com.dreawer.customer.web.form.AddAddressForm;
 import com.dreawer.customer.web.form.EditAddressForm;
 import com.dreawer.responsecode.rcdt.Error;
-import com.dreawer.responsecode.rcdt.ResponseCode;
-import com.dreawer.responsecode.rcdt.ResponseCodeRepository;
-import com.dreawer.responsecode.rcdt.RuleError;
-import com.dreawer.responsecode.rcdt.Success;
+import com.dreawer.responsecode.rcdt.*;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
+import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
+import java.util.*;
 
 @RestController
 public class AddressController extends BaseController{
+	private Logger logger = Logger.getLogger(this.getClass()); // 日志记录器
+
 
 	@Autowired
 	private RedisUtil redisUtil;

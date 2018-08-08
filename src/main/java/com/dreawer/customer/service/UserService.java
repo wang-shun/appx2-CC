@@ -1,9 +1,5 @@
 package com.dreawer.customer.service;
 
-import java.sql.Timestamp;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.dreawer.customer.domain.Customer;
 import com.dreawer.customer.domain.Organize;
 import com.dreawer.customer.domain.User;
@@ -11,6 +7,10 @@ import com.dreawer.customer.lang.UserStatus;
 import com.dreawer.customer.persistence.CustomerDao;
 import com.dreawer.customer.persistence.OrganizeDao;
 import com.dreawer.customer.persistence.UserDao;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.sql.Timestamp;
 
 @Service
 public class UserService {
@@ -35,7 +35,6 @@ public class UserService {
     
     /**
      * 保存用户信息。
-     * @param sns 第三方媒体信息。
      * @param user 用户信息。
      */
 	public void addSnsUser(Organize organize, User user, Customer customer) {
@@ -106,7 +105,6 @@ public class UserService {
 	/**
 	 * 通过手机号查找用户。
 	 * @param phoneNumber 手机号。
-	 * @param appId 
 	 * @return
 	 */
 	public User findUserByPhone(String phoneNumber, String organizeId) {

@@ -1,11 +1,12 @@
 package com.dreawer.customer.persistence;
 
-import java.util.HashMap;
-import java.util.Map;
-import org.springframework.stereotype.Repository;
 import com.dreawer.customer.domain.Customer;
 import com.dreawer.customer.lang.UserStatus;
 import com.dreawer.persistence.mybatis.MyBatisBaseDao;
+import org.springframework.stereotype.Repository;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Repository
 public class CustomerDao extends MyBatisBaseDao<Customer> {
@@ -40,7 +41,6 @@ public class CustomerDao extends MyBatisBaseDao<Customer> {
 	
 	/**
 	 * 更新用户状态。
-	 * @param user 用户信息。
 	 * @param status 用户状态。
 	 */
 	public int updateStatus(Customer customer, UserStatus status) {

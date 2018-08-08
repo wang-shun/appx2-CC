@@ -1,9 +1,9 @@
 package com.dreawer.customer.domain;
 
-import java.util.Date;
-
 import com.dreawer.customer.lang.UserStatus;
 import com.dreawer.domain.BaseDomain;
+
+import java.util.Date;
 
 public class Organize extends BaseDomain{
 

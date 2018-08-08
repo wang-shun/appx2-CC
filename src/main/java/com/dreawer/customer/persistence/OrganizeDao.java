@@ -1,9 +1,8 @@
 package com.dreawer.customer.persistence;
 
-import org.springframework.stereotype.Repository;
-
 import com.dreawer.customer.domain.Organize;
 import com.dreawer.persistence.mybatis.MyBatisBaseDao;
+import org.springframework.stereotype.Repository;
 
 @Repository
 public class OrganizeDao extends MyBatisBaseDao<Organize> {

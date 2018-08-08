@@ -1,0 +1,11 @@
+<object-view-mapper>
+	<!-- 用户信息 
+	<map id="user" 
+		 view-class-name="com.dreawer.whlmjc.view.ViewUser" 
+		 object-class-name="com.dreawer.whlmjc.entity.User">
+		<property view="petName" object="petName" />
+		<property view="alias" object="alias" />
+		<property view="mugshot" object="mugshot" />
+		<property view="slogan" object="slogan" />
+	</map>-->
+</object-view-mapper>

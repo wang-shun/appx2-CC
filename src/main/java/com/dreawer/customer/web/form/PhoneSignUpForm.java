@@ -1,9 +1,9 @@
 package com.dreawer.customer.web.form;
 
-import javax.validation.constraints.Pattern;
-
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
+
+import javax.validation.constraints.Pattern;
 
 public class PhoneSignUpForm {
 	

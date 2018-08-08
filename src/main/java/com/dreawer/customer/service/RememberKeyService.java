@@ -1,11 +1,10 @@
 package com.dreawer.customer.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.dreawer.customer.domain.RememberKey;
 import com.dreawer.customer.domain.User;
 import com.dreawer.customer.persistence.RememberKeyDao;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 @Service
 public class RememberKeyService {

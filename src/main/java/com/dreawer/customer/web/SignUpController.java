@@ -1,21 +1,5 @@
 package com.dreawer.customer.web;
 
-import static com.dreawer.customer.constants.ControllerConstants.*;
-
-import java.io.BufferedReader;
-import java.util.HashMap;
-import java.util.Map;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
-import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.aliyuncs.dysmsapi.model.v20170525.SendSmsResponse;
 import com.dreawer.customer.domain.Customer;
 import com.dreawer.customer.domain.Organize;
@@ -27,20 +11,26 @@ import com.dreawer.customer.service.OrganizeService;
 import com.dreawer.customer.service.TokenUserService;
 import com.dreawer.customer.service.UserService;
 import com.dreawer.customer.utils.MD5Utils;
-import com.dreawer.customer.web.form.CheckCaptchaForm;
-import com.dreawer.customer.web.form.EmailBaseForm;
-import com.dreawer.customer.web.form.PhoneBaseForm;
-import com.dreawer.customer.web.form.PhoneSignUpForm;
-import com.dreawer.customer.web.form.ResetPasswordForm;
-import com.dreawer.customer.web.form.VerifyForm;
-import com.dreawer.customer.web.form.WxappSignUpForm;
-import com.dreawer.responsecode.rcdt.EntryError;
+import com.dreawer.customer.web.form.*;
+import com.dreawer.responsecode.rcdt.*;
 import com.dreawer.responsecode.rcdt.Error;
-import com.dreawer.responsecode.rcdt.ResponseCode;
-import com.dreawer.responsecode.rcdt.ResponseCodeRepository;
-import com.dreawer.responsecode.rcdt.Success;
-
 import io.jstack.sendcloud4j.mail.Result;
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
+import java.io.BufferedReader;
+import java.util.HashMap;
+import java.util.Map;
+
+import static com.dreawer.customer.constants.ControllerConstants.*;
 
 @RestController
 public class SignUpController extends BaseController {

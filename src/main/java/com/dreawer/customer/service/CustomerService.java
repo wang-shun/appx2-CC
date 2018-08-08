@@ -1,10 +1,9 @@
 package com.dreawer.customer.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.dreawer.customer.domain.Customer;
 import com.dreawer.customer.persistence.CustomerDao;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 @Service
 public class CustomerService {

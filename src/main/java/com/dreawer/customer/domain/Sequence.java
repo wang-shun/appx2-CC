@@ -1,8 +1,8 @@
 package com.dreawer.customer.domain;
 
-import java.util.Date;
-
 import com.dreawer.domain.BaseDomain;
+
+import java.util.Date;
 
 public class Sequence extends BaseDomain {
     private static final long serialVersionUID = -4849587983674256999L;

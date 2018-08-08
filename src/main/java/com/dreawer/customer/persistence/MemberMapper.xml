@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.dreawer.customer.persistence.MemberMapper">
+
+    <!-- ================================================================================== -->
+    <!-- SQL新增																				-->
+    <!-- ================================================================================== -->
+    <!-- 新增 -->
+    <insert id="insert" parameterType="Member" useGeneratedKeys="true" keyProperty="id">
+        <!--<selectKey keyProperty="id" order="BEFORE" resultType="java.lang.String">
+              SELECT REPLACE(UUID(), '-', '')
+          </selectKey>-->
+        INSERT INTO mem_user(id,sto_id,ph_num,mug_shot,nick_nam,usr_nam,sex,birthday,hier_id)
+        VALUES (#{id},#{storeId},#{phoneNumber},#{mugshot},#{nickName},#{userName},#{sex},#{birthday},#{hierarchyId})
+    </insert>
+
+    <!-- ================================================================================== -->
+    <!-- SQL删除																				-->
+    <!-- ================================================================================== -->
+
+    <!-- ================================================================================== -->
+    <!-- SQL更新																				-->
+    <!-- ================================================================================== -->
+
+    <update id="update" parameterType="Member">
+        UPDATE mem_user
+        SET
+        <if test="phoneNumber!=null">
+            ph_num = #{phoneNumber},
+        </if>
+        <if test="mugshot!=null">
+            mug_shot = #{mugshot},
+        </if>
+        <if test="nickName!=null">
+            nick_nam = #{nickName},
+        </if>
+        <if test="userName!=null">
+            usr_nam = #{userName},
+        </if>
+        <if test="sex!=null">
+            sex = #{sex},
+        </if>
+        <if test="birthday!=null">
+            birthday = #{birthday},
+        </if>
+        <if test="hierarchyId!=null">
+            hier_id = #{hierarchyId},
+        </if>
+        <if test="dueDate!=null">
+            due_date = #{dueDate},
+        </if>
+        <if test="growthValue!=null">
+            gro_val = #{growthValue},
+        </if>
+        upd_tim = #{updateTime}
+        WHERE id = #{id}
+        AND sto_id = #{storeId}
+    </update>
+
+    <update id="updateHierarchyByGrowthValue" parameterType="Map">
+        UPDATE mem_user
+        SET
+        hier_id = #{id}
+        WHERE
+        sto_id = #{storeId}
+        AND gro_val &gt;= #{growthValue}
+    </update>
+
+
+    <!-- ================================================================================== -->
+    <!-- SQL查询																				-->
+    <!-- ================================================================================== -->
+
+    <select id="findByCondition" parameterType="Map" resultMap="memberFullResultMap">
+        SELECT
+        m.id,
+        m.sto_id,
+        m.ph_num,
+        m.mug_shot,
+        m.nick_nam,
+        m.usr_nam,
+        m.sex,
+        m.birthday,
+        m.gro_val,
+        m.due_date,
+        m.hier_id,
+        h.id AS hier_id,
+        h.sto_id AS hier_sto_id,
+        h.name AS hier_name,
+        h.sequence AS hier_sequence,
+        h.gro_val AS hier_gro_val
+        FROM (
+        SELECT
+        <include refid="basicFields"/>
+        FROM mem_user
+        ) AS m LEFT JOIN mem_hier AS h ON m.hier_id = h.id AND
+        m.sto_id = h.sto_id
+        WHERE
+        m.sto_id = #{storeId}
+        <if test="id!=null">
+            AND m.id = #{id}
+        </if>
+        <if test="userName!=null">
+            AND m.usr_nam LIKE CONCAT('%',#{userName},'%')
+        </if>
+        <if test="nickName!=null">
+            AND m.nick_nam LIKE CONCAT('%',#{nickName},'%')
+        </if>
+        <if test="phoneNumber!=null">
+            AND m.ph_num = #{phoneNumber}
+        </if>
+        <if test="hierarchyId!=null">
+            AND m.hier_id = #{hierarchyId}
+        </if>
+        AND h.status IN ('ENABLE','SUSPEND')
+        LIMIT #{start}, #{pageSize}
+    </select>
+
+    <select id="findByConditionCount" parameterType="Map" resultType="Integer">
+        SELECT
+        count(1)
+        FROM (
+        SELECT
+        <include refid="basicFields"/>
+        FROM mem_user
+        ) AS m LEFT JOIN mem_hier AS h ON m.hier_id = h.id AND
+        m.sto_id = h.sto_id
+        WHERE
+        m.sto_id = #{storeId}
+        <if test="id!=null">
+            AND m.id = #{id}
+        </if>
+        <if test="userName!=null">
+            AND m.usr_nam = #{userName}
+        </if>
+        <if test="nickName!=null">
+            AND m.nick_nam = #{nickName}
+        </if>
+        <if test="phoneNumber!=null">
+            AND m.ph_num = #{phoneNumber}
+        </if>
+        <if test="hierarchyId!=null">
+            AND m.hier_id = #{hierarchyId}
+        </if>
+        AND h.status IN ('ENABLE','SUSPEND')
+    </select>
+
+    <select id="findById" parameterType="String" resultMap="memberResultMap">
+        SELECT
+        <include refid="basicFields"/>
+        FROM mem_user
+        WHERE id = #{id}
+    </select>
+
+    <select id="findByStoreId" parameterType="String" resultMap="memberFullResultMap">
+        SELECT
+        m.id,
+        m.sto_id,
+        m.ph_num,
+        m.mug_shot,
+        m.nick_nam,
+        m.usr_nam,
+        m.sex,
+        m.birthday,
+        m.gro_val,
+        m.due_date,
+        m.hier_id,
+        h.id AS hier_id,
+        h.sto_id AS hier_sto_id,
+        h.name AS hier_name,
+        h.sequence AS hier_sequence,
+        h.gro_val AS hier_gro_val,
+        h.period AS hier_period,
+        h.expiration AS hier_expiration,
+        h.exp_deduction AS hier_exp_deduction
+        FROM (
+        SELECT
+        <include refid="basicFields"/>
+        FROM mem_user
+        ) AS m LEFT JOIN mem_hier AS h ON m.hier_id = h.id AND
+        m.sto_id = h.sto_id
+        WHERE
+        m.sto_id = #{storeId}
+    </select>
+
+    <select id="findByHierarchyId" parameterType="Map" resultMap="memberResultMap">
+        SELECT
+        <include refid="basicFields"/>
+        FROM mem_user
+        WHERE sto_id = #{storeId}
+        AND
+        hier_id = #{id}
+    </select>
+
+    <!-- 查询会员成长值大于等于指定成长值的会员 -->
+    <select id="findByGrowthValue" parameterType="Map" resultMap="memberResultMap">
+        SELECT
+        <include refid="basicFields"/>
+        FROM mem_user
+        WHERE sto_id = #{storeId}
+        AND gro_val &gt;= #{growthValue}
+    </select>
+
+    <!-- ================================================================================== -->
+    <!-- 公用SQL定义																			-->
+    <!-- ================================================================================== -->
+
+    <!-- 基本信息 -->
+    <sql id="basicFields">
+        id,sto_id,ph_num,mug_shot,nick_nam,usr_nam,sex,birthday,gro_val,due_date,hier_id,cre_tim
+    </sql>
+
+    <!-- ================================================================================== -->
+    <!-- 结果集映射																			-->
+    <!-- ================================================================================== -->
+
+    <!-- 基本结果映射 -->
+    <resultMap id="memberResultMap" type="Member">
+        <result property="id" column="id"/>
+        <result property="storeId" column="sto_id"/>
+        <result property="phoneNumber" column="ph_num"/>
+        <result property="mugshot" column="mug_shot"/>
+        <result property="nickName" column="nick_nam"/>
+        <result property="userName" column="usr_nam"/>
+        <result property="sex" column="sex"/>
+        <result property="birthday" column="birthday"/>
+        <result property="growthValue" column="gro_val"/>
+        <result property="dueDate" column="due_date"/>
+        <result property="hierarchyId" column="hier_id"/>
+        <result property="createTime" column="cre_tim"/>
+        <result property="updateTime" column="upd_tim"/>
+    </resultMap>
+    <resultMap id="memberFullResultMap" type="Member">
+        <result property="id" column="id"/>
+        <result property="storeId" column="sto_id"/>
+        <result property="phoneNumber" column="ph_num"/>
+        <result property="mugshot" column="mug_shot"/>
+        <result property="nickName" column="nick_nam"/>
+        <result property="userName" column="usr_nam"/>
+        <result property="sex" column="sex"/>
+        <result property="birthday" column="birthday"/>
+        <result property="growthValue" column="gro_val"/>
+        <result property="dueDate" column="due_date"/>
+        <result property="hierarchyId" column="hier_id"/>
+        <result property="createTime" column="cre_tim"/>
+        <result property="updateTime" column="upd_tim"/>
+        <collection property="hierarchy" columnPrefix="hier_" resultMap="com.dreawer.member.persistence.HierarchyMapper.hierarchyResultMap"/>
+    </resultMap>
+</mapper>

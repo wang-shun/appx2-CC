@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.dreawer.member.persistence.AddressMapper">
+
+    <!-- ================================================================================== -->
+    <!-- SQL新增																				-->
+    <!-- ================================================================================== -->
+
+    <!-- ================================================================================== -->
+    <!-- SQL删除																				-->
+    <!-- ================================================================================== -->
+
+    <!-- ================================================================================== -->
+    <!-- SQL更新																				-->
+    <!-- ================================================================================== -->
+
+
+    <!-- ================================================================================== -->
+    <!-- SQL查询																				-->
+    <!-- ================================================================================== -->
+
+
+    <!-- ================================================================================== -->
+    <!-- 公用SQL定义																			-->
+    <!-- ================================================================================== -->
+
+    <!-- 基本信息 -->
+    <sql id="basicFields">
+        id,cust_id,seller_id,use_flag,name,phone,email,zipcode,country,province,
+        city,district,street,hose_num,status,cre_tim
+    </sql>
+
+    <!-- ================================================================================== -->
+    <!-- 结果集映射																			-->
+    <!-- ================================================================================== -->
+
+    <!-- 基本结果映射 -->
+    <resultMap id="addressResultMap" type="Address">
+        <result property="id" column="id"/>
+        <result property="customerId" column="cust_id"/>
+        <result property="sellerId" column="seller_id"/>
+        <result property="useFlag" column="use_flag"/>
+        <result property="name" column="name"/>
+        <result property="phone" column="phone"/>
+        <result property="email" column="email"/>
+        <result property="zipcode" column="zipcode"/>
+        <result property="country" column="country"/>
+        <result property="province" column="province"/>
+        <result property="city" column="city"/>
+        <result property="district" column="district"/>
+        <result property="street" column="street"/>
+        <result property="housenumber" column="hose_num"/>
+        <result property="status" column="status"/>
+        <result property="createTime" column="cre_tim"/>
+    </resultMap>
+
+</mapper>

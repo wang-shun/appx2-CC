@@ -1,10 +1,9 @@
 package com.dreawer.customer.persistence;
 
-import org.springframework.stereotype.Repository;
-
 import com.dreawer.customer.domain.RememberKey;
 import com.dreawer.customer.domain.User;
 import com.dreawer.persistence.mybatis.MyBatisBaseDao;
+import org.springframework.stereotype.Repository;
 
 @Repository
 public class RememberKeyDao extends MyBatisBaseDao<RememberKey> {

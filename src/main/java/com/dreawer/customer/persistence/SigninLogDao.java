@@ -1,13 +1,12 @@
 package com.dreawer.customer.persistence;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import org.springframework.stereotype.Repository;
-
 import com.dreawer.customer.domain.SignInLog;
 import com.dreawer.customer.domain.User;
 import com.dreawer.persistence.mybatis.MyBatisBaseDao;
+import org.springframework.stereotype.Repository;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Repository
 public class SigninLogDao extends MyBatisBaseDao<SignInLog> {
@@ -37,7 +36,6 @@ public class SigninLogDao extends MyBatisBaseDao<SignInLog> {
     
     /**
      * 查询最后一次登录时间。
-     * @param userId 用户ID号。
      * @return 用户登录日志。
      */
     public SignInLog selectLastSignInTime(String id){

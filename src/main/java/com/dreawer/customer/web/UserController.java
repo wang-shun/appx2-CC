@@ -1,22 +1,5 @@
 package com.dreawer.customer.web;
 
-import static com.dreawer.customer.constants.ControllerConstants.*;
-
-import java.sql.Timestamp;
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.dreawer.customer.domain.Customer;
 import com.dreawer.customer.domain.Organize;
 import com.dreawer.customer.domain.TokenUser;
@@ -27,16 +10,24 @@ import com.dreawer.customer.service.TokenUserService;
 import com.dreawer.customer.service.UserService;
 import com.dreawer.customer.utils.MD5Utils;
 import com.dreawer.customer.utils.RedisUtil;
-import com.dreawer.customer.web.form.SetBasicForm;
-import com.dreawer.customer.web.form.SetEmailForm;
-import com.dreawer.customer.web.form.SetPasswordForm;
-import com.dreawer.customer.web.form.SetPhoneForm;
-import com.dreawer.customer.web.form.UserQueryForm;
-import com.dreawer.responsecode.rcdt.EntryError;
+import com.dreawer.customer.web.form.*;
+import com.dreawer.responsecode.rcdt.*;
 import com.dreawer.responsecode.rcdt.Error;
-import com.dreawer.responsecode.rcdt.ResponseCode;
-import com.dreawer.responsecode.rcdt.ResponseCodeRepository;
-import com.dreawer.responsecode.rcdt.Success;
+import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
+import java.sql.Timestamp;
+import java.util.List;
+
+import static com.dreawer.customer.constants.ControllerConstants.*;
 
 @RestController
 public class UserController extends BaseController {

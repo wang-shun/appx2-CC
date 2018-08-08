@@ -1,11 +1,11 @@
 package com.dreawer.customer.persistence;
 
-import java.util.HashMap;
-import java.util.Map;
-import org.springframework.stereotype.Repository;
-
 import com.dreawer.customer.domain.Sequence;
 import com.dreawer.persistence.mybatis.MyBatisBaseDao;
+import org.springframework.stereotype.Repository;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Repository
 public class SequenceDao extends MyBatisBaseDao<Sequence> {

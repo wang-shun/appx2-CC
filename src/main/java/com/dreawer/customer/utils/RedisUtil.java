@@ -1,17 +1,18 @@
 package com.dreawer.customer.utils;
 
-import java.lang.reflect.Type;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
-import org.apache.commons.lang.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.StringRedisTemplate;
-import org.springframework.stereotype.Component;
 import com.dreawer.customer.domain.SystemInfo;
 import com.dreawer.customer.domain.TokenUser;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
+import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.stereotype.Component;
+
+import java.lang.reflect.Type;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @Component
 public class RedisUtil {
@@ -137,7 +138,6 @@ public class RedisUtil {
     /**
      * 把用户信息放到redis中。默认增加前缀"user_",过期时间24小时。
      * @param key 要存放数据的主键。
-     * @param user 用户信息。
      */
     public void setTokenUser(String key, TokenUser tokenUser) {
     	if (StringUtils.isBlank(key) || tokenUser==null) {  

@@ -1,11 +1,11 @@
 package com.dreawer.customer.domain;
 
-import java.util.Date;
-
 import com.dreawer.customer.lang.ClientType;
 import com.dreawer.customer.lang.SignInFailCause;
 import com.dreawer.customer.lang.SignInStatus;
 import com.dreawer.domain.BaseDomain;
+
+import java.util.Date;
 
 public class SignInLog extends BaseDomain{
     private static final long serialVersionUID = -7788528035675069861L;

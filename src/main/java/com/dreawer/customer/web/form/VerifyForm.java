@@ -1,10 +1,10 @@
 package com.dreawer.customer.web.form;
 
-import javax.validation.constraints.Pattern;
+import com.dreawer.customer.lang.VerifyType;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 
-import com.dreawer.customer.lang.VerifyType;
+import javax.validation.constraints.Pattern;
 
 public class VerifyForm {
 
