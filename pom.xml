@@ -5,7 +5,7 @@
 
 	<groupId>com.dreawer</groupId>
 	<artifactId>cc</artifactId>
-	<version>0.0.9-SNAPSHOT</version>
+	<version>0.0.10-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
 	<name>cc_boot</name>
@@ -91,7 +91,7 @@
 		<dependency>
 			<groupId>com.dreawer.responsecode</groupId>
 			<artifactId>rcdt</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<version>0.0.2-SNAPSHOT</version>
 		</dependency>
 		<dependency>
     		<groupId>org.apache.commons</groupId>
