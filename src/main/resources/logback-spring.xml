@@ -62,8 +62,8 @@
 
     <!-- root 默认日志配置 ， 注意这里的级别哈！小心生产环境用DEBUG，压爆你的磁盘！-->
     <root level="INFO">
-        <!--<appender-ref ref="logfile"/>-->
-        <!--<appender-ref ref="stdout"/>-->
+        <appender-ref ref="logfile"/>
+        <appender-ref ref="stdout"/>
         <appender-ref ref="LOGSTASH" />
     </root>
 </configuration>
