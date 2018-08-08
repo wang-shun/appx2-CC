@@ -25,35 +25,35 @@
         </layout>
     </appender>
 
-    <!--<appender name="LOGSTASH"-->
-              <!--class="net.logstash.logback.appender.LogstashTcpSocketAppender">-->
-        <!--<destination>${LOGSTASH_PATH}</destination>-->
-        <!--&lt;!&ndash; encoder必须配置,有多种可选 &ndash;&gt;-->
-        <!--<encoder charset="UTF-8" class="net.logstash.logback.encoder.LogstashEncoder">-->
-            <!--<customFields>{"appname":"cc"}</customFields>-->
+    <appender name="LOGSTASH"
+              class="net.logstash.logback.appender.LogstashTcpSocketAppender">
+        <destination>${LOGSTASH_PATH}</destination>
+        <!-- encoder必须配置,有多种可选 -->
+        <encoder charset="UTF-8" class="net.logstash.logback.encoder.LogstashEncoder">
+            <customFields>{"appname":"cc"}</customFields>
 
-            <!--<providers>-->
-                <!--<timestamp>-->
-                    <!--<timeZone>UTC</timeZone>-->
-                <!--</timestamp>-->
-                <!--<pattern>-->
-                    <!--<pattern>-->
-                        <!--{-->
-                        <!--"severity": "%level",-->
-                        <!--"service": "${springAppName:-}",-->
-                        <!--"trace": "%X{X-B3-TraceId:-}",-->
-                        <!--"span": "%X{X-B3-SpanId:-}",-->
-                        <!--"exportable": "%X{X-Span-Export:-}",-->
-                        <!--"pid": "${PID:-}",-->
-                        <!--"thread": "%thread",-->
-                        <!--"class": "%logger{40}",-->
-                        <!--"rest": "%msg"-->
-                        <!--}-->
-                    <!--</pattern>-->
-                <!--</pattern>-->
-            <!--</providers>-->
-        <!--</encoder>-->
-    <!--</appender>-->
+            <providers>
+                <timestamp>
+                    <timeZone>UTC</timeZone>
+                </timestamp>
+                <pattern>
+                    <pattern>
+                        {
+                        "severity": "%level",
+                        "service": "${springAppName:-}",
+                        "trace": "%X{X-B3-TraceId:-}",
+                        "span": "%X{X-B3-SpanId:-}",
+                        "exportable": "%X{X-Span-Export:-}",
+                        "pid": "${PID:-}",
+                        "thread": "%thread",
+                        "class": "%logger{40}",
+                        "rest": "%msg"
+                        }
+                    </pattern>
+                </pattern>
+            </providers>
+        </encoder>
+    </appender>
 
     <!-- 修改其他包的日志输出级别 -->
     <logger name="org.springframework">
@@ -64,6 +64,6 @@
     <root level="INFO">
         <appender-ref ref="logfile"/>
         <appender-ref ref="stdout"/>
-        <!--<appender-ref ref="LOGSTASH" />-->
+        <appender-ref ref="LOGSTASH" />
     </root>
 </configuration>
