@@ -265,7 +265,7 @@ public class MemberController extends BaseController {
         	if (jsonObject==null){
 				result.put("result", null);
 			}else {
-				result.put("result", jsonObject.toString());
+				result.put("result", jsonObject);
 			}
 
         	
