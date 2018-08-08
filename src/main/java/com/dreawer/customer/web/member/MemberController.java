@@ -1,4 +1,4 @@
-package com.dreawer.customer.web;
+package com.dreawer.customer.web.member;
 
 
 import com.dreawer.customer.domain.Hierarchy;
@@ -15,6 +15,7 @@ import com.dreawer.customer.manager.MemberManager;
 import com.dreawer.customer.service.HierarchyService;
 import com.dreawer.customer.service.MemberService;
 import com.dreawer.customer.utils.RedisUtil;
+import com.dreawer.customer.web.BaseController;
 import com.dreawer.customer.web.form.GoodsInfoForm;
 import com.dreawer.responsecode.rcdt.EntryError;
 import com.dreawer.responsecode.rcdt.Error;
@@ -26,6 +27,7 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -72,8 +74,8 @@ public class MemberController extends BaseController {
      */
     @RequestMapping(value=REQ_REGISTER, method = RequestMethod.POST)
     public @ResponseBody
-	ResponseCode register(HttpServletRequest req, @RequestBody @Valid RegisterMemberForm form){
-        try {
+	ResponseCode register(HttpServletRequest req, @RequestBody @Valid RegisterMemberForm form) throws Exception {
+
         	//获取用户信息
 			String userId = req.getHeader("userId");
 			//判断店铺ID是否为空
@@ -153,10 +155,7 @@ public class MemberController extends BaseController {
 
 			return Success.SUCCESS(data);
 
-		}  catch (Exception e) {
-        	logger.error(e);
-			return com.dreawer.responsecode.rcdt.Error.APPSERVER;
-		}
+
 	}
     
     /**
@@ -168,8 +167,8 @@ public class MemberController extends BaseController {
      * @since 1.0
      */
     @RequestMapping(value=REQ_EDIT, method = RequestMethod.POST)
-    public @ResponseBody ResponseCode edit(HttpServletRequest req, @RequestBody @Valid EditMemberForm form){
-        try {
+    public @ResponseBody ResponseCode edit(HttpServletRequest req, @RequestBody @Valid EditMemberForm form) throws Exception {
+
 			//获取用户信息
 			String userId = req.getHeader("userId");
 			//判断店铺ID是否为空
@@ -224,13 +223,7 @@ public class MemberController extends BaseController {
         	memberManager.update(data,storeId);
         	return Success.SUCCESS(data);
 
-		} catch (ResponseCodeException e) {
-			logger.error(e);
-			return e.getResponseCode();
-		} catch (Exception e) {
-			logger.error(e);
-			return com.dreawer.responsecode.rcdt.Error.APPSERVER;
-		}
+
     }
     
     /**
@@ -246,7 +239,6 @@ public class MemberController extends BaseController {
 	})
     @RequestMapping(value=REQ_DETAIL, method = RequestMethod.GET)
     public @ResponseBody ResponseCode detail(HttpServletRequest req, @RequestParam(STORE_ID)String storeId, @RequestParam(TERMINAL_TYPE)String terminalType){
-        try {
         	
         	//获取用户信息
 			String userId = req.getHeader("userId");
@@ -270,14 +262,16 @@ public class MemberController extends BaseController {
         	}
 
         	Map<String, Object> result = new HashMap<>();
-        	result.put("result", jsonObject);
+        	if (jsonObject==null){
+				result.put("result", null);
+			}else {
+				result.put("result", jsonObject.toString());
+			}
+
         	
 			return Success.SUCCESS(result);
         	
-		}  catch (Exception e) {
-			logger.error(e);
-			return com.dreawer.responsecode.rcdt.Error.APPSERVER;
-		}
+
     }
     
     /**
@@ -291,7 +285,7 @@ public class MemberController extends BaseController {
     public @ResponseBody ResponseCode list(HttpServletRequest req, @RequestParam(STORE_ID)String storeId, @RequestParam(value=PHONE_NUMBER,required=false)String phoneNumber, @RequestParam(value=USER_NAME,required=false)String userName,
     		@RequestParam(value=RANK_ID,required=false)String rankId, @RequestParam(value=NICK_NAME,required=false)String nickName, @RequestParam(value=APP_TYPE,required=false)String appType, @RequestParam(value=PAGE_NO, required=false, defaultValue="1")Integer pageNo,
     		@RequestParam(value=PAGE_SIZE, required=false, defaultValue="5")Integer pageSize){
-        try {
+
         	//判断店铺ID是否为空
         	if(StringUtils.isBlank(storeId)){
         		return EntryError.EMPTY(STORE_ID);
@@ -310,10 +304,7 @@ public class MemberController extends BaseController {
 
 			return Success.SUCCESS(map);
         	
-		} catch (Exception e) {
-			logger.error(e);
-			return com.dreawer.responsecode.rcdt.Error.APPSERVER;
-		}
+
     }
     
     /**
@@ -324,9 +315,8 @@ public class MemberController extends BaseController {
      * @since 1.0
      */
     @RequestMapping(value=REQ_POINT_RECORD, method = RequestMethod.GET)
-    public @ResponseBody ResponseCode pointRecord(HttpServletRequest req, @RequestParam(STORE_ID)String storeId, @RequestParam(TERMINAL_TYPE)String terminalType, @RequestParam(value=PAGE_NO, required=false, defaultValue="1")Integer pageNo, @RequestParam(value=PAGE_SIZE, required=false, defaultValue="5")Integer pageSize){
-        try {
-        	
+    public @ResponseBody ResponseCode pointRecord(HttpServletRequest req, @RequestParam(STORE_ID)String storeId, @RequestParam(TERMINAL_TYPE)String terminalType, @RequestParam(value=PAGE_NO, required=false, defaultValue="1")Integer pageNo, @RequestParam(value=PAGE_SIZE, required=false, defaultValue="5")Integer pageSize) throws Exception {
+
         	//获取用户信息
 			String userId = req.getHeader("userId");
 			//判断店铺ID是否为空
@@ -356,14 +346,7 @@ public class MemberController extends BaseController {
 			Map<String, Object> map = memberManager.recordQuery(data, storeId);
 
 			return Success.SUCCESS(map);
-        	
-		} catch (ResponseCodeException e) {
-			logger.error(e);
-			return e.getResponseCode();
-		} catch (Exception e) {
-			logger.error(e);
-			return com.dreawer.responsecode.rcdt.Error.APPSERVER;
-		}
+
     }
     
 //    /**
@@ -422,7 +405,7 @@ public class MemberController extends BaseController {
      */
     @RequestMapping(value=REQ_CHECK, method = RequestMethod.GET)
     public @ResponseBody ResponseCode check(HttpServletRequest req, @RequestParam(STORE_ID)String storeId, @RequestParam(TERMINAL_TYPE)String terminalType){
-        try {
+
         	
         	//获取用户信息
 			String userId = req.getHeader("userId");
@@ -454,11 +437,7 @@ public class MemberController extends BaseController {
         	}
         	
 			return Success.SUCCESS(result);
-        	
-		}  catch (Exception e) {
-			logger.error(e);
-			return com.dreawer.responsecode.rcdt.Error.APPSERVER;
-		}
+
     }
 
 
@@ -468,8 +447,8 @@ public class MemberController extends BaseController {
 	 * @return 折扣金额
 	 */
 	@RequestMapping(value = REQ_DISCOUNT,method = RequestMethod.POST)
-	public @ResponseBody ResponseCode discount(@RequestBody DiscountQueryForm form){
-		try {
+	public @ResponseBody ResponseCode discount(@RequestBody DiscountQueryForm form) throws IllegalAccessException {
+
 			Boolean hasDiscount = false;
 			String userId = form.getUserId();
 			Map<String,Object> param = new HashMap<>();
@@ -499,10 +478,7 @@ public class MemberController extends BaseController {
 			param.put("hasDiscount",hasDiscount);
 			param.put("goodsInfo",goodsInfo);
 			return Success.SUCCESS(param);
-		} catch (Exception e) {
-			logger.error("error",e);
-			return Error.APPSERVER;
-		}
+
 	}
 
 	/**
@@ -512,8 +488,8 @@ public class MemberController extends BaseController {
 	 * @since 1.0
 	 */
 	@RequestMapping(value=REQ_POINT_RECORD_ADD, method = RequestMethod.GET)
-	public @ResponseBody ResponseCode addPoint(HttpServletRequest req,@RequestParam(STORE_ID)String storeId,@RequestParam("value")String value){
-		try {
+	public @ResponseBody ResponseCode addPoint(HttpServletRequest req,@RequestParam(STORE_ID)String storeId,@RequestParam("value")String value) throws Exception {
+
 			//判断店铺ID是否为空
 			if(StringUtils.isBlank(storeId)){
 				return EntryError.EMPTY(STORE_ID);
@@ -540,10 +516,7 @@ public class MemberController extends BaseController {
 
 			return Success.SUCCESS(pointRecord);
 
-		} catch (Exception e) {
-			logger.error(e);
-			return com.dreawer.responsecode.rcdt.Error.APPSERVER;
-		}
+
 	}
 
 

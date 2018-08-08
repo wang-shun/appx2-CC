@@ -1,4 +1,4 @@
-package com.dreawer.customer.web;
+package com.dreawer.customer.web.member;
 
 import com.dreawer.customer.domain.Hierarchy;
 import com.dreawer.customer.exception.ResponseCodeException;
@@ -9,6 +9,7 @@ import com.dreawer.customer.lang.MemberRankExpiration;
 import com.dreawer.customer.lang.MemberRankStatus;
 import com.dreawer.customer.manager.HierarchyManager;
 import com.dreawer.customer.utils.RedisUtil;
+import com.dreawer.customer.web.BaseController;
 import com.dreawer.responsecode.rcdt.EntryError;
 import com.dreawer.responsecode.rcdt.ResponseCode;
 import com.dreawer.responsecode.rcdt.RuleError;
@@ -58,8 +59,8 @@ public class MemberRankController extends BaseController {
      */
     @RequestMapping(value=REQ_ADD, method = RequestMethod.POST)
     public @ResponseBody
-	ResponseCode add(HttpServletRequest req, @RequestBody @Valid AddMemberRankForm form){
-        try {
+	ResponseCode add(HttpServletRequest req, @RequestBody @Valid AddMemberRankForm form) throws Exception {
+
         	//获取用户信息
         	//User user = getSignInUser(req);
 			String userId = form.getUserId();
@@ -157,13 +158,7 @@ public class MemberRankController extends BaseController {
 			Hierarchy hierarchy = hierarchyManager.addHierarchy(data, storeId);
 			return Success.SUCCESS(hierarchy);
 
-		} catch (ResponseCodeException e) {
-            logger.error(e);
-			return e.getResponseCode();
-		} catch (Exception e) {
-            logger.error(e);
-            return com.dreawer.responsecode.rcdt.Error.APPSERVER;
-		}
+
     }
     
     /**
@@ -175,8 +170,8 @@ public class MemberRankController extends BaseController {
      * @since 1.0
      */
     @RequestMapping(value=REQ_EDIT, method = RequestMethod.POST)
-    public @ResponseBody ResponseCode edit(HttpServletRequest req, @RequestBody @Valid EditMemberRankForm form){
-        try {
+    public @ResponseBody ResponseCode edit(HttpServletRequest req, @RequestBody @Valid EditMemberRankForm form) throws Exception {
+
 
         	//获取用户信息
         	//User user = getSignInUser(req);
@@ -277,13 +272,7 @@ public class MemberRankController extends BaseController {
 
 			Hierarchy hierarchy = hierarchyManager.update(data, storeId);
 			return Success.SUCCESS(hierarchy);
-		} catch (ResponseCodeException e) {
-            logger.error(e);
-            return e.getResponseCode();
-		} catch (Exception e) {
-            logger.error(e);
-            return com.dreawer.responsecode.rcdt.Error.APPSERVER;
-		}
+
     }
     
     /**
@@ -295,8 +284,8 @@ public class MemberRankController extends BaseController {
      * @since 1.0
      */
     @RequestMapping(value=REQ_UPDATE_STATUS, method = RequestMethod.POST)
-    public @ResponseBody ResponseCode updateStatus(HttpServletRequest req, @RequestBody @Valid UpdateMemberRankStatusForm form){
-        try {
+    public @ResponseBody ResponseCode updateStatus(HttpServletRequest req, @RequestBody @Valid UpdateMemberRankStatusForm form) throws ResponseCodeException, IllegalAccessException {
+
         	//获取用户信息
         	//User user = getSignInUser(req);
 			String userId = form.getUserId();
@@ -329,13 +318,7 @@ public class MemberRankController extends BaseController {
         	
 			return Success.SUCCESS;
         	
-		} catch (ResponseCodeException e) {
-            logger.error(e);
-            return e.getResponseCode();
-		} catch (Exception e) {
-            logger.error(e);
-            return com.dreawer.responsecode.rcdt.Error.APPSERVER;
-		}
+
     }
     
     /**
@@ -347,7 +330,7 @@ public class MemberRankController extends BaseController {
      */
     @RequestMapping(value=REQ_LIST, method = RequestMethod.GET)
     public @ResponseBody ResponseCode list(HttpServletRequest req, @RequestParam(STORE_ID)String storeId){
-        try {
+
         	//判断店铺ID是否为空
         	if(StringUtils.isBlank(storeId)){
         		return EntryError.EMPTY(STORE_ID);
@@ -362,10 +345,7 @@ public class MemberRankController extends BaseController {
         	result.put("result", hierarchies);
         	return Success.SUCCESS(result);
         	
-		}  catch (Exception e) {
-            logger.error(e);
-            return com.dreawer.responsecode.rcdt.Error.APPSERVER;
-		}
+
     }
     
     /**
@@ -377,7 +357,7 @@ public class MemberRankController extends BaseController {
      */
     @RequestMapping(value=REQ_DETAIL, method = RequestMethod.GET)
     public @ResponseBody ResponseCode detail(HttpServletRequest req, @RequestParam(ID)String id){
-        try {
+
         	
         	//判断店铺ID是否为空
         	if(StringUtils.isBlank(id)){
@@ -396,10 +376,7 @@ public class MemberRankController extends BaseController {
         	result.put("result", jsonObject.toString());
         	return Success.SUCCESS(result);
         	
-		} catch (Exception e) {
-            logger.error(e);
-            return com.dreawer.responsecode.rcdt.Error.APPSERVER;
-		}
+
     }
 
 

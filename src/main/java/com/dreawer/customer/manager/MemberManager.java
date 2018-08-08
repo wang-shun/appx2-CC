@@ -111,7 +111,7 @@ public class MemberManager extends BaseManager {
 
         List<Hierarchy> list = hierarchyService.findByStoreId(storeId);
         //如果店铺所有会员等级都被禁用则报错
-        if (list==null){
+        if (list==null||list.size()==0){
             throw new ResponseCodeException(BusinessError.STATUS("未查找到会员等级列表"));
         }
         if (list.get(0).getStatus().equals(Status.DISABLE.toString())){
