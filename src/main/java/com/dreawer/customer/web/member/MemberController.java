@@ -450,6 +450,7 @@ public class MemberController extends BaseController {
 	public @ResponseBody ResponseCode discount(@RequestBody DiscountQueryForm form) throws IllegalAccessException {
 
 			Boolean hasDiscount = false;
+			Boolean freeShipping = false;
 			String userId = form.getUserId();
 			Map<String,Object> param = new HashMap<>();
 			param.put("hasDiscount",hasDiscount);
@@ -464,6 +465,9 @@ public class MemberController extends BaseController {
 			if (!hierarchy.getDiscount()||hierarchy.getStatus().equals(Status.DISABLE)){
 				return Success.SUCCESS(param);
 			}
+			if (hierarchy.getFreeShipping()){
+				freeShipping=true;
+			}
 			String discountAmount = hierarchy.getDiscountAmount();
 			List<GoodsInfoForm> goodsInfo = form.getGoodsInfo();
 			//遍历计算折扣金额
@@ -477,6 +481,7 @@ public class MemberController extends BaseController {
 			hasDiscount=true;
 			param.put("hasDiscount",hasDiscount);
 			param.put("goodsInfo",goodsInfo);
+			param.put("freeShipping",freeShipping);
 			return Success.SUCCESS(param);
 
 	}
