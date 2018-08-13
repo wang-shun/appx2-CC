@@ -16,7 +16,6 @@ import com.dreawer.responsecode.rcdt.RuleError;
 import com.dreawer.responsecode.rcdt.Success;
 import com.google.gson.JsonObject;
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -38,9 +37,6 @@ import static com.dreawer.customer.constants.ControllerConstants.REQ_ADD;
 @Controller
 @RequestMapping(REQ_MEMBER_RANK)
 public class MemberRankController extends BaseController {
-
-    private Logger logger = Logger.getLogger(this.getClass()); // 日志记录器
-
 
     @Autowired
 	private RedisUtil redisUtil;

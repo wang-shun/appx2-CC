@@ -1,10 +1,8 @@
 package com.dreawer.customer;
 
 import com.dreawer.customer.form.AddMemberRankForm;
-import com.dreawer.customer.form.RegisterMemberForm;
 import com.dreawer.customer.lang.MemberRankExpiration;
 import com.dreawer.customer.lang.MemberRankStatus;
-import com.dreawer.customer.utils.HttpClientUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import org.junit.Before;
@@ -21,7 +19,6 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.math.BigDecimal;
-import java.util.Date;
 import java.util.UUID;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -74,28 +71,28 @@ public class CustomerBootApplicationTests {
 				.andDo(print());
 	}
 
-	@Test
-	public void testMemberAdd() throws Exception {
-		RegisterMemberForm form = new RegisterMemberForm();
-		form.setStoreId("34d803197cd94a90b312cdd74684ac9f");
-		form.setNickName("222222");
-		form.setPhoneNumber("13349953687");
-		form.setUserName("11111");
-		form.setSex(1);
-		form.setMugshot("11111111111");
-		form.setBirthday(String.valueOf(new Date().getTime()));
-		ObjectMapper mapper = new ObjectMapper();
-		ObjectWriter ow = mapper.writer().withDefaultPrettyPrinter();
-		String requestJson = ow.writeValueAsString(form);
+//	@Test
+//	public void testMemberAdd() throws Exception {
+//		RegisterMemberForm form = new RegisterMemberForm();
+//		form.setStoreId("34d803197cd94a90b312cdd74684ac9f");
+//		form.setNickName("222222");
+//		form.setPhoneNumber("13349953687");
+//		form.setUserName("11111");
+//		form.setSex(1);
+//		form.setMugshot("11111111111");
+//		form.setBirthday(String.valueOf(new Date().getTime()));
+//		ObjectMapper mapper = new ObjectMapper();
+//		ObjectWriter ow = mapper.writer().withDefaultPrettyPrinter();
+//		String requestJson = ow.writeValueAsString(form);
 //		mvc.perform(MockMvcRequestBuilders.post("/member/register")
 //				.contentType(MediaType.APPLICATION_JSON_UTF8)
 //				.content(requestJson)
 //				.header("userId",UUID.randomUUID().toString().replace("-",""))
 //				.sessionAttr("111", "111"))
 //				.andDo(print());
-		String response = HttpClientUtil.doPostJSON("http://localhost:9092/member/register", requestJson);
-		System.out.println(response);
-	}
+//		String response = HttpClientUtil.doPostJSON("http://localhost:9092/member/register", requestJson);
+//		System.out.println(response);
+//	}
 	
 	public static void main(String[] args) {
 		

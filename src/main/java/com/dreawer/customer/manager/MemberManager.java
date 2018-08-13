@@ -30,7 +30,6 @@ import java.util.UUID;
  */
 
 @Component
-@SuppressWarnings("unchecked")
 public class MemberManager extends BaseManager {
 
     private final MemberService memberService;
@@ -56,7 +55,7 @@ public class MemberManager extends BaseManager {
      * 分页查询会员信息
      * @return 分页信息
      */
-    public Map memberQuery(Map<String,Object> map){
+    public Map<String,Object> memberQuery(Map<String,Object> map){
             String storeId = null;
             if ( map.get("storeId")!=null){
                 storeId = (String) map.get("storeId");

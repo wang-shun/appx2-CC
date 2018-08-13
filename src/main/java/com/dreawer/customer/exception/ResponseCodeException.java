@@ -9,7 +9,10 @@ package com.dreawer.customer.exception;
 import com.dreawer.responsecode.rcdt.ResponseCode;
 
 public class ResponseCodeException extends Exception {
-    private ResponseCode responseCode;
+	
+	private static final long serialVersionUID = 3974533619225717551L;
+	
+	private ResponseCode responseCode;
 
     protected ResponseCodeException() {
     }
