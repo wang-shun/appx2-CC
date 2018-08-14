@@ -158,11 +158,11 @@ public class UserController extends BaseController {
             }
 	        
 			// TODO 校验验证码 换成通知中心校验
-            if(isCaptchaValid(form.getEmail(), form.getCaptcha())) {
+            /*if(isCaptchaValid(form.getEmail(), form.getCaptcha())) {
             	removeCaptcha(form.getEmail());
             }else {
 				return Error.BUSINESS("captcha");
-            }
+            }*/
 			
 			// 更新邮箱
 			User user = new User();
@@ -211,11 +211,11 @@ public class UserController extends BaseController {
             }
 	        
 			// TODO 校验验证码 换成通知中心校验
-            if(isCaptchaValid(form.getPhone(), form.getCaptcha())) {
+            /*if(isCaptchaValid(form.getPhone(), form.getCaptcha())) {
             	removeCaptcha(form.getPhone());
             }else {
 				return Error.BUSINESS("captcha");
-            }
+            }*/
 			
 			// 更新邮箱
 			User user = new User();

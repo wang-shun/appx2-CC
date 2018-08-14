@@ -1,12 +1,5 @@
 package com.dreawer.customer.web;
 
-import com.aliyuncs.DefaultAcsClient;
-import com.aliyuncs.IAcsClient;
-import com.aliyuncs.dysmsapi.model.v20170525.SendSmsRequest;
-import com.aliyuncs.dysmsapi.model.v20170525.SendSmsResponse;
-import com.aliyuncs.exceptions.ClientException;
-import com.aliyuncs.profile.DefaultProfile;
-import com.aliyuncs.profile.IClientProfile;
 import com.dreawer.customer.domain.Sequence;
 import com.dreawer.customer.domain.SignInLog;
 import com.dreawer.customer.domain.SystemInfo;
@@ -19,11 +12,6 @@ import com.dreawer.customer.service.TokenUserService;
 import com.dreawer.customer.utils.PinyinUtils;
 import com.dreawer.customer.utils.RedisUtil;
 import com.dreawer.customer.utils.SystemUtils;
-import com.google.gson.Gson;
-import io.jstack.sendcloud4j.SendCloud;
-import io.jstack.sendcloud4j.mail.Email;
-import io.jstack.sendcloud4j.mail.Result;
-import io.jstack.sendcloud4j.mail.Substitution.Sub;
 import org.apache.commons.lang.StringUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
@@ -39,7 +27,6 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
-import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -49,7 +36,6 @@ import java.io.UnsupportedEncodingException;
 import java.sql.Timestamp;
 import java.util.*;
 
-import static com.dreawer.customer.constants.ControllerConstants.*;
 
 public class BaseController{
 	
@@ -431,89 +417,6 @@ public class BaseController{
     }
     
 	/**
-     * 阿里云发送短信。
-     * @param phoneNumber 手机号。
-     * @param value 验证信息。
-     * @throws ClientException
-     */
-    protected SendSmsResponse sendSMSByAliyun(String phoneNumber, String templateCode, String value) throws ClientException{
-    	
-   	 	//可自助调整超时时间
-    	// System.setProperty("sun.net.client.defaultConnectTimeout", "10000");
-    	// System.setProperty("sun.net.client.defaultReadTimeout", "10000");
-
-    	//初始化acsClient,暂不支持region化
-    	IClientProfile profile = DefaultProfile.getProfile("cn-hangzhou", SMS_API_KEY, SMS_API_SECRET);
-    	DefaultProfile.addEndpoint("cn-hangzhou", "cn-hangzhou", "Dysmsapi", "dysmsapi.aliyuncs.com");
-    	IAcsClient acsClient = new DefaultAcsClient(profile);
-
-    	//组装请求对象-具体描述见控制台-文档部分内容
-    	SendSmsRequest request = new SendSmsRequest();
-    	//必填:待发送手机号
-    	request.setPhoneNumbers(phoneNumber);
-    	//必填:短信签名-可在短信控制台中找到
-    	request.setSignName("极乐科技");
-    	//必填:短信模板-可在短信控制台中找到
-    	request.setTemplateCode(templateCode);
-    	//可选:模板中的变量替换JSON串,如模板内容为"亲爱的${name},您的验证码为${code}"时,此处的值为
-    	request.setTemplateParam("{\"number\":\"" + value + "\"}");
-
-    	//选填-上行短信扩展码(无特殊需求用户请忽略此字段)
-    	//request.setSmsUpExtendCode("90997");
-
-    	//可选:outId为提供给业务方扩展字段,最终在短信回执消息中将此值带回给调用者
-    	request.setOutId("dreawer");
-
-    	//hint 此处可能会抛出异常，注意catch
-    	SendSmsResponse sendSmsResponse = acsClient.getAcsResponse(request);
-
-    	return sendSmsResponse;
-    }	
-    
-    /**
-     * 发送邮件。
-     * @param map 邮件内容参数。
-     * @param params sendcloud发件参数。
-     * @return
-     */
-    @SuppressWarnings("rawtypes")
-	protected Result sendEmailBySendCloud(Map<String, String> map, Map<String, String> params) {
-		//装载用户信息和密钥
-    	String apiKey = SENDCLOUD_API_KEY;
-    	SendCloud webapi = SendCloud.createWebApi(params.get(API_USER), apiKey);
-    	Sub sub = new Sub();
-		for (String key : map.keySet()) {
-			sub.set(key, map.get(key));
-		}
-        Email email = Email.template(params.get(RECEIVE_TEMPLATE))
-                .from(params.get(SENDCLOUD_USERTYPE))
-                .fromName(SENDCLOUD_SEND_NAME)
-                .substitutionVars(sub)
-                .to(params.get(RECEIVE_USER));
-        Result result = webapi.mail().send(email);
-    	return result;
-    }
-    
-    /**
-	 * 生成四位数字验证码，并放置redis中。key为"captcha_"+手机号或者邮箱。
-	 * @param key 
-	 * @return
-	 */
-	public String createCaptcha(String key) {
-		String value = (int) Math.round(Math.random() * (9999-1000) +1000)+"";
-		redisUtil.put("captcha_"+key, value, 10*60L);
-		return value;
-	}
-	
-	/**
-	 * 通过key删除redis中的验证码。
-	 * @param key
-	 */
-	public void removeCaptcha(String key) {
-		redisUtil.delete("captcha_"+key);
-	}
-	
-	/**
 	 * 验证验证码是否正确。
 	 * @param key 验证的key。
 	 * @param captcha 输入的验证码。
@@ -526,38 +429,5 @@ public class BaseController{
 		}
 		return true;
 	}
-
-    protected boolean verifyPhone(String phoneNumber, String captcha) throws JSONException {
-        Map<String, String> params = new HashMap<>();
-        params.put("phone", phoneNumber);
-        params.put("captcha", captcha);
-        String result = httpPost("https://account.dreawer.com/verify/phone/commen", params);
-        if(StringUtils.isNotBlank(result)){
-            JSONObject json = new JSONObject(result);
-            if(json!=null && json.getBoolean("status")){
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
-     * 将对象转换成json。
-     * @param object 对象
-     * @return json。
-     * @author Kael
-     * @since 2.0
-     */
-    protected String objectToJson(Object object){
-        if (object == null) {
-            return null;
-        }
-
-        String json = new Gson().toJson(object);
-
-        return json;
-    }
-
-
 
 }
