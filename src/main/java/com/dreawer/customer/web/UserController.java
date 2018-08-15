@@ -10,6 +10,7 @@ import com.dreawer.customer.service.TokenUserService;
 import com.dreawer.customer.service.UserService;
 import com.dreawer.customer.utils.MD5Utils;
 import com.dreawer.customer.utils.RedisUtil;
+import com.dreawer.customer.utils.RestRequest;
 import com.dreawer.customer.web.form.*;
 import com.dreawer.responsecode.rcdt.*;
 import com.dreawer.responsecode.rcdt.Error;
@@ -46,6 +47,9 @@ public class UserController extends BaseController {
     
     @Autowired
     private TokenUserService tokenUserService; // 用户信息服务
+    
+    @Autowired
+    private RestRequest restRequest;
     
     private Logger logger = Logger.getLogger(this.getClass()); // 日志记录器
     
@@ -157,12 +161,10 @@ public class UserController extends BaseController {
 				return Error.BUSINESS("email");
             }
 	        
-			// TODO 校验验证码 换成通知中心校验
-            /*if(isCaptchaValid(form.getEmail(), form.getCaptcha())) {
-            	removeCaptcha(form.getEmail());
-            }else {
+			// 校验验证码
+            if(!restRequest.isCaptchaValid(form.getEmail(), form.getCaptcha())) {
 				return Error.BUSINESS("captcha");
-            }*/
+            }
 			
 			// 更新邮箱
 			User user = new User();
@@ -210,12 +212,10 @@ public class UserController extends BaseController {
 				return Error.BUSINESS("phone");
             }
 	        
-			// TODO 校验验证码 换成通知中心校验
-            /*if(isCaptchaValid(form.getPhone(), form.getCaptcha())) {
-            	removeCaptcha(form.getPhone());
-            }else {
+			// 校验验证码
+            if(!restRequest.isCaptchaValid(form.getPhone(), form.getCaptcha())) {
 				return Error.BUSINESS("captcha");
-            }*/
+            }
 			
 			// 更新邮箱
 			User user = new User();
