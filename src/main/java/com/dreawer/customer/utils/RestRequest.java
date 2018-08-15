@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
-import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
@@ -23,16 +22,22 @@ public class RestRequest {
     
     private Logger logger = Logger.getLogger(this.getClass()); // 日志记录器
 
-    public boolean isCaptchaValid(String name, String value) throws JSONException{
-    	Map<String, String> params = new HashMap<>();
-    	params.put("address", name);
-    	params.put("code", value);
-        String response = restPost("http://nc/api/checkedVerifyCode", new Gson().toJson(params));
-        JSONObject responseCode = new JSONObject(response);
-        if (responseCode.getString("code").equals("000000")) {
-            return true;
-        }
-        return false;
+    public boolean isCaptchaValid(String name, String value){
+    	try {
+    		Map<String, String> params = new HashMap<>();
+        	params.put("address", name);
+        	params.put("code", value);
+            String response = restPost("http://nc/api/checkedVerifyCode", new Gson().toJson(params));
+            JSONObject responseCode = new JSONObject(response);
+            if (responseCode.getString("code").equals("000000")) {
+                return true;
+            }
+            return false;
+    	}catch(Exception e) {
+    		logger.error(e);
+            return false;
+    	}
+    	
     }
     
     public String restPost(String url, String data){
