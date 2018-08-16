@@ -232,10 +232,15 @@ public class MemberController extends BaseController {
 	@ApiImplicitParam(name = "terminalType",value = "终端类型",required = true,defaultValue = "BROWSER")
 	})
     @RequestMapping(value=REQ_DETAIL, method = RequestMethod.GET)
-    public @ResponseBody ResponseCode detail(HttpServletRequest req, @RequestParam(STORE_ID)String storeId, @RequestParam(TERMINAL_TYPE)String terminalType){
+    public @ResponseBody ResponseCode detail(HttpServletRequest req,
+											 @RequestParam(STORE_ID)String storeId,
+											 @RequestParam(TERMINAL_TYPE)String terminalType,
+											 @RequestParam(value = USER_ID,required = false)String userId
+
+	){
         	
-        	//获取用户信息
-			String userId = req.getHeader("userid");
+        	//获取用户登录信息
+			String userid = req.getHeader("userid");
         	//判断店铺ID是否为空
         	if(StringUtils.isBlank(storeId)){
         		return EntryError.EMPTY(STORE_ID);
@@ -249,10 +254,11 @@ public class MemberController extends BaseController {
         		if(userId == null || StringUtils.isBlank(userId)){
         			return EntryError.EMPTY(USER_ID);
         		}
-        		
+        		//如果从后台进入则查询的ID为指定用户
         		jsonObject = redisUtil.getJsonObject("member_"+userId+"_"+storeId);
         	}else{
-        		jsonObject = redisUtil.getJsonObject("member_"+userId+"_"+storeId);
+        		//如果从客户端则从登录信息中获取
+        		jsonObject = redisUtil.getJsonObject("member_"+userid+"_"+storeId);
         	}
 
         	Map<String, Object> result = new HashMap<>();
@@ -309,10 +315,16 @@ public class MemberController extends BaseController {
      * @since 1.0
      */
     @RequestMapping(value=REQ_POINT_RECORD, method = RequestMethod.GET)
-    public @ResponseBody ResponseCode pointRecord(HttpServletRequest req, @RequestParam(STORE_ID)String storeId, @RequestParam(TERMINAL_TYPE)String terminalType, @RequestParam(value=PAGE_NO, required=false, defaultValue="1")Integer pageNo, @RequestParam(value=PAGE_SIZE, required=false, defaultValue="5")Integer pageSize) throws Exception {
+    public @ResponseBody ResponseCode pointRecord(HttpServletRequest req,
+												  @RequestParam(STORE_ID)String storeId,
+												  @RequestParam(TERMINAL_TYPE)String terminalType,
+												  @RequestParam(value=PAGE_NO, required=false, defaultValue="1")Integer pageNo,
+												  @RequestParam(value=PAGE_SIZE, required=false, defaultValue="5")Integer pageSize,
+												  @RequestParam(value = USER_ID,required = false)String userId
+												  ) throws Exception {
 
         	//获取用户信息
-			String userId = req.getHeader("userid");
+			String userid = req.getHeader("userid");
 			//判断店铺ID是否为空
         	if(StringUtils.isBlank(storeId)){
         		return EntryError.EMPTY(STORE_ID);
@@ -325,13 +337,13 @@ public class MemberController extends BaseController {
         	//判断终端类型
         	if(terminalType.equals(TERMINAL_TYPE_BROWSER)){
         		//判断用户ID是否为空
-        		if(userId == null || StringUtils.isBlank(userId)){
+        		if(StringUtils.isBlank(userId)){
         			return EntryError.EMPTY(USER_ID);
         		}
         		
         		data.put(USER_ID, userId);
         	}else{
-        		data.put(USER_ID, userId);
+        		data.put(USER_ID, userid);
         	}
         	
         	data.put(PAGE_NO, pageNo);
