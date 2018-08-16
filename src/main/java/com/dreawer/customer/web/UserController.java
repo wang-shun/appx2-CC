@@ -10,6 +10,7 @@ import com.dreawer.customer.service.TokenUserService;
 import com.dreawer.customer.service.UserService;
 import com.dreawer.customer.utils.MD5Utils;
 import com.dreawer.customer.utils.RedisUtil;
+import com.dreawer.customer.utils.RestRequest;
 import com.dreawer.customer.web.form.*;
 import com.dreawer.responsecode.rcdt.*;
 import com.dreawer.responsecode.rcdt.Error;
@@ -46,6 +47,9 @@ public class UserController extends BaseController {
     
     @Autowired
     private TokenUserService tokenUserService; // 用户信息服务
+    
+    @Autowired
+    private RestRequest restRequest;
     
     private Logger logger = Logger.getLogger(this.getClass()); // 日志记录器
     
@@ -157,10 +161,8 @@ public class UserController extends BaseController {
 				return Error.BUSINESS("email");
             }
 	        
-			// TODO 校验验证码 换成通知中心校验
-            if(isCaptchaValid(form.getEmail(), form.getCaptcha())) {
-            	removeCaptcha(form.getEmail());
-            }else {
+			// 校验验证码
+            if(!restRequest.isCaptchaValid(form.getEmail(), form.getCaptcha())) {
 				return Error.BUSINESS("captcha");
             }
 			
@@ -210,10 +212,8 @@ public class UserController extends BaseController {
 				return Error.BUSINESS("phone");
             }
 	        
-			// TODO 校验验证码 换成通知中心校验
-            if(isCaptchaValid(form.getPhone(), form.getCaptcha())) {
-            	removeCaptcha(form.getPhone());
-            }else {
+			// 校验验证码
+            if(!restRequest.isCaptchaValid(form.getPhone(), form.getCaptcha())) {
 				return Error.BUSINESS("captcha");
             }
 			
@@ -266,8 +266,13 @@ public class UserController extends BaseController {
             return ResponseCodeRepository.fetch(result.getFieldError().getDefaultMessage(), result.getFieldError().getField(), Error.ENTRY);
         }
 		try {
-			//String appId = req.getHeader("appid");
+			String appId = req.getHeader("appid");
 			
+			// 检查组织是否存在
+			Organize organize = organizeService.findOrganizeByAppId(appId);
+			if(organize==null) {
+				return Error.BUSINESS("appId");
+			}
 			Timestamp startTime = null;
     		Timestamp endTime = null;
     		if(form.getStartTime()!=null){
@@ -286,7 +291,7 @@ public class UserController extends BaseController {
     		}
     		int start = (pageNo-1)*pageSize;
     		
-    		List<TokenUser> users = tokenUserService.findUsers(form.getAppId(), form.getQuery(), start, pageSize, startTime, endTime);
+    		List<TokenUser> users = tokenUserService.findUsers(organize.getId(), form.getQuery(), start, pageSize, startTime, endTime);
 			return Success.SUCCESS(users);
 		} catch (Exception e) {
             logger.error(e);

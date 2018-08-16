@@ -5,7 +5,7 @@
 
 	<groupId>com.dreawer</groupId>
 	<artifactId>cc</artifactId>
-	<version>0.0.21-SNAPSHOT</version>
+	<version>0.0.26-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
 	<name>cc_boot</name>
@@ -105,27 +105,11 @@
 		<dependency>
 			<groupId>commons-beanutils</groupId>
 			<artifactId>commons-beanutils</artifactId>
-			<version>1.9.3</version>
 		</dependency>
     	<dependency>
     		<groupId>com.dreawer</groupId>
     		<artifactId>dao</artifactId>
     		<version>0.0.1-SNAPSHOT</version>
-		</dependency>
-		<dependency>
-    		<groupId>io.jstack</groupId>
-    		<artifactId>sendcloud4j</artifactId>
-    		<version>0.0.5</version>
-		</dependency>
-		<dependency>
-		    <groupId>com.aliyun</groupId>
-		    <artifactId>aliyun-java-sdk-core</artifactId>
-		    <version>3.3.1</version>
-		</dependency>
-		<dependency>
-		    <groupId>com.aliyun</groupId>
-		    <artifactId>aliyun-java-sdk-dysmsapi</artifactId>
-		    <version>1.0.0</version>
 		</dependency>
 		<dependency>
 			<groupId>io.springfox</groupId>

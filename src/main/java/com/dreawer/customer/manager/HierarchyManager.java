@@ -27,7 +27,6 @@ import java.util.Map;
  * @author fenrir
  */
 @Component
-@SuppressWarnings("unchecked")
 public class HierarchyManager extends BaseManager{
 
 
@@ -306,7 +305,8 @@ public class HierarchyManager extends BaseManager{
      * @param storeId 店铺ID
      * @return Boolean
      */
-    private Boolean isSuspend(String storeId){
+    @SuppressWarnings("unused")
+	private Boolean isSuspend(String storeId){
         List<Hierarchy> list = service.findByStoreId(storeId);
         if (list==null){
             return false;

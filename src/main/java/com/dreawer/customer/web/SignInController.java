@@ -47,7 +47,7 @@ public class SignInController extends BaseController {
      * @return
      */
     @RequestMapping(value=REQ_LOGIN_COMMON, method=RequestMethod.POST)
-    public ResponseCode loginByEmail(HttpServletRequest req, 
+    public ResponseCode login(HttpServletRequest req, 
     		@RequestBody @Valid BaseLoginForm form, BindingResult result) {
     	if (result.hasErrors()) {
             return ResponseCodeRepository.fetch(result.getFieldError().getDefaultMessage(), result.getFieldError().getField(), Error.ENTRY);

@@ -18,7 +18,6 @@ import com.dreawer.customer.utils.RedisUtil;
 import com.dreawer.customer.web.BaseController;
 import com.dreawer.customer.web.form.GoodsInfoForm;
 import com.dreawer.responsecode.rcdt.EntryError;
-import com.dreawer.responsecode.rcdt.Error;
 import com.dreawer.responsecode.rcdt.ResponseCode;
 import com.dreawer.responsecode.rcdt.Success;
 import com.google.gson.JsonObject;
@@ -26,8 +25,6 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -48,9 +45,6 @@ import static com.dreawer.customer.DomainConstants.*;
 @Controller
 @RequestMapping(REQ_MEMBER)
 public class MemberController extends BaseController {
-
-	private Logger logger = Logger.getLogger(this.getClass()); // 日志记录器
-
 
 	@Autowired
 	private RedisUtil redisUtil;
@@ -300,7 +294,7 @@ public class MemberController extends BaseController {
         	data.put(PAGE_NO, pageNo);
         	data.put(PAGE_SIZE, pageSize);
 
-			Map map = memberManager.memberQuery(data);
+			Map<String,Object> map = memberManager.memberQuery(data);
 
 			return Success.SUCCESS(map);
         	
@@ -462,7 +456,7 @@ public class MemberController extends BaseController {
 			if (hierarchy==null){
 				return Success.SUCCESS(param);
 			}
-			if (!hierarchy.getDiscount()||hierarchy.getStatus().equals(Status.DISABLE)){
+			if (!hierarchy.getDiscount()||hierarchy.getStatus().equals(Status.DISABLE.name())){
 				return Success.SUCCESS(param);
 			}
 			if (hierarchy.getFreeShipping()){

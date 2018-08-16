@@ -8,7 +8,6 @@ import com.dreawer.responsecode.rcdt.Error;
 import com.dreawer.responsecode.rcdt.*;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
@@ -20,7 +19,6 @@ import java.util.*;
 
 @RestController
 public class AddressController extends BaseController{
-	private Logger logger = Logger.getLogger(this.getClass()); // 日志记录器
 
 
 	@Autowired
