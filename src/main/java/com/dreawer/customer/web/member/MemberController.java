@@ -77,7 +77,7 @@ public class MemberController extends BaseController {
 	ResponseCode register(HttpServletRequest req, @RequestBody @Valid RegisterMemberForm form) throws Exception {
 
         	//获取用户信息
-			String userId = req.getHeader("userId");
+			String userId = req.getHeader("userid");
 			//判断店铺ID是否为空
         	String storeId = form.getStoreId();
         	if(storeId == null || StringUtils.isBlank(storeId)){
@@ -170,7 +170,7 @@ public class MemberController extends BaseController {
     public @ResponseBody ResponseCode edit(HttpServletRequest req, @RequestBody @Valid EditMemberForm form) throws Exception {
 
 			//获取用户信息
-			String userId = req.getHeader("userId");
+			String userId = req.getHeader("userid");
 			//判断店铺ID是否为空
         	String storeId = form.getStoreId();
         	if(storeId == null || StringUtils.isBlank(storeId)){
@@ -241,7 +241,7 @@ public class MemberController extends BaseController {
     public @ResponseBody ResponseCode detail(HttpServletRequest req, @RequestParam(STORE_ID)String storeId, @RequestParam(TERMINAL_TYPE)String terminalType){
         	
         	//获取用户信息
-			String userId = req.getHeader("userId");
+			String userId = req.getHeader("userid");
         	//判断店铺ID是否为空
         	if(StringUtils.isBlank(storeId)){
         		return EntryError.EMPTY(STORE_ID);
@@ -318,7 +318,7 @@ public class MemberController extends BaseController {
     public @ResponseBody ResponseCode pointRecord(HttpServletRequest req, @RequestParam(STORE_ID)String storeId, @RequestParam(TERMINAL_TYPE)String terminalType, @RequestParam(value=PAGE_NO, required=false, defaultValue="1")Integer pageNo, @RequestParam(value=PAGE_SIZE, required=false, defaultValue="5")Integer pageSize) throws Exception {
 
         	//获取用户信息
-			String userId = req.getHeader("userId");
+			String userId = req.getHeader("userid");
 			//判断店铺ID是否为空
         	if(StringUtils.isBlank(storeId)){
         		return EntryError.EMPTY(STORE_ID);
@@ -408,7 +408,7 @@ public class MemberController extends BaseController {
 
         	
         	//获取用户信息
-			String userId = req.getHeader("userId");
+			String userId = req.getHeader("userid");
 			//判断店铺ID是否为空
         	if(StringUtils.isBlank(storeId)){
         		return EntryError.EMPTY(STORE_ID);
@@ -509,7 +509,7 @@ public class MemberController extends BaseController {
 				throw new ResponseCodeException(EntryError.OVERRANGE(VALUE));
 			}
 
-			String userId = req.getHeader("userId");
+			String userId = req.getHeader("userid");
 			PointRecord pointRecord = new PointRecord();
 			pointRecord.setCustomerId(userId);
 			pointRecord.setSource(Source.SYSTEM.toString());

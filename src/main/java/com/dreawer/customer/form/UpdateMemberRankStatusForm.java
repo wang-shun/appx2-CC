@@ -1,6 +1,7 @@
 package com.dreawer.customer.form;
 
 import com.dreawer.customer.lang.MemberRankStatus;
+import com.dreawer.customer.lang.member.Status;
 
 /**
  * <CODE>AddMemberRankForm</CODE> 添加会员等级表单。
@@ -14,7 +15,7 @@ public class UpdateMemberRankStatusForm {
 	
 	private String storeId = null; //店铺ID
 	
-    private MemberRankStatus status = null; //状态
+    private Status status = null; //状态
 
 	private String userId = null;
 
@@ -47,12 +48,11 @@ public class UpdateMemberRankStatusForm {
 		this.storeId = storeId;
 	}
 
-	public MemberRankStatus getStatus() {
+	public Status getStatus() {
 		return status;
 	}
 
-	public void setStatus(String status) {
-		this.status = MemberRankStatus.get(status);
+	public void setStatus(Status status) {
+		this.status = status;
 	}
-    
 }

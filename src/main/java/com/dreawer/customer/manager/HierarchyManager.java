@@ -4,6 +4,7 @@ package com.dreawer.customer.manager;
 import com.dreawer.customer.domain.Hierarchy;
 import com.dreawer.customer.domain.Member;
 import com.dreawer.customer.exception.ResponseCodeException;
+import com.dreawer.customer.lang.MemberRankStatus;
 import com.dreawer.customer.lang.member.Expiration;
 import com.dreawer.customer.lang.member.Status;
 import com.dreawer.customer.service.HierarchyService;
@@ -126,10 +127,10 @@ public class HierarchyManager extends BaseManager{
     public void updateStatus(Map<String, Object> entity,String storeId) throws IllegalAccessException, ResponseCodeException {
 
         String id = (String) entity.get("id");
-        String status = (String) entity.get("status");
-        if (!(status.equals(Status.DISABLE.toString()) ||
-                status.equals(Status.ENABLE.toString()) ||
-                status.equals(Status.SUSPEND.toString()))) {
+        Status status = (Status) entity.get("status");
+        if (!(status.equals(Status.DISABLE) ||
+                status.equals(Status.ENABLE) ||
+                status.equals(Status.SUSPEND))) {
             //返回错误
             throw new ResponseCodeException(EntryError.COMMON("状态输入有误"));
         }

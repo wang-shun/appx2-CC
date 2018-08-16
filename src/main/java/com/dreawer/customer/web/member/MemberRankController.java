@@ -7,6 +7,7 @@ import com.dreawer.customer.form.EditMemberRankForm;
 import com.dreawer.customer.form.UpdateMemberRankStatusForm;
 import com.dreawer.customer.lang.MemberRankExpiration;
 import com.dreawer.customer.lang.MemberRankStatus;
+import com.dreawer.customer.lang.member.Status;
 import com.dreawer.customer.manager.HierarchyManager;
 import com.dreawer.customer.utils.RedisUtil;
 import com.dreawer.customer.web.BaseController;
@@ -302,9 +303,9 @@ public class MemberRankController extends BaseController {
         	}
         	
         	//判断状态是否为空
-        	MemberRankStatus status = form.getStatus();
-        	if(status == null){
-        		return EntryError.OVERRANGE(STATUS);
+		Status status = form.getStatus();
+		if(status == null){
+        		return EntryError.EMPTY(STATUS);
         	}
         	
         	//封装消息数据
