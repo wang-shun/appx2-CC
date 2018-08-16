@@ -61,7 +61,7 @@ public class SignUpController extends BaseController {
 				return Error.BUSINESS("appId");
 			}
 			
-			User user = userService.findUserByPhone(form.getPhone(), organize.getAppId());
+			User user = userService.findUserByPhone(form.getPhone(), organize.getId());
             if(user!=null){
 				return Error.BUSINESS("phone");
             }

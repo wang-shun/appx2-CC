@@ -31,9 +31,8 @@ CREATE TABLE aci_user (
 	remark 			VARCHAR(128) COMMENT '备注',
 	PRIMARY KEY (id)
 ) COMMENT='用户信息表' ENGINE=InnoDB;
-CREATE INDEX idx_user_username ON aci_user (username);
-CREATE INDEX idx_user_email ON aci_user (email);
-CREATE INDEX idx_user_phoneNumber ON aci_user (phoneNumber);
+CREATE UNIQUE INDEX idx_user_email ON aci_user (email, org_id);
+CREATE UNIQUE INDEX idx_user_phoneNumber ON aci_user (phoneNumber, org_id);
 
 -- ==================================================
 -- 客户信息表
@@ -60,7 +59,6 @@ CREATE TABLE aci_customer (
 	remark 			VARCHAR(128) COMMENT '备注',
 	PRIMARY KEY (id)
 ) COMMENT='客户信息表' ENGINE=InnoDB;
-CREATE UNIQUE INDEX uniq_idx_customer_alias ON aci_customer (alias);
 
 -- ==================================================
 -- 序列号信息表

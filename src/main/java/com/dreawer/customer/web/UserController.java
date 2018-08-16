@@ -266,8 +266,13 @@ public class UserController extends BaseController {
             return ResponseCodeRepository.fetch(result.getFieldError().getDefaultMessage(), result.getFieldError().getField(), Error.ENTRY);
         }
 		try {
-			//String appId = req.getHeader("appid");
+			String appId = req.getHeader("appid");
 			
+			// 检查组织是否存在
+			Organize organize = organizeService.findOrganizeByAppId(appId);
+			if(organize==null) {
+				return Error.BUSINESS("appId");
+			}
 			Timestamp startTime = null;
     		Timestamp endTime = null;
     		if(form.getStartTime()!=null){
@@ -286,7 +291,7 @@ public class UserController extends BaseController {
     		}
     		int start = (pageNo-1)*pageSize;
     		
-    		List<TokenUser> users = tokenUserService.findUsers(form.getAppId(), form.getQuery(), start, pageSize, startTime, endTime);
+    		List<TokenUser> users = tokenUserService.findUsers(organize.getId(), form.getQuery(), start, pageSize, startTime, endTime);
 			return Success.SUCCESS(users);
 		} catch (Exception e) {
             logger.error(e);
