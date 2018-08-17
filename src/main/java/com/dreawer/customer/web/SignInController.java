@@ -111,6 +111,10 @@ public class SignInController extends BaseController {
             return ResponseCodeRepository.fetch(result.getFieldError().getDefaultMessage(), result.getFieldError().getField(), Error.ENTRY);
         }
 		try {
+			User user = userService.findUserById(form.getUserId());
+			if(user==null) {
+				return Error.BUSINESS("user");
+			}
         	return Success.SUCCESS(signInUser(req, form.getUserId()));
 		}catch(Exception e){
 			 e.printStackTrace();
