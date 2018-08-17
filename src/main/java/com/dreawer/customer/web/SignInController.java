@@ -21,6 +21,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+
+import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -115,7 +118,9 @@ public class SignInController extends BaseController {
 			if(user==null) {
 				return Error.BUSINESS("user");
 			}
-        	return Success.SUCCESS(signInUser(req, form.getUserId()));
+            Map<String, String> params = new HashMap<>();
+            params.put("token", signInUser(req, user.getId()));
+        	return Success.SUCCESS(params);
 		}catch(Exception e){
 			 e.printStackTrace();
 	         logger.error(e);
