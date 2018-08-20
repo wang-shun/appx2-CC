@@ -40,11 +40,9 @@ public class AddressController extends BaseController{
 		try {
 			String userId = req.getHeader("userid");
 			// 检查地址参数信息
-    		Map<String, String> params = new HashMap<>();
-    		params.put("provinceId", form.getProvince());
-    		params.put("cityId", form.getCity());
-    		params.put("areaId", form.getArea());
-			String response = restRequest.restGet("http://basedata/district/check", params);
+    		String url = new StringBuilder().append("http://basedata/district/check?provinceId=").append(form.getProvince())
+    				.append("&cityId=").append(form.getCity()).append("&areaId=").append(form.getArea()).toString();
+			String response = restRequest.restGet(url);
             JSONObject responseCode = new JSONObject(response);
             if (!responseCode.getString("code").equals("000000")) {
             	return Error.BUSINESS("basedata");
@@ -125,11 +123,9 @@ public class AddressController extends BaseController{
             }
             
             // 检查地址参数信息
-    		Map<String, String> params = new HashMap<>();
-    		params.put("provinceId", form.getProvince());
-    		params.put("cityId", form.getCity());
-    		params.put("areaId", form.getArea());
-			String response = restRequest.restGet("http://basedata/district/check", params);
+            String url = new StringBuilder().append("http://basedata/district/check?provinceId=").append(form.getProvince())
+    				.append("&cityId=").append(form.getCity()).append("&areaId=").append(form.getArea()).toString();
+			String response = restRequest.restGet(url);
             JSONObject responseCode = new JSONObject(response);
             if (!responseCode.getString("code").equals("000000")) {
             	Error.BUSINESS("basedata");

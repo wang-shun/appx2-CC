@@ -50,8 +50,8 @@ public class RestRequest {
         return response;
 	}
 
-    public String restGet(String url, Map<String, String> params){
-        String response = restTemplate.getForObject(url, String.class, params);
+    public String restGet(String url){
+        String response = restTemplate.getForObject(url, String.class);
         logger.error(response);
         return response;
 	}
