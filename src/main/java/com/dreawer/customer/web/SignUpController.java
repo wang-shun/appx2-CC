@@ -80,6 +80,7 @@ public class SignUpController extends BaseController {
             customer.setCategory("person");
             customer.setPetName(form.getPetName());
             customer.setAlias(getAlias(form.getPetName()));
+            customer.setMugshot(getMugshot(form.getMugshot()));
             customer.setCreater(user.getId());
             customer.setPhoneNumber(form.getPhone());
             customer.setStatus(UserStatus.ACTIVATED);
@@ -120,6 +121,7 @@ public class SignUpController extends BaseController {
             customer.setCategory("person");
             customer.setPetName(form.getPetName());
             customer.setAlias(getAlias(form.getPetName()));
+            customer.setMugshot(getMugshot(form.getMugshot()));
             customer.setCreater(user.getId());
             customer.setStatus(UserStatus.ACTIVATED);
             userService.addUser(user, customer);

@@ -2,12 +2,12 @@ package com.dreawer.customer.web;
 
 import com.dreawer.customer.domain.Address;
 import com.dreawer.customer.utils.RedisUtil;
+import com.dreawer.customer.utils.RestRequest;
 import com.dreawer.customer.web.form.AddAddressForm;
 import com.dreawer.customer.web.form.EditAddressForm;
 import com.dreawer.responsecode.rcdt.Error;
 import com.dreawer.responsecode.rcdt.*;
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang.StringUtils;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
@@ -20,9 +20,11 @@ import java.util.*;
 @RestController
 public class AddressController extends BaseController{
 
-
 	@Autowired
 	private RedisUtil redisUtil;
+    
+    @Autowired
+    private RestRequest restRequest;
     
     /**
      * 用户添加地址信息。
@@ -37,17 +39,17 @@ public class AddressController extends BaseController{
         }
 		try {
 			// 检查地址参数信息
-			String query = new StringBuilder().append("provinceId=").append(form.getProvince())
-					.append("&cityId=").append(form.getCity()).append("&areaId=").append(form.getArea()).toString();
-        	String addressResult = httpGet("https://basedata.dreawer.com/district/check", query);
-        	if(StringUtils.isBlank(addressResult)){
-				return Error.EXT_REQUEST("account");
-			}
-        	JSONObject json = new JSONObject(addressResult);
-			if(!json.getBoolean("status")){
-				return Error.EXT_REQUEST("account");
-			}
-			JSONObject data = json.getJSONObject("data");
+    		Map<String, String> params = new HashMap<>();
+    		params.put("provinceId", form.getProvince());
+    		params.put("cityId", form.getCity());
+    		params.put("areaId", form.getArea());
+			String response = restRequest.restGet("http://basedata/district/check", params);
+            JSONObject responseCode = new JSONObject(response);
+            if (!responseCode.getString("code").equals("000000")) {
+            	Error.BUSINESS("basedata");
+            }
+            
+			JSONObject data = responseCode.getJSONObject("data");
 			JSONObject province = data.getJSONObject("province");
 			JSONObject city = data.getJSONObject("city");
 			JSONObject area = data.getJSONObject("area");
@@ -121,20 +123,21 @@ public class AddressController extends BaseController{
             }
             
             // 检查地址参数信息
- 			String query = new StringBuilder().append("provinceId=").append(form.getProvince())
- 					.append("&cityId=").append(form.getCity()).append("&areaId=").append(form.getArea()).toString();
-         	String addressResult = httpGet("https://basedata.dreawer.com/district/check", query);
-         	if(StringUtils.isBlank(addressResult)){
-				return Error.EXT_REQUEST("account");
- 			}
-         	JSONObject json = new JSONObject(addressResult);
- 			if(!json.getBoolean("status")){
-				return RuleError.NON_EXISTENT("district"); 
- 			}
- 			JSONObject data = json.getJSONObject("data");
- 			JSONObject province = data.getJSONObject("province");
- 			JSONObject city = data.getJSONObject("city");
- 			JSONObject area = data.getJSONObject("area");
+    		Map<String, String> params = new HashMap<>();
+    		params.put("provinceId", form.getProvince());
+    		params.put("cityId", form.getCity());
+    		params.put("areaId", form.getArea());
+			String response = restRequest.restGet("http://basedata/district/check", params);
+            JSONObject responseCode = new JSONObject(response);
+            if (!responseCode.getString("code").equals("000000")) {
+            	Error.BUSINESS("basedata");
+            }
+            
+			JSONObject data = responseCode.getJSONObject("data");
+			JSONObject province = data.getJSONObject("province");
+			JSONObject city = data.getJSONObject("city");
+			JSONObject area = data.getJSONObject("area");
+			
  			address.setName(form.getName());
             address.setPhoneNumber(form.getPhone());
             address.setProvince(province.getString("id"));
@@ -340,4 +343,5 @@ public class AddressController extends BaseController{
     	Collections.sort(addresses, new Address());
     	return addresses;
     }
+    
 }
