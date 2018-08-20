@@ -47,7 +47,7 @@ public class AddressController extends BaseController{
 			String response = restRequest.restGet("http://basedata/district/check", params);
             JSONObject responseCode = new JSONObject(response);
             if (!responseCode.getString("code").equals("000000")) {
-            	Error.BUSINESS("basedata");
+            	return Error.BUSINESS("basedata");
             }
             
 			JSONObject data = responseCode.getJSONObject("data");
