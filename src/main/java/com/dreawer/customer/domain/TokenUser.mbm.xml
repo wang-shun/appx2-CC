@@ -91,7 +91,6 @@
 		<result property="phoneNumber" column="phoneNumber" />
 		<result property="petName" column="pet_nam" />
 		<result property="mugshot" column="mugshot" />
-		<result property="createTime" column="cre_tim" />
 	</resultMap>
 	
 </mapper>
