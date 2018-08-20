@@ -7,17 +7,6 @@ public class EditAddressForm extends AddAddressForm{
 	@NotEmpty(message="EntryError.EMPTY")
 	private String id = null;
 
-	@NotEmpty(message="EntryError.EMPTY")
-	private String userId = null;
-	
-	public String getUserId() {
-		return userId;
-	}
-
-	public void setUserId(String userId) {
-		this.userId = userId;
-	}
-	
 	public String getId() {
 		return id;
 	}

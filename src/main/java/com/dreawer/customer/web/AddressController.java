@@ -38,6 +38,7 @@ public class AddressController extends BaseController{
             return ResponseCodeRepository.fetch(result.getFieldError().getDefaultMessage(), result.getFieldError().getField(), Error.ENTRY);
         }
 		try {
+			String userId = req.getHeader("userid");
 			// 检查地址参数信息
     		Map<String, String> params = new HashMap<>();
     		params.put("provinceId", form.getProvince());
@@ -66,23 +67,23 @@ public class AddressController extends BaseController{
             address.setArea(area.getString("id"));
             address.setAreaName(area.getString("name"));
             address.setDetail(form.getDetail());
-            address.setUserId(form.getUserId());
+            address.setUserId(userId);
             Long now = System.currentTimeMillis();
             address.setCreateTime(now);
             address.setUpdateTime(now);
-            List<Address> addresses =  redisUtil.getJsonArray("addr_"+form.getUserId(), Address.class);
+            List<Address> addresses =  redisUtil.getJsonArray("addr_"+userId, Address.class);
             if(addresses==null || addresses.size()<=0){
             	// 把地址添加到缓存
                 address.setStatus("DEFAULT");
             	addresses = new ArrayList<>();
             	addresses.add(address);
-            	redisUtil.put("addr_"+form.getUserId(), addresses);
+            	redisUtil.put("addr_"+userId, addresses);
             }else{
             	// 同步缓存 
                 address.setStatus("USED");
             	addresses.add(address);
             	sort(addresses);
-            	redisUtil.put("addr_"+form.getUserId(), addresses);
+            	redisUtil.put("addr_"+userId, addresses);
             }
 			return Success.SUCCESS;
 		} catch (Exception e) {
@@ -103,8 +104,9 @@ public class AddressController extends BaseController{
             return ResponseCodeRepository.fetch(result.getFieldError().getDefaultMessage(), result.getFieldError().getField(), Error.ENTRY);
         }
 		try {
+			String userId = req.getHeader("userid");
 			// 校验收货地址
-			String key = "addr_"+form.getUserId();
+			String key = "addr_"+userId;
             List<Address> addresses =  redisUtil.getJsonArray(key, Address.class);
             if(addresses==null){
 				return RuleError.NON_EXISTENT("address"); 
@@ -167,8 +169,9 @@ public class AddressController extends BaseController{
      */
     @RequestMapping(value="/address/delete", method=RequestMethod.GET)
 	public ResponseCode deleteAddress(HttpServletRequest req, 
-    		@RequestParam("id") String id, @RequestParam("userId") String userId) {
+    		@RequestParam("id") String id) {
 		try {
+			String userId = req.getHeader("userid");
 			// 校验收货地址
 			String key = "addr_"+userId;
             List<Address> addresses =  redisUtil.getJsonArray(key, Address.class);
@@ -207,8 +210,9 @@ public class AddressController extends BaseController{
      * @return
      */
     @RequestMapping(value="/address/list", method=RequestMethod.GET)
-	public ResponseCode list(HttpServletRequest req, @RequestParam("userId") String userId) {
+	public ResponseCode list(HttpServletRequest req) {
 		try {
+			String userId = req.getHeader("userid");
 			String key = "addr_"+userId;
             List<Address> addresses =  redisUtil.getJsonArray(key, Address.class);
 			Map<String, Object> params = new HashMap<>();
@@ -227,8 +231,9 @@ public class AddressController extends BaseController{
      */
     @RequestMapping(value="/address/detail", method=RequestMethod.GET)
 	public ResponseCode detail(HttpServletRequest req, 
-    		@RequestParam("id") String id, @RequestParam("userId") String userId) {
+    		@RequestParam("id") String id) {
 		try {
+			String userId = req.getHeader("userid");
 			String key = "addr_"+userId;
             List<Address> addresses =  redisUtil.getJsonArray(key, Address.class);
             if(addresses==null){
@@ -260,8 +265,9 @@ public class AddressController extends BaseController{
      */
     @RequestMapping(value="/address/setDefault", method=RequestMethod.GET)
 	public ResponseCode setDefault(HttpServletRequest req, 
-    		@RequestParam("id") String id, @RequestParam("userId") String userId) {
+    		@RequestParam("id") String id) {
 		try {
+			String userId = req.getHeader("userid");
 			String key = "addr_"+userId;
             List<Address> addresses =  redisUtil.getJsonArray(key, Address.class);
             if(addresses==null){
@@ -304,8 +310,9 @@ public class AddressController extends BaseController{
      * @return
      */
     @RequestMapping(value="/address/getDefault", method=RequestMethod.GET)
-	public ResponseCode getDefault(HttpServletRequest req, @RequestParam("userId") String userId) {
+	public ResponseCode getDefault(HttpServletRequest req) {
 		try {
+			String userId = req.getHeader("userid");
 			String key = "addr_"+userId;
             List<Address> addresses =  redisUtil.getJsonArray(key, Address.class);
             if(addresses==null){
