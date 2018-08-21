@@ -11,7 +11,9 @@ import com.dreawer.responsecode.rcdt.Error;
 import com.dreawer.responsecode.rcdt.ResponseCode;
 import com.dreawer.responsecode.rcdt.ResponseCodeRepository;
 import com.dreawer.responsecode.rcdt.Success;
-import org.apache.log4j.Logger;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -39,7 +41,7 @@ public class SignInController extends BaseController {
     @Autowired
     private OrganizeService organizeService; // 用户信息服务
     
-    private Logger logger = Logger.getLogger(this.getClass()); // 日志记录器
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
 	
 
     /**
@@ -95,7 +97,7 @@ public class SignInController extends BaseController {
         	return Success.SUCCESS(signInUser(req, user.getId()));
 		}catch(Exception e){
 			 e.printStackTrace();
-	         logger.error(e);
+		     logger.error("error",e);
 	         return Error.APPSERVER;
 		}
     }
@@ -123,7 +125,7 @@ public class SignInController extends BaseController {
         	return Success.SUCCESS(params);
 		}catch(Exception e){
 			 e.printStackTrace();
-	         logger.error(e);
+		     logger.error("error",e);
 	         return Error.APPSERVER;
 		}
     }

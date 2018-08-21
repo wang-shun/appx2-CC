@@ -12,7 +12,9 @@ import com.dreawer.customer.utils.RestRequest;
 import com.dreawer.customer.web.form.*;
 import com.dreawer.responsecode.rcdt.*;
 import com.dreawer.responsecode.rcdt.Error;
-import org.apache.log4j.Logger;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -39,7 +41,7 @@ public class SignUpController extends BaseController {
     @Autowired
     private RestRequest restRequest;
     
-    private Logger logger = Logger.getLogger(this.getClass()); // 日志记录器
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     /**
      * 用户手机号注册
@@ -88,7 +90,7 @@ public class SignUpController extends BaseController {
         	return Success.SUCCESS;
 		}catch(Exception e){
 			 e.printStackTrace();
-	         logger.error(e);
+		     logger.error("error",e);
 	         return Error.APPSERVER;
 		}
     }
@@ -131,7 +133,7 @@ public class SignUpController extends BaseController {
         	return Success.SUCCESS(params);
 		}catch(Exception e){
 			 e.printStackTrace();
-	         logger.error(e);
+		     logger.error("error",e);
 	         return Error.APPSERVER;
 		}
     }
@@ -180,7 +182,7 @@ public class SignUpController extends BaseController {
         	return Success.SUCCESS;
 		}catch(Exception e){
 			 e.printStackTrace();
-	         logger.error(e);
+		     logger.error("error",e);
 	         return Error.APPSERVER;
 		}
     }
@@ -219,7 +221,7 @@ public class SignUpController extends BaseController {
         	return Success.SUCCESS;
 		}catch(Exception e){
 			 e.printStackTrace();
-	         logger.error(e);
+		     logger.error("error",e);
 	         return Error.APPSERVER;
 		}
     }

@@ -421,12 +421,12 @@ public class BaseController{
 	 * @param captcha 输入的验证码。
 	 * @return 校验结果。如果正确返回ture，否则返回false。
 	 */
-	public boolean isCaptchaValid(String key, String captcha) {
+	/*public boolean isCaptchaValid(String key, String captcha) {
 		String value = redisUtil.getString("captcha_"+key);
 		if(StringUtils.isBlank(value) || StringUtils.isBlank(captcha) || !captcha.equals(value)) {
 			return false;
 		}
 		return true;
-	}
+	}*/
 
 }
