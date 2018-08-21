@@ -20,7 +20,6 @@ import com.dreawer.customer.web.form.GoodsInfoForm;
 import com.dreawer.responsecode.rcdt.EntryError;
 import com.dreawer.responsecode.rcdt.ResponseCode;
 import com.dreawer.responsecode.rcdt.Success;
-import com.google.gson.JsonObject;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
@@ -242,11 +241,12 @@ public class MemberController extends BaseController {
         	//获取用户登录信息
 			String userid = req.getHeader("userid");
         	//判断店铺ID是否为空
-        	if(StringUtils.isBlank(storeId)){
-        		return EntryError.EMPTY(STORE_ID);
-        	}
+        	if(StringUtils.isBlank(storeId)) {
+                return EntryError.EMPTY(STORE_ID);
+            }
+
         	
-        	JsonObject jsonObject = null;
+        	Member member;
         	
         	//判断终端类型
         	if(terminalType.equals(TERMINAL_TYPE_BROWSER)){
@@ -255,21 +255,13 @@ public class MemberController extends BaseController {
         			return EntryError.EMPTY(USER_ID);
         		}
         		//如果从后台进入则查询的ID为指定用户
-        		jsonObject = redisUtil.getJsonObject("member_"+userId+"_"+storeId);
-        	}else{
+				member = redisUtil.get("member_" + userId + "_" + storeId, Member.class);
+			}else{
         		//如果从客户端则从登录信息中获取
-        		jsonObject = redisUtil.getJsonObject("member_"+userid+"_"+storeId);
-        	}
-
-        	Map<String, Object> result = new HashMap<>();
-        	if (jsonObject==null){
-				result.put("result", null);
-			}else {
-				result.put("result", jsonObject);
+				member = redisUtil.get("member_" + userid + "_" + storeId, Member.class);
 			}
 
-        	
-			return Success.SUCCESS(result);
+			return Success.SUCCESS(member);
         	
 
     }
@@ -420,7 +412,7 @@ public class MemberController extends BaseController {
         		return EntryError.EMPTY(STORE_ID);
         	}
         	
-        	JsonObject jsonObject = null;
+        	Member member = null;
         	
         	//判断终端类型
         	if(terminalType.equals(TERMINAL_TYPE_BROWSER)){
@@ -428,15 +420,15 @@ public class MemberController extends BaseController {
         		if(userId == null || StringUtils.isBlank(userId)){
         			return EntryError.EMPTY(USER_ID);
         		}
-        		jsonObject = redisUtil.getJsonObject("member_"+userId+"_"+storeId);
+        		member = redisUtil.get("member_"+userId+"_"+storeId,Member.class);
         	}else{
-        		jsonObject = redisUtil.getJsonObject("member_"+userId+"_"+storeId);
+        		member = redisUtil.get("member_"+userId+"_"+storeId,Member.class);
         	}
         	
         	Map<String, Boolean> result = new HashMap<>();
         	
         	//判断查询结果是否为空
-        	if(jsonObject == null){
+        	if(member == null){
         		result.put("isMember", false);
         	}else{
         		result.put("isMember", true);

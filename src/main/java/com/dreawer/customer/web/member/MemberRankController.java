@@ -15,7 +15,6 @@ import com.dreawer.responsecode.rcdt.EntryError;
 import com.dreawer.responsecode.rcdt.ResponseCode;
 import com.dreawer.responsecode.rcdt.RuleError;
 import com.dreawer.responsecode.rcdt.Success;
-import com.google.gson.JsonObject;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -362,16 +361,14 @@ public class MemberRankController extends BaseController {
         	}
         	
         	//从redis中取出查询结果
-        	JsonObject jsonObject = redisUtil.getJsonObject("hierarchy_"+id);
+        	Hierarchy hierarchy = redisUtil.get("hierarchy_"+id,Hierarchy.class);
         	
         	//判断查询结果是否为空
-        	if(jsonObject == null){
+        	if(hierarchy == null){
         		return RuleError.NON_EXISTENT;
         	}
-        	
-        	Map<String, Object> result = new HashMap<>();
-        	result.put("result", jsonObject.toString());
-        	return Success.SUCCESS(result);
+
+        	return Success.SUCCESS(hierarchy);
         	
 
     }
