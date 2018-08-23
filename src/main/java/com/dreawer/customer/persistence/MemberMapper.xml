@@ -245,6 +245,6 @@
         <result property="hierarchyId" column="hier_id"/>
         <result property="createTime" column="cre_tim"/>
         <result property="updateTime" column="upd_tim"/>
-        <collection property="hierarchy" columnPrefix="hier_" resultMap="com.dreawer.member.persistence.HierarchyMapper.hierarchyResultMap"/>
+        <collection property="hierarchy" columnPrefix="hier_" resultMap="com.dreawer.customer.persistence.HierarchyMapper.hierarchyResultMap"/>
     </resultMap>
 </mapper>
