@@ -176,7 +176,7 @@
         FROM mem_user
         ) AS m LEFT JOIN mem_hier AS h ON m.hier_id = h.id AND
         m.sto_id = h.sto_id
-        WHERE id = #{id}
+        WHERE m.id = #{id}
     </select>
 
     <select id="findByStoreId" parameterType="String" resultMap="memberFullResultMap">
