@@ -9,6 +9,8 @@ import com.dreawer.responsecode.rcdt.Error;
 import com.dreawer.responsecode.rcdt.*;
 import org.apache.commons.collections4.CollectionUtils;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -26,6 +28,8 @@ public class AddressController extends BaseController{
     @Autowired
     private RestRequest restRequest;
     
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
+
     /**
      * 用户添加地址信息。
      * @param req 用户请求。
@@ -86,6 +90,7 @@ public class AddressController extends BaseController{
 			return Success.SUCCESS;
 		} catch (Exception e) {
 	    	e.printStackTrace();
+	    	logger.error("error",e);
             return Error.APPSERVER;
 		}
 	}
@@ -154,6 +159,7 @@ public class AddressController extends BaseController{
 			return Success.SUCCESS;
 		} catch (Exception e) {
 	    	e.printStackTrace();
+	    	logger.error("error",e);
             return Error.APPSERVER;
 		}
 	}
@@ -196,6 +202,7 @@ public class AddressController extends BaseController{
 			return Success.SUCCESS;
 		} catch (Exception e) {
 	    	e.printStackTrace();
+	    	logger.error("error",e);
             return Error.APPSERVER;
 		}
 	}
@@ -216,6 +223,7 @@ public class AddressController extends BaseController{
 			return Success.SUCCESS(params);
 		} catch (Exception e) {
 	    	e.printStackTrace();
+	    	logger.error("error",e);
             return Error.APPSERVER;
 		}
 	}
@@ -250,6 +258,7 @@ public class AddressController extends BaseController{
 			return Success.SUCCESS(params);
 		} catch (Exception e) {
 	    	e.printStackTrace();
+	    	logger.error("error",e);
             return Error.APPSERVER;
 		}
 	}
@@ -296,6 +305,7 @@ public class AddressController extends BaseController{
 			return Success.SUCCESS;
 		} catch (Exception e) {
 	    	e.printStackTrace();
+	    	logger.error("error",e);
             return Error.APPSERVER;
 		}
 	}
@@ -329,6 +339,7 @@ public class AddressController extends BaseController{
 			return Success.SUCCESS(params);
 		} catch (Exception e) {
 	    	e.printStackTrace();
+	    	logger.error("error",e);
             return Error.APPSERVER;
 		}
 	}

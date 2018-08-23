@@ -8,6 +8,9 @@ import com.dreawer.responsecode.rcdt.Error;
 import com.dreawer.responsecode.rcdt.ResponseCode;
 import com.dreawer.responsecode.rcdt.ResponseCodeRepository;
 import com.dreawer.responsecode.rcdt.Success;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,6 +27,8 @@ public class OrganizeController {
     @Autowired
     private OrganizeService organizeService; // 组织信息服务
 	
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
+
     /**
      * 添加组织。
      * @param req 用户请求。
@@ -49,7 +54,7 @@ public class OrganizeController {
     		}
         	return Success.SUCCESS(organize.getId());
 		} catch (Exception e) {
-			
+	    	logger.error("error",e);
 		    return Error.APPSERVER;
 		}
     }

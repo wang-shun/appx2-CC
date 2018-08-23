@@ -15,7 +15,8 @@ import com.dreawer.customer.web.form.*;
 import com.dreawer.responsecode.rcdt.*;
 import com.dreawer.responsecode.rcdt.Error;
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -51,7 +52,7 @@ public class UserController extends BaseController {
     @Autowired
     private RestRequest restRequest;
     
-    private Logger logger = Logger.getLogger(this.getClass()); // 日志记录器
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
     
     /**
      * 修改用户密码。
@@ -86,7 +87,7 @@ public class UserController extends BaseController {
         	return Success.SUCCESS;
 		}catch(Exception e){
 			 e.printStackTrace();
-	         logger.error(e);
+		     logger.error("error",e);
 		     return Error.APPSERVER;
 		}
     }
@@ -127,7 +128,7 @@ public class UserController extends BaseController {
 			updateSignInUser(req);
         	return Success.SUCCESS;
 		} catch (Exception e) {
-            logger.error(e);
+		    logger.error("error",e);
             // 返回失败标志及信息
 		    return Error.APPSERVER;
         }
@@ -178,7 +179,7 @@ public class UserController extends BaseController {
 			updateSignInUser(req);
         	return Success.SUCCESS;
 		} catch (Exception e) {
-            logger.error(e);
+		    logger.error("error",e);
             
             // 返回失败标志及信息
 		    return Error.APPSERVER;
@@ -228,7 +229,7 @@ public class UserController extends BaseController {
 			updateSignInUser(req);
         	return Success.SUCCESS;
 		} catch (Exception e) {
-            logger.error(e);
+		    logger.error("error",e);
             
             // 返回失败标志及信息
 		    return Error.APPSERVER;
@@ -247,7 +248,7 @@ public class UserController extends BaseController {
 	        TokenUser tokenUser = redisUtil.getTokenUser(token);
         	return Success.SUCCESS(tokenUser);
 		} catch (Exception e) {
-            logger.error(e);
+		    logger.error("error",e);
             
             // 返回失败标志及信息
 		    return Error.APPSERVER;
@@ -294,7 +295,7 @@ public class UserController extends BaseController {
     		List<TokenUser> users = tokenUserService.findUsers(organize.getId(), form.getQuery(), start, pageSize, startTime, endTime);
 			return Success.SUCCESS(users);
 		} catch (Exception e) {
-            logger.error(e);
+		    logger.error("error",e);
             
             // 返回失败标志及信息
 		    return Error.APPSERVER;
