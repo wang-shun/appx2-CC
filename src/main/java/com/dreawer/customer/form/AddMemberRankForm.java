@@ -1,7 +1,7 @@
 package com.dreawer.customer.form;
 
-import com.dreawer.customer.lang.MemberRankExpiration;
-import com.dreawer.customer.lang.MemberRankStatus;
+import com.dreawer.customer.lang.member.Expiration;
+import com.dreawer.customer.lang.member.Status;
 
 import java.math.BigDecimal;
 
@@ -24,13 +24,13 @@ public class AddMemberRankForm {
 	
     private BigDecimal discountAmount  = null; // 折扣
 	
-    private MemberRankExpiration expiration  = null; // 有效期类型
+    private Expiration expiration  = null; // 有效期类型
 	
     private Integer period = null; // 有效期
 	
     private Integer expireDeduction = null; // 过期后扣减成长值
     
-    private MemberRankStatus status = null; //状态
+    private Status status = null; //状态
 
 	private String userId = null;
 
@@ -87,11 +87,11 @@ public class AddMemberRankForm {
 		this.discountAmount = discountAmount;
 	}
 
-	public MemberRankExpiration getExpiration() {
+	public Expiration getExpiration() {
 		return expiration;
 	}
 
-	public void setExpiration(MemberRankExpiration expiration) {
+	public void setExpiration(Expiration expiration) {
 		this.expiration = expiration;
 	}
 
@@ -111,11 +111,11 @@ public class AddMemberRankForm {
 		this.expireDeduction = expireDeduction;
 	}
 
-	public MemberRankStatus getStatus() {
+	public Status getStatus() {
 		return status;
 	}
 
-	public void setStatus(MemberRankStatus status) {
+	public void setStatus(Status status) {
 		this.status = status;
 	}
 

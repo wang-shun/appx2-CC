@@ -1,6 +1,5 @@
 package com.dreawer.customer.form;
 
-import com.dreawer.customer.lang.MemberRankStatus;
 import com.dreawer.customer.lang.member.Status;
 
 /**

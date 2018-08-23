@@ -5,8 +5,7 @@ import com.dreawer.customer.exception.ResponseCodeException;
 import com.dreawer.customer.form.AddMemberRankForm;
 import com.dreawer.customer.form.EditMemberRankForm;
 import com.dreawer.customer.form.UpdateMemberRankStatusForm;
-import com.dreawer.customer.lang.MemberRankExpiration;
-import com.dreawer.customer.lang.MemberRankStatus;
+import com.dreawer.customer.lang.member.Expiration;
 import com.dreawer.customer.lang.member.Status;
 import com.dreawer.customer.manager.HierarchyManager;
 import com.dreawer.customer.service.HierarchyService;
@@ -106,13 +105,13 @@ public class MemberRankController extends BaseController {
         }
 
         //判断有效期是否为空
-        MemberRankExpiration expiration = form.getExpiration();
+        Expiration expiration = form.getExpiration();
         Integer period = form.getPeriod();
         Integer expireDeduction = form.getExpireDeduction();
         if (expiration == null) {
             return EntryError.EMPTY(EXPIRATION);
         } else {
-            if (expiration.equals(MemberRankExpiration.LIMITED)) {
+            if (expiration.equals(Expiration.LIMITED)) {
                 //判断有效期类型为LIMITED时，有效期是否为空并且符合规则
                 if (period == null) {
                     return EntryError.EMPTY(PERIOD);
@@ -130,7 +129,7 @@ public class MemberRankController extends BaseController {
         }
 
         //判断状态是否为空
-        MemberRankStatus status = form.getStatus();
+        Status status = form.getStatus();
         if (status == null) {
             return EntryError.OVERRANGE(STATUS);
         }
@@ -226,13 +225,13 @@ public class MemberRankController extends BaseController {
         }
 
         //判断有效期是否为空
-        MemberRankExpiration expiration = form.getExpiration();
+        Expiration expiration = form.getExpiration();
         Integer period = form.getPeriod();
         Integer expireDeduction = form.getExpireDeduction();
         if (expiration == null) {
             return EntryError.EMPTY(EXPIRATION);
         } else {
-            if (expiration.equals(MemberRankExpiration.LIMITED)) {
+            if (expiration.equals(Expiration.LIMITED)) {
                 //判断有效期类型为LIMITED时，有效期是否为空并且符合规则
                 if (period == null) {
                     return EntryError.EMPTY(PERIOD);
@@ -250,7 +249,7 @@ public class MemberRankController extends BaseController {
         }
 
         //判断状态是否为空
-        MemberRankStatus status = form.getStatus();
+        Status status = form.getStatus();
         if (status == null) {
             return EntryError.OVERRANGE(STATUS);
         }
