@@ -114,8 +114,12 @@ public class Hierarchy implements Serializable {
         this.discountAmount = discountAmount;
     }
 
-    public String getExpiration() {
-        return expiration.toString();
+    public Expiration getExpiration() {
+        return expiration;
+    }
+
+    public void setExpiration(Expiration expiration) {
+        this.expiration = expiration;
     }
 
     public Integer getPeriod() {
@@ -134,17 +138,8 @@ public class Hierarchy implements Serializable {
         this.expireDeduction = expireDeduction;
     }
 
-    public String getStatus() {
-        return status.toString();
-    }
-
-
-    public void setStatus(String status) {
-        this.status = Status.get(status);
-    }
-
-    public void setExpiration(Expiration expiration) {
-        this.expiration = expiration;
+    public Status getStatus() {
+        return status;
     }
 
     public void setStatus(Status status) {
