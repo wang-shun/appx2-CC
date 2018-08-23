@@ -151,8 +151,31 @@
 
     <select id="findById" parameterType="String" resultMap="memberResultMap">
         SELECT
+        m.id,
+        m.sto_id,
+        m.ph_num,
+        m.mug_shot,
+        m.nick_nam,
+        m.usr_nam,
+        m.sex,
+        m.birthday,
+        m.gro_val,
+        m.due_date,
+        m.hier_id,
+        h.id AS hier_id,
+        h.sto_id AS hier_sto_id,
+        h.name AS hier_name,
+        h.sequence AS hier_sequence,
+        h.gro_val AS hier_gro_val,
+        h.period AS hier_period,
+        h.expiration AS hier_expiration,
+        h.exp_deduction AS hier_exp_deduction
+        FROM (
+        SELECT
         <include refid="basicFields"/>
         FROM mem_user
+        ) AS m LEFT JOIN mem_hier AS h ON m.hier_id = h.id AND
+        m.sto_id = h.sto_id
         WHERE id = #{id}
     </select>
 

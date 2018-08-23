@@ -7,6 +7,8 @@ package com.dreawer.customer;
  * @since Dreawer 2.0
  * @version 1.0
  */
+
+
 public final class MessageConstants {
     
     /**

@@ -13,21 +13,12 @@ public enum Type {
     /**
      * 到期扣减
      **/
-    EXPIRE;
-
+    EXPIRE,
 
     /**
-     * 获取成长值类型
-     *
-     * @param name
-     * @return 枚举对象
+     *  手动添加
      */
-    public static Type get(String name) {
-        for (Type type : Type.values()) {
-            if (type.toString().equalsIgnoreCase(name)) {
-                return type;
-            }
-        }
-        return null;
-    }
+    MANUAL;
+
+
 }
