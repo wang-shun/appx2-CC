@@ -20,10 +20,13 @@ import com.dreawer.customer.web.form.GoodsInfoForm;
 import com.dreawer.responsecode.rcdt.EntryError;
 import com.dreawer.responsecode.rcdt.ResponseCode;
 import com.dreawer.responsecode.rcdt.Success;
+import com.google.gson.Gson;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -44,6 +47,9 @@ import static com.dreawer.customer.DomainConstants.*;
 @Controller
 @RequestMapping(REQ_MEMBER)
 public class MemberController extends BaseController {
+	private Logger logger = LoggerFactory.getLogger(this.getClass());
+
+
 
 	@Autowired
 	private RedisUtil redisUtil;
@@ -293,7 +299,7 @@ public class MemberController extends BaseController {
         	data.put(PAGE_SIZE, pageSize);
 
 			Map<String,Object> map = memberManager.memberQuery(data);
-
+			logger.info("查询结果:"+new Gson().toJson(map));
 			return Success.SUCCESS(map);
         	
 
