@@ -92,7 +92,10 @@
         h.gro_val AS hier_gro_val,
         h.period AS hier_period,
         h.expiration AS hier_expiration,
-        h.exp_deduction AS hier_exp_deduction
+        h.exp_deduction AS hier_exp_deduction,
+        h.dis_amo As hier_dis_amo,
+        h.discnt AS hier_discnt,
+        h.fre_ship AS hier_fre_ship
         FROM (
         SELECT
         <include refid="basicFields"/>
@@ -169,7 +172,10 @@
         h.gro_val AS hier_gro_val,
         h.period AS hier_period,
         h.expiration AS hier_expiration,
-        h.exp_deduction AS hier_exp_deduction
+        h.exp_deduction AS hier_exp_deduction,
+        h.dis_amo As hier_dis_amo,
+        h.discnt AS hier_discnt,
+        h.fre_ship AS hier_fre_ship
         FROM (
         SELECT
         <include refid="basicFields"/>
@@ -199,7 +205,10 @@
         h.gro_val AS hier_gro_val,
         h.period AS hier_period,
         h.expiration AS hier_expiration,
-        h.exp_deduction AS hier_exp_deduction
+        h.exp_deduction AS hier_exp_deduction,
+        h.dis_amo As hier_dis_amo,
+        h.discnt AS hier_discnt,
+        h.fre_ship AS hier_fre_ship
         FROM (
         SELECT
         <include refid="basicFields"/>
