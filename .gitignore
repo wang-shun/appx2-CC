@@ -4,3 +4,6 @@
 /target/
 /.settings/
 /log/
+/cc.iml
+/.classpath
+/.project

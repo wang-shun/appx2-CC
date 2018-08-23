@@ -497,15 +497,10 @@ public class MemberController extends BaseController {
 	 * @since 1.0
 	 */
 	@RequestMapping(value=REQ_POINT_RECORD_ADD, method = RequestMethod.GET)
-	public @ResponseBody ResponseCode addPoint(HttpServletRequest req,@RequestParam(STORE_ID)String storeId,@RequestParam("value")String value) throws Exception {
-
-			//判断店铺ID是否为空
-			if(StringUtils.isBlank(storeId)){
-				return EntryError.EMPTY(STORE_ID);
-			}
-			if (StringUtils.isBlank(value)){
-				return EntryError.EMPTY(VALUE);
-			}
+	public @ResponseBody ResponseCode addPoint(HttpServletRequest req,
+											   @RequestParam(STORE_ID)String storeId,
+											   @RequestParam("value")String value,
+											   @RequestParam("userId")String userId) throws Exception {
 
 			//如果消费金额小于1则不计入成长值
 			if (new BigDecimal(value).compareTo(new BigDecimal(1))==-1||
@@ -513,7 +508,6 @@ public class MemberController extends BaseController {
 				throw new ResponseCodeException(EntryError.OVERRANGE(VALUE));
 			}
 
-			String userId = req.getHeader("userid");
 			PointRecord pointRecord = new PointRecord();
 			pointRecord.setCustomerId(userId);
 			pointRecord.setSource(Source.SYSTEM.toString());

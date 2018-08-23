@@ -214,7 +214,7 @@ public class MemberManager extends BaseManager {
         if (hierarchies==null){
             throw new ResponseCodeException(RuleError.NON_EXISTENT("未查询到店铺信息"));
         }
-        if (hierarchies.get(0).getStatus().equals(Status.DISABLE.toString())){
+        if (hierarchies.get(0).getStatus().equals(Status.DISABLE)){
                 throw new ResponseCodeException(PermissionsError.FUNCTION_NO_ALLOW("店铺无已启用的会员等级"));
             }
             //保留整数
