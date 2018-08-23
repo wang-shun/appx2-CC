@@ -4,7 +4,6 @@ package com.dreawer.customer.manager;
 import com.dreawer.customer.domain.Hierarchy;
 import com.dreawer.customer.domain.Member;
 import com.dreawer.customer.exception.ResponseCodeException;
-import com.dreawer.customer.lang.MemberRankStatus;
 import com.dreawer.customer.lang.member.Expiration;
 import com.dreawer.customer.lang.member.Status;
 import com.dreawer.customer.service.HierarchyService;
@@ -161,7 +160,7 @@ public class HierarchyManager extends BaseManager{
     private void updateMemberHierarchy(Hierarchy hierarchy, List<Hierarchy> hierarchies) throws IllegalAccessException {
         String storeId = hierarchy.getStoreId();
         Integer growthValue = hierarchy.getGrowthValue();
-        String status = hierarchy.getStatus();
+        Status status = hierarchy.getStatus();
         String id = hierarchy.getId();
 
         //如果开启会员等级,则将积分大于等于这一级的用户关联其ID
@@ -324,7 +323,7 @@ public class HierarchyManager extends BaseManager{
      * @param id 等级ID
      * @param status 启动状态
      */
-    private void rollBack(String id,String status) throws IllegalAccessException {
+    private void rollBack(String id,Status status) throws IllegalAccessException {
         Hierarchy hierarchy = service.findById(id);
         hierarchy.setStatus(status);
         hierarchy.setUpdateTime(getNow());
