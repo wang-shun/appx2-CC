@@ -149,7 +149,7 @@
         AND h.status IN ('ENABLE','SUSPEND')
     </select>
 
-    <select id="findById" parameterType="String" resultMap="memberResultMap">
+    <select id="findById" parameterType="String" resultMap="memberFullResultMap">
         SELECT
         m.id,
         m.sto_id,
@@ -273,4 +273,5 @@
         <result property="updateTime" column="upd_tim"/>
         <collection property="hierarchy" columnPrefix="hier_" resultMap="com.dreawer.customer.persistence.HierarchyMapper.hierarchyResultMap"/>
     </resultMap>
+
 </mapper>
