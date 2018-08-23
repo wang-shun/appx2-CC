@@ -150,20 +150,12 @@ public class MemberManager extends BaseManager {
             member.setHierarchyId(hierarchy.getId());
             member.setGrowthValue(0);
             memberService.addMember(member);
-            //添加会员信息到第三方平台用户
-//            ThirdPartUser user = thirdPartService.findByIdAndStoreId(member.getId(),storeId);
-//            if (user==null){
-//                throw new ResponseCodeException(RuleError.NON_EXISTENT("未查询到第三方平台用户信息"));
-//            }
-//
-//            user.setMemberId(member.getId());
-//            thirdPartService.update(user);
+
     }
 
     /**
      * 更新会员信息
      */
-    //@Transactional(rollbackFor = RuntimeException.class)
     public void update(Map<String,Object> map,String storeId) throws Exception {
 
 
@@ -233,14 +225,14 @@ public class MemberManager extends BaseManager {
             Integer growthValue = member.getGrowthValue();
 
             //增减用户成长值
-            if (pointRecord.getType().equals(Type.PURCHASE.toString())){
+            if (pointRecord.getType().equals(Type.PURCHASE)){
                 //增加成长值
                 BigDecimal result = new BigDecimal(growthValue).add(new BigDecimal(value)).setScale(0,BigDecimal.ROUND_DOWN);
                 //判断用户成长值归属到哪一等级
                 for (Hierarchy hierarchy:hierarchies) {
                     member =setMemberRank(member, result, hierarchy);
                 }
-            }else if (pointRecord.getType().equals(Type.EXPIRE.toString())){
+            }else if (pointRecord.getType().equals(Type.EXPIRE)){
                 BigDecimal result = new BigDecimal(growthValue).subtract(new BigDecimal(value)).setScale(0,BigDecimal.ROUND_DOWN);
                 //如果相减结果小于0
                 if (result.compareTo(new BigDecimal(0))==-1){
@@ -258,7 +250,7 @@ public class MemberManager extends BaseManager {
     }
 
     private Member setMemberRank(Member member, BigDecimal result, Hierarchy hierarchy) {
-        if (hierarchy.getStatus().equals(Status.ENABLE.toString())){
+        if (hierarchy.getStatus().equals(Status.ENABLE)){
             Integer next = hierarchy.getGrowthValue();
             if (result.intValue()>=next){
                 member.setHierarchyId(hierarchy.getId());

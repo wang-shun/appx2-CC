@@ -14,7 +14,6 @@ import com.dreawer.customer.lang.record.Type;
 import com.dreawer.customer.manager.MemberManager;
 import com.dreawer.customer.service.HierarchyService;
 import com.dreawer.customer.service.MemberService;
-import com.dreawer.customer.utils.RedisUtil;
 import com.dreawer.customer.web.BaseController;
 import com.dreawer.customer.web.form.GoodsInfoForm;
 import com.dreawer.responsecode.rcdt.EntryError;
@@ -48,11 +47,6 @@ import static com.dreawer.customer.DomainConstants.*;
 @RequestMapping(REQ_MEMBER)
 public class MemberController extends BaseController {
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
-
-
-
-	@Autowired
-	private RedisUtil redisUtil;
 
 	@Autowired
 	private MemberManager memberManager;
@@ -251,7 +245,6 @@ public class MemberController extends BaseController {
                 return EntryError.EMPTY(STORE_ID);
             }
 
-        	
         	Member member;
         	
         	//判断终端类型
@@ -261,10 +254,11 @@ public class MemberController extends BaseController {
         			return EntryError.EMPTY(USER_ID);
         		}
         		//如果从后台进入则查询的ID为指定用户
-				member = redisUtil.get("member_" + userId + "_" + storeId, Member.class);
+				member = memberService.findById(userId);
 			}else{
         		//如果从客户端则从登录信息中获取
-				member = redisUtil.get("member_" + userid + "_" + storeId, Member.class);
+				member = memberService.findById(userid);
+
 			}
 
 			return Success.SUCCESS(member);
@@ -353,52 +347,7 @@ public class MemberController extends BaseController {
 
     }
     
-//    /**
-//     * 任务查询
-//     * @param req 用户请求
-//     * @return 查询结果
-//     * @author kael
-//     * @since 1.0
-//     */
-//    @RequestMapping(value=REQ_TASK_QUERY, method = RequestMethod.GET)
-//    public @ResponseBody ResponseCode taskQuery(HttpServletRequest req, @RequestParam(TASK_ID)String taskId){
-//        try {
-//
-//        	JsonObject jsonObject = redisUtil.getJsonObject("taskId_"+taskId);
-//
-//        	//判断查询结果是否为空
-//        	if(jsonObject == null){
-//        		return Warning.UN_GET_RESULT;
-//        	}
-//        	String string = jsonObject.toString();
-//
-//        	Gson gson = new Gson();
-//        	ResponseMessage responseMessage = gson.fromJson(string, ResponseMessage.class);
-//
-//        	PublicResponseMessage publicMessage = responseMessage.getPublicMessage();
-//        	if(publicMessage == null){
-//        		return MessageError.NO_HEAD;
-//        	}
-//
-//        	ResponseCode responseCode = publicMessage.getResponseCode();
-//        	if(responseCode == null){
-//        		return MessageError.NO_HEAD;
-//        	}
-//
-//        	if(responseCode.equals(ResponseCode.C_FAILED)){
-//        		return responseCode;
-//        	}
-//
-//        	Object body = responseMessage.getBody(DATA);
-//
-//        	redisUtil.delete("taskId_"+taskId);
-//			return Success.SUCCESS(body);
-//
-//		} catch (Exception e) {
-//			Log.error(e);
-//            return Error.DEFAULT;
-//		}
-//    }
+
     
     /**
      * 查询会员信息
@@ -408,11 +357,15 @@ public class MemberController extends BaseController {
      * @since 1.0
      */
     @RequestMapping(value=REQ_CHECK, method = RequestMethod.GET)
-    public @ResponseBody ResponseCode check(HttpServletRequest req, @RequestParam(STORE_ID)String storeId, @RequestParam(TERMINAL_TYPE)String terminalType){
+    public @ResponseBody ResponseCode check(HttpServletRequest req,
+											@RequestParam(STORE_ID)String storeId,
+											@RequestParam(TERMINAL_TYPE)String terminalType,
+											@RequestParam(value = "userId",required = false)String userId){
 
         	
         	//获取用户信息
-			String userId = req.getHeader("userid");
+			String userid = req.getHeader("userid");
+
 			//判断店铺ID是否为空
         	if(StringUtils.isBlank(storeId)){
         		return EntryError.EMPTY(STORE_ID);
@@ -426,9 +379,10 @@ public class MemberController extends BaseController {
         		if(userId == null || StringUtils.isBlank(userId)){
         			return EntryError.EMPTY(USER_ID);
         		}
-        		member = redisUtil.get("member_"+userId+"_"+storeId,Member.class);
+        		member = memberService.findById(userId);
+
         	}else{
-        		member = redisUtil.get("member_"+userId+"_"+storeId,Member.class);
+        		member = memberService.findById(userid);
         	}
         	
         	Map<String, Boolean> result = new HashMap<>();
@@ -510,11 +464,11 @@ public class MemberController extends BaseController {
 
 			PointRecord pointRecord = new PointRecord();
 			pointRecord.setCustomerId(userId);
-			pointRecord.setSource(Source.SYSTEM.toString());
+			pointRecord.setSource(Source.SYSTEM);
 			pointRecord.setCreateTime(getNow());
 			pointRecord.setStoreId(storeId);
 			pointRecord.setValue(value);
-			pointRecord.setType(Type.PURCHASE.toString());
+			pointRecord.setType(Type.PURCHASE);
 			memberManager.updateRecord(pointRecord,storeId);
 
 			return Success.SUCCESS(pointRecord);

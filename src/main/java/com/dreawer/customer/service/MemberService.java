@@ -28,7 +28,7 @@ public class MemberService extends BaseService {
     @Autowired
     RedisUtil redisUtil;
 
-    public Member findById(String id) throws IllegalAccessException {
+    public Member findById(String id)  {
         Member member = memberMapper.findById(id);
         return member;
     }
@@ -39,9 +39,8 @@ public class MemberService extends BaseService {
      * @return
      */
     //@Transactional
-    public Member addMember(Member member) throws Exception {
+    public Member addMember(Member member)  {
         memberMapper.insert(member);
-        redisUtil.put("member_"+member.getId()+"_"+member.getStoreId(),member);
         return member;
     }
 
@@ -51,12 +50,10 @@ public class MemberService extends BaseService {
      *
      * @param member 会员信息
      * @return 返回结果
-     * @throws IllegalAccessException
      */
     @Transactional
-    public Member editMember(Member member) throws IllegalAccessException {
+    public Member editMember(Member member)  {
         memberMapper.update(member);
-        redisUtil.put("member_"+member.getId()+"_"+member.getStoreId(),member);
         return member;
     }
 
@@ -66,9 +63,8 @@ public class MemberService extends BaseService {
      * @return
      */
     public List<Member> findByStoreId(String storeId) {
-        List<Member> list = memberMapper.findByStoreId(storeId);
-        redisUtil.put("member_list_"+storeId,list);
-        return list;
+        return memberMapper.findByStoreId(storeId);
+
     }
 
 

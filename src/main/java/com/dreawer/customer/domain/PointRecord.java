@@ -32,14 +32,6 @@ public class PointRecord implements Serializable {
 
     private Timestamp createTime = null; // 创建时间
 
-    public String getStoreId() {
-        return storeId;
-    }
-
-    public void setStoreId(String storeId) {
-        this.storeId = storeId;
-    }
-
     public static long getSerialVersionUID() {
         return serialVersionUID;
     }
@@ -52,12 +44,12 @@ public class PointRecord implements Serializable {
         this.id = id;
     }
 
-    public String getType() {
-        return type.toString();
+    public Type getType() {
+        return type;
     }
 
-    public void setType(String type) {
-        this.type = Type.get(type);
+    public void setType(Type type) {
+        this.type = type;
     }
 
     public String getValue() {
@@ -68,12 +60,12 @@ public class PointRecord implements Serializable {
         this.value = value;
     }
 
-    public String getSource() {
-        return source.toString();
+    public Source getSource() {
+        return source;
     }
 
-    public void setSource(String source) {
-        this.source = Source.get(source);
+    public void setSource(Source source) {
+        this.source = source;
     }
 
     public String getCustomerId() {
@@ -82,6 +74,14 @@ public class PointRecord implements Serializable {
 
     public void setCustomerId(String customerId) {
         this.customerId = customerId;
+    }
+
+    public String getStoreId() {
+        return storeId;
+    }
+
+    public void setStoreId(String storeId) {
+        this.storeId = storeId;
     }
 
     public Timestamp getCreateTime() {

@@ -164,7 +164,7 @@ public class HierarchyManager extends BaseManager{
         String id = hierarchy.getId();
 
         //如果开启会员等级,则将积分大于等于这一级的用户关联其ID
-        if (status.equals(Status.ENABLE.toString())) {
+        if (status.equals(Status.ENABLE)) {
             //更新数据库
             memberService.updateHierarchyByGrowthValue(storeId, id, growthValue);
             //更新redis
@@ -175,10 +175,9 @@ public class HierarchyManager extends BaseManager{
                     member.setHierarchyId(hierarchy.getId());
                     setDueDate(hierarchy, member);
                     memberService.editMember(member);
-                    redisUtil.put("member_"+member.getId()+"_"+member.getStoreId(),member);
                 }
             }
-        } else if (status.equals(Status.DISABLE.toString())) {
+        } else if (status.equals(Status.DISABLE)) {
             //关闭会员等级则将其会员降级
             if (hierarchies.size() == 1) {
                 //如果关闭的是全店唯一的等级则删除所有用户的等级
@@ -189,7 +188,6 @@ public class HierarchyManager extends BaseManager{
                         member.setHierarchy(null);
                         member.setHierarchyId(null);
                         memberService.editMember(member);
-                        redisUtil.put("member_"+member.getId()+"_"+member.getStoreId(),member);
                     }
                 }
             } else {
@@ -216,7 +214,6 @@ public class HierarchyManager extends BaseManager{
                                     setDueDate(node, member);
                                 }
                                 memberService.editMember(member);
-                                redisUtil.put("member_"+member.getId()+"_"+member.getStoreId(),member);
                             }
                         }
                         break;
@@ -236,7 +233,7 @@ public class HierarchyManager extends BaseManager{
 
         Hierarchy hierarchy = BeanUtils.mapToObject(entity, Hierarchy.class);
 
-        if (hierarchy.getExpiration().equals(Expiration.UNLIMITED.toString())){
+        if (hierarchy.getExpiration().equals(Expiration.UNLIMITED)){
             hierarchy.setExpireDeduction(0);
             hierarchy.setPeriod(0);
         }
@@ -311,7 +308,7 @@ public class HierarchyManager extends BaseManager{
             return false;
         }
         for (Hierarchy hierarchy : list) {
-            if (hierarchy.getStatus().equals(Status.SUSPEND.toString())){
+            if (hierarchy.getStatus().equals(Status.SUSPEND)){
                 return true;
             }
         }
@@ -323,7 +320,7 @@ public class HierarchyManager extends BaseManager{
      * @param id 等级ID
      * @param status 启动状态
      */
-    private void rollBack(String id,Status status) throws IllegalAccessException {
+    private void rollBack(String id,Status status) {
         Hierarchy hierarchy = service.findById(id);
         hierarchy.setStatus(status);
         hierarchy.setUpdateTime(getNow());

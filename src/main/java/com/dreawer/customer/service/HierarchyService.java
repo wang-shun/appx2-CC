@@ -34,7 +34,6 @@ public class HierarchyService extends BaseService {
     public List<Hierarchy> findByStoreId(String storeId){
         List<Hierarchy> list = hierarchyMapper.findByStoreId(storeId);
         //Map<String, Object> map = convertMap(list);
-        redisUtil.put("hierarchy_list_"+storeId,list);
         return list;
     }
 
@@ -42,7 +41,6 @@ public class HierarchyService extends BaseService {
     public Hierarchy addHierarchy(Hierarchy hierarchy){
         hierarchyMapper.insert(hierarchy);
         //Map<String, Object> map = convertMap(hierarchy);
-        redisUtil.put("hierarchy_"+hierarchy.getId(),hierarchy);
         return hierarchy;
     }
 
@@ -51,13 +49,9 @@ public class HierarchyService extends BaseService {
      * @param id 等级ID
      * @return 权益列表
      */
-    public Hierarchy findById(String id) throws IllegalAccessException {
-        Hierarchy hierarchy = hierarchyMapper.findById(id);
-        //Map<String, Object> map = convertMap(hierarchy);
-        if (hierarchy!=null){
-            redisUtil.put("hierarchy_"+hierarchy.getId(),hierarchy);
-        }
-        return hierarchy;
+    public Hierarchy findById(String id)  {
+        return hierarchyMapper.findById(id);
+
     }
 
 
@@ -67,9 +61,8 @@ public class HierarchyService extends BaseService {
      * @param hierarchy 会员等级实体类
      */
     //@Transactional
-    public Hierarchy update(Hierarchy hierarchy) throws IllegalAccessException {
+    public Hierarchy update(Hierarchy hierarchy) {
         hierarchyMapper.update(hierarchy);
-        redisUtil.put("hierarchy_"+hierarchy.getId(),hierarchy);
         return hierarchy;
     }
 
