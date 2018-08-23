@@ -89,7 +89,10 @@
         h.sto_id AS hier_sto_id,
         h.name AS hier_name,
         h.sequence AS hier_sequence,
-        h.gro_val AS hier_gro_val
+        h.gro_val AS hier_gro_val,
+        h.period AS hier_period,
+        h.expiration AS hier_expiration,
+        h.exp_deduction AS hier_exp_deduction
         FROM (
         SELECT
         <include refid="basicFields"/>

@@ -18,7 +18,7 @@ public class Hierarchy implements Serializable {
 
     private static final long serialVersionUID = 4779570023792487491L;
 
-    public String id; //主键
+    public String id = null; //主键
 
     private String storeId; //店铺ID
 
@@ -27,10 +27,6 @@ public class Hierarchy implements Serializable {
     private Integer sequence; //会员等级Level 1-7
 
     private Integer growthValue; //成长值
-
-    //private Boolean viewablePrice; //是否开启会员价格给非会员用户查看 //TODO 这里应该放在RETAIL里
-
-    //private String growthRule; //会员每消费X元，交易完成后即获得X点成长值 {"1":"1"} //TODO 这里应该放在RETAIL里
 
     private Boolean freeShipping; //是否免运费
 
@@ -42,7 +38,7 @@ public class Hierarchy implements Serializable {
 
     private Integer period; //有效期时长
 
-    private Integer expireDeduction; //过期后扣减成长值
+    private Integer expireDeduction = null; //过期后扣减成长值
 
     private Status status; //状态 ENABLE启用 DISABLE 禁用
 
@@ -120,10 +116,6 @@ public class Hierarchy implements Serializable {
 
     public String getExpiration() {
         return expiration.toString();
-    }
-
-    public void setExpiration(String expiration) {
-        this.expiration = Expiration.get(expiration);
     }
 
     public Integer getPeriod() {

@@ -16,20 +16,5 @@ public enum Expiration {
     LIMITED;
 
 
-    /**
-     * 获取有效期限
-     *
-     * @param name
-     * @return 枚举对象
-     */
-    public static Expiration get(String name) {
-        for (Expiration expiration : Expiration.values()) {
-            if (expiration.toString().equalsIgnoreCase(name)) {
-                return expiration;
-            }
-        }
-        return null;
-    }
-
 
 }
