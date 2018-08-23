@@ -2,7 +2,6 @@ package com.dreawer.customer.service;
 
 import com.dreawer.customer.domain.Member;
 import com.dreawer.customer.persistence.MemberMapper;
-import com.dreawer.customer.utils.RedisUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,8 +24,6 @@ public class MemberService extends BaseService {
     @Autowired
     MemberMapper memberMapper;
 
-    @Autowired
-    RedisUtil redisUtil;
 
     public Member findById(String id)  {
         Member member = memberMapper.findById(id);

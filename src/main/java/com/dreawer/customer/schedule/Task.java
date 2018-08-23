@@ -5,6 +5,8 @@ import com.dreawer.customer.domain.Member;
 import com.dreawer.customer.domain.PointRecord;
 import com.dreawer.customer.exception.ResponseCodeException;
 import com.dreawer.customer.lang.member.Expiration;
+import com.dreawer.customer.lang.record.Source;
+import com.dreawer.customer.lang.record.Type;
 import com.dreawer.customer.manager.MemberManager;
 import com.dreawer.customer.service.HierarchyService;
 import com.dreawer.customer.service.MemberService;
@@ -69,9 +71,9 @@ public class Task {
                           //扣减值
                           Integer expireDeduction = member.getHierarchy().getExpireDeduction();
                           PointRecord pointRecord = new PointRecord();
-                          pointRecord.setType("EXPIRE");
+                          pointRecord.setType(Type.EXPIRE);
                           pointRecord.setValue(expireDeduction.toString());
-                          pointRecord.setSource("SYSTEM");
+                          pointRecord.setSource(Source.SYSTEM);
                           pointRecord.setStoreId(store);
                           pointRecord.setCustomerId(member.getId());
                           memberManager.updateRecord(pointRecord,member.getStoreId());
