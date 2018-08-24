@@ -83,9 +83,11 @@ public class BaseController{
      */
     protected void updateSignInUser(HttpServletRequest req) {
     	TokenUser oldUser = getSignInUser(req);
-    	TokenUser tokenUser = tokenuserService.findTokenUserById(oldUser.getId());
-        String token = "";
-    	redisUtil.setTokenUser(token, tokenUser);
+    	String token = req.getHeader("token");
+    	if(oldUser!=null && StringUtils.isNotBlank(token)) {
+        	TokenUser tokenUser = tokenuserService.findTokenUserById(oldUser.getId());
+    		redisUtil.setTokenUser(token, tokenUser);
+    	}
     }
     
 	/**
