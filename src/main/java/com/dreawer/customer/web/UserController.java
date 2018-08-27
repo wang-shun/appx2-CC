@@ -124,7 +124,7 @@ public class UserController extends BaseController {
 	        customer.setUpdater(userId);
 	        customer.setUpdateTime(new Timestamp(System.currentTimeMillis()));
 	        customerService.updateBasic(customer);
-			// TODO 更新用户登录信息
+			// 更新用户登录信息
 			updateSignInUser(req);
         	return Success.SUCCESS;
 		} catch (Exception e) {
@@ -175,7 +175,7 @@ public class UserController extends BaseController {
 			user.setUpdateTime(getNow());
 			userService.updateBasic(user);
 			
-			// TODO 更新用户登录信息
+			// 更新用户登录信息
 			updateSignInUser(req);
         	return Success.SUCCESS;
 		} catch (Exception e) {
@@ -225,7 +225,7 @@ public class UserController extends BaseController {
 			user.setUpdater(form.getUserId());
 			user.setUpdateTime(getNow());
 			userService.updateBasic(user);
-			// TODO 更新用户登录信息
+			// 更新用户登录信息
 			updateSignInUser(req);
         	return Success.SUCCESS;
 		} catch (Exception e) {
