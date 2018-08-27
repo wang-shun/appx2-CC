@@ -310,6 +310,8 @@ public class MemberController extends BaseController {
     public @ResponseBody ResponseCode pointRecord(HttpServletRequest req,
 												  @RequestParam(STORE_ID)String storeId,
 												  @RequestParam(TERMINAL_TYPE)String terminalType,
+												  @RequestParam(SOURCE) Source source,
+												  @RequestParam(TYPE)Type type,
 												  @RequestParam(value=PAGE_NO, required=false, defaultValue="1")Integer pageNo,
 												  @RequestParam(value=PAGE_SIZE, required=false, defaultValue="5")Integer pageSize,
 												  @RequestParam(value = USER_ID,required = false)String userId
@@ -340,6 +342,8 @@ public class MemberController extends BaseController {
         	
         	data.put(PAGE_NO, pageNo);
         	data.put(PAGE_SIZE, pageSize);
+        	data.put(SOURCE,source);
+        	data.put(TYPE,type);
 
 			Map<String, Object> map = memberManager.recordQuery(data, storeId);
 
@@ -451,11 +455,14 @@ public class MemberController extends BaseController {
 	 * @since 1.0
 	 */
 	@RequestMapping(value=REQ_POINT_RECORD_ADD, method = RequestMethod.GET)
-	public @ResponseBody ResponseCode addPoint(HttpServletRequest req,
+	public @ResponseBody ResponseCode addPoint(
 											   @RequestParam(STORE_ID)String storeId,
 											   @RequestParam("value")String value,
-											   @RequestParam("userId")String userId) throws Exception {
-
+											   @RequestParam("userId")String userId,
+												@RequestParam("source")String source) throws Exception {
+		if (!(source.equals("PURCHASE")||source.equals("MANUAL"))){
+				return EntryError.ILLEGAL("source");
+			}
 			//如果消费金额小于1则不计入成长值
 			if (new BigDecimal(value).compareTo(new BigDecimal(1))==-1||
 			new BigDecimal(value).compareTo(new BigDecimal(100000))==1) {
@@ -464,11 +471,17 @@ public class MemberController extends BaseController {
 
 			PointRecord pointRecord = new PointRecord();
 			pointRecord.setCustomerId(userId);
-			pointRecord.setSource(Source.SYSTEM);
+			if (source.equals("PURCHASE")){
+				pointRecord.setSource(Source.PURCHASE);
+			}else {
+				pointRecord.setSource(Source.MANUAL);
+			}
+
 			pointRecord.setCreateTime(getNow());
 			pointRecord.setStoreId(storeId);
 			pointRecord.setValue(value);
-			pointRecord.setType(Type.PURCHASE);
+			pointRecord.setType(Type.ADD);
+			pointRecord.setCustomerId(userId);
 			memberManager.updateRecord(pointRecord,storeId);
 
 			return Success.SUCCESS(pointRecord);

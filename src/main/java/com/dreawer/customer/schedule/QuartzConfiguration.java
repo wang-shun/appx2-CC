@@ -38,7 +38,7 @@ public class QuartzConfiguration {
         trigger.setJobDetail(firstJobDetail);
         // 设置任务启动延迟
         trigger.setStartDelay(0);
-        trigger.setCronExpression("0 0 1 * * ?");
+        trigger.setCronExpression("0 0 5 * * ?");
         trigger.setName("MemberExpireTrigger");
         return trigger;
     }

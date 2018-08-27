@@ -33,6 +33,12 @@ public abstract class DomainConstants {
     /** 店铺ID */
     public static final String STORE_ID = "storeId";
 
+    /** 类型 */
+    public static final String TYPE = "type";
+
+    /** 来源 */
+    public static final String SOURCE = "source";
+
     /** 成长值 */
     public static final String VALUE = "value";
     

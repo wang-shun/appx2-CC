@@ -6,19 +6,13 @@ package com.dreawer.customer.lang.record;
 public enum Type {
 
     /**
-     * 消费获取
-     **/
-    PURCHASE,
-
-    /**
-     * 到期扣减
-     **/
-    EXPIRE,
-
-    /**
-     *  手动添加
+     * 增加
      */
-    MANUAL;
+   ADD,
 
+    /**
+     * 减少
+     */
+    REDUCE
 
 }

@@ -28,6 +28,8 @@
         WHERE
             sto_id = #{storeId}
         AND custid =#{customerId}
+        AND source = #{source}
+        AND type = #{type}
     </select>
 
     <select id="recordQuery" parameterType="Map" resultMap="pointRecordResultMap">
@@ -37,6 +39,8 @@
         WHERE
         sto_id = #{storeId}
         AND custid =#{customerId}
+        AND source = #{source}
+        AND type = #{type}
         ORDER BY cre_tim DESC
         LIMIT #{start}, #{pageSize}
     </select>

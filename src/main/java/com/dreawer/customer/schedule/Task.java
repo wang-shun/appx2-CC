@@ -71,9 +71,9 @@ public class Task {
                           //扣减值
                           Integer expireDeduction = member.getHierarchy().getExpireDeduction();
                           PointRecord pointRecord = new PointRecord();
-                          pointRecord.setType(Type.EXPIRE);
+                          pointRecord.setType(Type.REDUCE);
                           pointRecord.setValue(expireDeduction.toString());
-                          pointRecord.setSource(Source.SYSTEM);
+                          pointRecord.setSource(Source.EXPIRE);
                           pointRecord.setStoreId(store);
                           pointRecord.setCustomerId(member.getId());
                           memberManager.updateRecord(pointRecord,member.getStoreId());

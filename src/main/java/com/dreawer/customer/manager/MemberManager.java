@@ -5,6 +5,7 @@ import com.dreawer.customer.domain.Member;
 import com.dreawer.customer.domain.PointRecord;
 import com.dreawer.customer.exception.ResponseCodeException;
 import com.dreawer.customer.lang.member.Status;
+import com.dreawer.customer.lang.record.Source;
 import com.dreawer.customer.lang.record.Type;
 import com.dreawer.customer.service.HierarchyService;
 import com.dreawer.customer.service.MemberService;
@@ -22,6 +23,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+
+import static com.dreawer.customer.DomainConstants.SOURCE;
+import static com.dreawer.customer.DomainConstants.TYPE;
 
 /**
  * <CODE>MemberManager</CODE>
@@ -225,14 +229,14 @@ public class MemberManager extends BaseManager {
             Integer growthValue = member.getGrowthValue();
 
             //增减用户成长值
-            if (pointRecord.getType().equals(Type.PURCHASE)){
+            if (pointRecord.getType().equals(Type.ADD)){
                 //增加成长值
                 BigDecimal result = new BigDecimal(growthValue).add(new BigDecimal(value)).setScale(0,BigDecimal.ROUND_DOWN);
                 //判断用户成长值归属到哪一等级
                 for (Hierarchy hierarchy:hierarchies) {
                     member =setMemberRank(member, result, hierarchy);
                 }
-            }else if (pointRecord.getType().equals(Type.EXPIRE)){
+            }else if (pointRecord.getType().equals(Type.REDUCE)){
                 BigDecimal result = new BigDecimal(growthValue).subtract(new BigDecimal(value)).setScale(0,BigDecimal.ROUND_DOWN);
                 //如果相减结果小于0
                 if (result.compareTo(new BigDecimal(0))==-1){
@@ -278,8 +282,10 @@ public class MemberManager extends BaseManager {
             if (map.get("pageSize")!=null){
                 pageSize = Integer.parseInt(map.get("pageSize").toString());
             }
-            List<PointRecord> pointRecords = pointRecordService.recordQuery(storeId,customerId,pageNo,pageSize);
-            int totalSize = pointRecordService.recordQueryCount(storeId,customerId);
+       Source source= (Source) map.get(SOURCE);
+       Type type = (Type) map.get(TYPE);
+            List<PointRecord> pointRecords = pointRecordService.recordQuery(storeId,customerId,pageNo,pageSize,source,type);
+            int totalSize = pointRecordService.recordQueryCount(storeId,customerId,source,type);
             int totalPage = totalSize%pageSize==0?totalSize/pageSize:(totalSize/pageSize+1);
             Map<String,Object> params = new HashMap<>();
             params.put("totalSize",totalSize);

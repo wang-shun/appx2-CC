@@ -1,6 +1,8 @@
 package com.dreawer.customer.service;
 
 import com.dreawer.customer.domain.PointRecord;
+import com.dreawer.customer.lang.record.Source;
+import com.dreawer.customer.lang.record.Type;
 import com.dreawer.customer.persistence.PointRecordMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,17 +26,26 @@ public class PointRecordService extends BaseService{
         return pointRecordMapper.insert(pointRecord);
     }
 
-    public int recordQueryCount(String storeId, String customerId) {
+    public int recordQueryCount(String storeId, String customerId, Source source, Type type) {
         Map<String,Object> map = new HashMap<>();
         map.put("storeId",storeId);
         map.put("customerId",customerId);
+        map.put("source",source);
+        map.put("type",type);
         return pointRecordMapper.recordQueryCount(map);
     }
 
-    public List<PointRecord> recordQuery(String storeId, String customerId, Integer pageNo, Integer pageSize) {
+    public List<PointRecord> recordQuery(String storeId,
+                                         String customerId,
+                                         Integer pageNo,
+                                         Integer pageSize,
+                                         Source source,
+                                         Type type) {
         Map<String,Object> map = new HashMap<>();
         map.put("storeId",storeId);
         map.put("customerId",customerId);
+        map.put("source",source);
+        map.put("type",type);
         int start = (pageNo > 0 ? pageNo - 1 : 0) * pageSize;
         map.put("start",start);
         map.put("pageSize",pageSize);

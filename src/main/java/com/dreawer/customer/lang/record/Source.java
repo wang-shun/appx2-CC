@@ -6,23 +6,18 @@ package com.dreawer.customer.lang.record;
 public enum Source {
 
     /**
-     * 系统
+     * 消费获取
      **/
-    SYSTEM;
+    PURCHASE,
 
     /**
-     * 获取成长值来源
-     *
-     * @param name
-     * @return 枚举对象
+     * 到期扣减
+     **/
+    EXPIRE,
+
+    /**
+     *  手动添加
      */
-    public static Source get(String name) {
-        for (Source source : Source.values()) {
-            if (source.toString().equalsIgnoreCase(name)) {
-                return source;
-            }
-        }
-        return null;
-    }
+    MANUAL
 
 }
