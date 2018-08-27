@@ -282,8 +282,15 @@ public class MemberManager extends BaseManager {
             if (map.get("pageSize")!=null){
                 pageSize = Integer.parseInt(map.get("pageSize").toString());
             }
-       Source source= (Source) map.get(SOURCE);
-       Type type = (Type) map.get(TYPE);
+            Source source = null;
+            Type type = null;
+            if (map.get(SOURCE)!=null){
+                source= (Source) map.get(SOURCE);
+            }
+            if (map.get(TYPE)!=null){
+                type = (Type) map.get(TYPE);
+            }
+
             List<PointRecord> pointRecords = pointRecordService.recordQuery(storeId,customerId,pageNo,pageSize,source,type);
             int totalSize = pointRecordService.recordQueryCount(storeId,customerId,source,type);
             int totalPage = totalSize%pageSize==0?totalSize/pageSize:(totalSize/pageSize+1);

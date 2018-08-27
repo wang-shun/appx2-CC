@@ -310,8 +310,8 @@ public class MemberController extends BaseController {
     public @ResponseBody ResponseCode pointRecord(HttpServletRequest req,
 												  @RequestParam(STORE_ID)String storeId,
 												  @RequestParam(TERMINAL_TYPE)String terminalType,
-												  @RequestParam(SOURCE) Source source,
-												  @RequestParam(TYPE)Type type,
+												  @RequestParam(value = SOURCE,required = false) Source source,
+												  @RequestParam(value = TYPE,required = false)Type type,
 												  @RequestParam(value=PAGE_NO, required=false, defaultValue="1")Integer pageNo,
 												  @RequestParam(value=PAGE_SIZE, required=false, defaultValue="5")Integer pageSize,
 												  @RequestParam(value = USER_ID,required = false)String userId
@@ -342,9 +342,12 @@ public class MemberController extends BaseController {
         	
         	data.put(PAGE_NO, pageNo);
         	data.put(PAGE_SIZE, pageSize);
-        	data.put(SOURCE,source);
-        	data.put(TYPE,type);
-
+        	if (source!=null) {
+				data.put(SOURCE, source);
+			}
+			if (type!=null) {
+				data.put(TYPE, type);
+			}
 			Map<String, Object> map = memberManager.recordQuery(data, storeId);
 
 			return Success.SUCCESS(map);
