@@ -1,5 +1,7 @@
 package com.dreawer.customer.domain;
 
+import java.util.Date;
+
 import com.dreawer.domain.BaseDomain;
 
 public class TokenUser extends BaseDomain{
@@ -17,6 +19,8 @@ public class TokenUser extends BaseDomain{
     private String petName = null; // 昵称
 
     private String mugshot = null; // 头像
+
+    private Date createTime = null; // 创建时间
 
 	public String getPassword() {
 		return password;
@@ -64,6 +68,14 @@ public class TokenUser extends BaseDomain{
 
 	public void setOrganizeId(String organizeId) {
 		this.organizeId = organizeId;
+	}
+
+	public Date getCreateTime() {
+		return createTime;
+	}
+
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
 	}
 
 	
