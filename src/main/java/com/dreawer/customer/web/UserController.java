@@ -206,7 +206,10 @@ public class UserController extends BaseController {
 			if(organize==null) {
 				return Error.BUSINESS("appId");
 			}
-			
+			TokenUser tokenUser = getSignInUser(req);
+			if(StringUtils.isBlank(tokenUser.getEmail())) {
+				return Error.BUSINESS("email");
+			}
 			// 判断手机是否已注册
 			User existsUser = userService.findUserByPhone(form.getPhone(), organize.getId());
             if(existsUser!=null){
@@ -214,15 +217,15 @@ public class UserController extends BaseController {
             }
 	        
 			// 校验验证码
-            if(!restRequest.isCaptchaValid(form.getPhone(), form.getCaptcha())) {
+            if(!restRequest.isCaptchaValid(tokenUser.getEmail(), form.getCaptcha())) {
 				return Error.BUSINESS("captcha");
             }
 			
-			// 更新邮箱
+			// 更新手机
 			User user = new User();
-	    	user.setId(form.getUserId());
+	    	user.setId(tokenUser.getId());
 			user.setPhoneNumber(form.getPhone());
-			user.setUpdater(form.getUserId());
+			user.setUpdater(tokenUser.getId());
 			user.setUpdateTime(getNow());
 			userService.updateBasic(user);
 			// 更新用户登录信息
