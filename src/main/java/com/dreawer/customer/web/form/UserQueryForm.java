@@ -1,12 +1,7 @@
 package com.dreawer.customer.web.form;
 
-import org.hibernate.validator.constraints.NotEmpty;
-
 public class UserQueryForm {
 
-	@NotEmpty(message="EntryError.EMPTY")
-	private String appId = null;
-	
 	private Long startTime = null;
 	
 	private Long endTime = null;
@@ -55,14 +50,6 @@ public class UserQueryForm {
 
 	public void setPageSize(Integer pageSize) {
 		this.pageSize = pageSize;
-	}
-
-	public String getAppId() {
-		return appId;
-	}
-
-	public void setAppId(String appId) {
-		this.appId = appId;
 	}
 	
 }
