@@ -435,16 +435,20 @@ public class MemberController extends BaseController {
 			freeShipping =hierarchy.getFreeShipping();
 			hasDiscount = hierarchy.getDiscount();
 
-			String discountAmount = hierarchy.getDiscountAmount();
-			List<GoodsInfoForm> goodsInfo = form.getGoodsInfo();
-			//遍历计算折扣金额
-			for (GoodsInfoForm goodsInfoForm : goodsInfo) {
-				BigDecimal price = goodsInfoForm.getPrice();
-				BigDecimal discountPrice = price
-						.divide(new BigDecimal(10),2,RoundingMode.HALF_UP)
-						.multiply(new BigDecimal(discountAmount));
-				goodsInfoForm.setPrice(discountPrice);
-			}
+			List<GoodsInfoForm> goodsInfo =null;
+            if (hasDiscount){
+                String discountAmount = hierarchy.getDiscountAmount();
+                goodsInfo = form.getGoodsInfo();
+                //遍历计算折扣金额
+                for (GoodsInfoForm goodsInfoForm : goodsInfo) {
+                    BigDecimal price = goodsInfoForm.getPrice();
+                    BigDecimal discountPrice = price
+                            .divide(new BigDecimal(10),2,RoundingMode.HALF_UP)
+                            .multiply(new BigDecimal(discountAmount));
+                    goodsInfoForm.setPrice(discountPrice);
+                }
+            }
+
 			param.put("hasDiscount",hasDiscount);
 			param.put("goodsInfo",goodsInfo);
 			param.put("freeShipping",freeShipping);
