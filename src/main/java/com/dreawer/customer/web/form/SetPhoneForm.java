@@ -6,7 +6,6 @@ import javax.validation.constraints.Pattern;
 
 public class SetPhoneForm {
 
-	
 	@NotEmpty(message="EntryError.EMPTY")
 	@Pattern(regexp="^1(3[0-9]|4[57]|5[0-35-9]|7[0135678]|8[0-9])\\d{8}$",
 		message="EntryError.FORMAT")    
@@ -17,9 +16,6 @@ public class SetPhoneForm {
 
 	@NotEmpty(message="EntryError.EMPTY")
 	private String appId = null;
-	
-	@NotEmpty(message="EntryError.EMPTY")
-	private String userId = null;
 	
 	public String getPhone() {
 		return phone;
@@ -44,14 +40,5 @@ public class SetPhoneForm {
 	public void setAppId(String appId) {
 		this.appId = appId;
 	}
-
-	public String getUserId() {
-		return userId;
-	}
-
-	public void setUserId(String userId) {
-		this.userId = userId;
-	}
-
 	
 }
