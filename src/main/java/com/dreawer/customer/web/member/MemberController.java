@@ -419,6 +419,7 @@ public class MemberController extends BaseController {
 			String userId = form.getUserId();
 			Map<String,Object> param = new HashMap<>();
 			param.put("hasDiscount",hasDiscount);
+			param.put("freeShipping",freeShipping);
 			Member member = memberService.findById(userId);
 			if (member==null){
 				return Success.SUCCESS(param);
@@ -427,12 +428,13 @@ public class MemberController extends BaseController {
 			if (hierarchy==null){
 				return Success.SUCCESS(param);
 			}
-			if (!hierarchy.getDiscount()||hierarchy.getStatus().equals(Status.DISABLE.name())){
+			//如果等级为关则无会员权益
+			if (hierarchy.getStatus().equals(Status.DISABLE)){
 				return Success.SUCCESS(param);
 			}
-			if (hierarchy.getFreeShipping()){
-				freeShipping=true;
-			}
+			freeShipping =hierarchy.getFreeShipping();
+			hasDiscount = hierarchy.getDiscount();
+
 			String discountAmount = hierarchy.getDiscountAmount();
 			List<GoodsInfoForm> goodsInfo = form.getGoodsInfo();
 			//遍历计算折扣金额
@@ -443,7 +445,6 @@ public class MemberController extends BaseController {
 						.multiply(new BigDecimal(discountAmount));
 				goodsInfoForm.setPrice(discountPrice);
 			}
-			hasDiscount=true;
 			param.put("hasDiscount",hasDiscount);
 			param.put("goodsInfo",goodsInfo);
 			param.put("freeShipping",freeShipping);
