@@ -443,8 +443,8 @@ public class MemberController extends BaseController {
                 for (GoodsInfoForm goodsInfoForm : goodsInfo) {
                     BigDecimal price = goodsInfoForm.getPrice();
                     BigDecimal discountPrice = price
-                            .divide(new BigDecimal(10),2,RoundingMode.HALF_UP)
-                            .multiply(new BigDecimal(discountAmount));
+							.multiply(new BigDecimal(discountAmount))
+                            .divide(new BigDecimal(10),2,RoundingMode.HALF_UP);
                     goodsInfoForm.setPrice(discountPrice);
                 }
             }
