@@ -1,6 +1,8 @@
 package com.dreawer.customer.web.form;
 
 import com.dreawer.customer.lang.VerifyType;
+
+import org.apache.commons.lang.StringUtils;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -9,7 +11,7 @@ import javax.validation.constraints.Pattern;
 public class VerifyForm {
 
 	@NotEmpty(message="EntryError.EMPTY")
-	private VerifyType type = null; // 类型
+	private String type = null; // 类型
 
 	@Pattern(regexp="^1(3[0-9]|4[57]|5[0-35-9]|7[0135678]|8[0-9])\\d{8}$",
 			message="EntryError.FORMAT")
@@ -22,11 +24,14 @@ public class VerifyForm {
 	private String appId = null;
 	
 	public VerifyType getType() {
-		return type;
+		if(StringUtils.isNotBlank(type)) {
+			return VerifyType.valueOf(type);
+		}
+		return null;
 	}
 
 	public void setType(String type) {
-		this.type = VerifyType.valueOf(type);
+		this.type = type;
 	}
 
 	public String getEmail() {

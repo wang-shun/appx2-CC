@@ -304,4 +304,26 @@ public class UserController extends BaseController {
 		    return Error.APPSERVER;
         }
 	}
+	
+	/**
+	 * 获取用户信息。
+	 * @param req
+	 * @return
+	 */
+	@RequestMapping(value="/user/detail", method=RequestMethod.GET)
+	public ResponseCode userList(HttpServletRequest req) {
+		try {
+			String id = req.getParameter("userId");
+			if(StringUtils.isBlank(id)) {
+				return Error.BUSINESS("userId");
+			}
+			TokenUser user = tokenUserService.findTokenUserById(id);
+			return Success.SUCCESS(user);
+		} catch (Exception e) {
+		    logger.error("error",e);
+            
+            // 返回失败标志及信息
+		    return Error.APPSERVER;
+        }
+	}
 }
