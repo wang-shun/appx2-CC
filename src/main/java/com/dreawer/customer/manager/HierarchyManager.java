@@ -95,7 +95,7 @@ public class HierarchyManager extends BaseManager{
                 //判断会员名称是否重复
                 for (Hierarchy node : list) {
                     if (node.getName().trim().equals(hierarchy.getName().trim())){
-                        throw new ResponseCodeException(EntryError.DUPLICATE("名称不能重复"));
+                        throw new ResponseCodeException(EntryError.DUPLICATE("会员名称不得与已添加的会员的名称相同"));
                     }
                 }
             }
@@ -253,7 +253,7 @@ public class HierarchyManager extends BaseManager{
                     !node.getId().equals(hierarchy.getId())){
                 //名称重复时回滚启用状态
                 rollBack(hierarchy.getId(),hierarchy.getStatus());
-                throw new ResponseCodeException(EntryError.DUPLICATE("名称不能重复"));
+                throw new ResponseCodeException(EntryError.DUPLICATE("会员名称不得与已添加的会员的名称相同"));
             }
         }
 
