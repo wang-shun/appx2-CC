@@ -1,5 +1,6 @@
 package com.dreawer.customer;
 
+import com.dreawer.responsecode.rcdt.ResponseCode;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -15,6 +16,7 @@ public class CustomerBootApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(CustomerBootApplication.class, args);
+		ResponseCode.initNamespace("cc");
 	}
 	
 	@Bean
