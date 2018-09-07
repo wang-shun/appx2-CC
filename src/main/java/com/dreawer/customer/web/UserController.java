@@ -311,7 +311,7 @@ public class UserController extends BaseController {
 	 * @return
 	 */
 	@RequestMapping(value="/user/detail", method=RequestMethod.GET)
-	public ResponseCode userList(HttpServletRequest req) {
+	public ResponseCode detail(HttpServletRequest req) {
 		try {
 			String id = req.getParameter("userId");
 			if(StringUtils.isBlank(id)) {

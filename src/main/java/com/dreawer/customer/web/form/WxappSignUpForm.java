@@ -8,7 +8,7 @@ public class WxappSignUpForm {
 	private String mugshot = null; // 头像
 
 	@NotEmpty(message="EntryError.EMPTY")
-	@Length(min=2, max=20, message="EntryError.OVERRANGE")
+	@Length(min=1, max=20, message="EntryError.OVERRANGE")
 	private String petName = null; // 昵称
 	
 	@NotEmpty(message="EntryError.EMPTY")
