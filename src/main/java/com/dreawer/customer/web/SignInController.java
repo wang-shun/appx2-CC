@@ -7,9 +7,11 @@ import com.dreawer.customer.service.UserService;
 import com.dreawer.customer.utils.MD5Utils;
 import com.dreawer.customer.web.form.BaseLoginForm;
 import com.dreawer.customer.web.form.UserBaseForm;
+import com.dreawer.responsecode.rcdt.EntryError;
 import com.dreawer.responsecode.rcdt.Error;
 import com.dreawer.responsecode.rcdt.ResponseCode;
 import com.dreawer.responsecode.rcdt.ResponseCodeRepository;
+import com.dreawer.responsecode.rcdt.RuleError;
 import com.dreawer.responsecode.rcdt.Success;
 
 import org.slf4j.Logger;
@@ -62,7 +64,7 @@ public class SignInController extends BaseController {
 			// 检查组织是否存在
 			Organize organize = organizeService.findOrganizeByAppId(form.getAppId());
 			if(organize==null) {
-				return Error.BUSINESS("appId");
+	            return RuleError.NON_EXISTENT("organize");
 			}
 			
             String flag = null;
@@ -86,10 +88,10 @@ public class SignInController extends BaseController {
 	        }else if("phone".equals(flag)){
 				user = userService.findUserByPhone(form.getLoginName(), organize.getId());
 	        }else{
-				return Error.BUSINESS("loginName");
+				return EntryError.FORMAT("loginName");
 	        }
 			if(user==null){
-				return Error.BUSINESS("user");
+	            return RuleError.NON_EXISTENT("user");
 			}
 			if(!MD5Utils.encrypt(form.getPassword(), "dreawer").equals(user.getPassword())){
 				return Error.BUSINESS("password");
@@ -118,7 +120,7 @@ public class SignInController extends BaseController {
 		try {
 			User user = userService.findUserById(form.getUserId());
 			if(user==null) {
-				return Error.BUSINESS("user");
+	            return RuleError.NON_EXISTENT("user");
 			}
             Map<String, String> params = new HashMap<>();
             params.put("token", signInUser(req, user.getId()));

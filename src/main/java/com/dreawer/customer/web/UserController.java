@@ -70,10 +70,10 @@ public class UserController extends BaseController {
 			User user = userService.findUserById(userId);
 	    	if(StringUtils.isNotBlank(user.getPassword())){
 	    		if(!form.getNewPassword().equals(form.getConfirmPassword())){
-					return EntryError.EMPTY("password");
+					return Error.BUSINESS("confirmPassword");
 	    		}
 	    		if(form.getNewPassword().equals(form.getOldPassword())){
-					return Error.BUSINESS("password");
+					return Error.BUSINESS("newPassword");
 	    		}
 	    		if(!user.getPassword().equals(MD5Utils.encrypt(form.getOldPassword(), "dreawer"))){
 					return Error.BUSINESS("password");
@@ -111,7 +111,7 @@ public class UserController extends BaseController {
 			String userId = req.getHeader("userid");
 	        Customer customer = customerService.findCustomerById(userId);
 	        if(customer==null) {
-	        	return Error.BUSINESS("user");
+	            return RuleError.NON_EXISTENT("user");
 	        }
 	        if(!customer.getPetName().equals(form.getPetName())){
 	        	customer.setPetName(form.getPetName());
@@ -153,13 +153,13 @@ public class UserController extends BaseController {
 			// 检查组织是否存在
 			Organize organize = organizeService.findOrganizeByAppId(form.getAppId());
 			if(organize==null) {
-				return Error.BUSINESS("appId");
+	            return RuleError.NON_EXISTENT("organize");
 			}
 			
 			// 判断邮箱是否已注册
 			User existsUser = userService.findUserByEmail(form.getEmail(), organize.getId());
             if(existsUser!=null){
-				return Error.BUSINESS("email");
+				return RuleError.EXISTED("email");
             }
 	        
 			// 校验验证码
@@ -204,16 +204,16 @@ public class UserController extends BaseController {
 			// 检查组织是否存在
 			Organize organize = organizeService.findOrganizeByAppId(form.getAppId());
 			if(organize==null) {
-				return Error.BUSINESS("appId");
+	            return RuleError.NON_EXISTENT("organize");
 			}
 			TokenUser tokenUser = getSignInUser(req);
 			if(StringUtils.isBlank(tokenUser.getEmail())) {
-				return Error.BUSINESS("email");
+	            return RuleError.NON_EXISTENT("email");
 			}
 			// 判断手机是否已注册
 			User existsUser = userService.findUserByPhone(form.getPhone(), organize.getId());
             if(existsUser!=null){
-				return Error.BUSINESS("phone");
+				return RuleError.EXISTED("phone");
             }
 	        
 			// 校验验证码
@@ -275,7 +275,7 @@ public class UserController extends BaseController {
 			// 检查组织是否存在
 			Organize organize = organizeService.findOrganizeByAppId(appId);
 			if(organize==null) {
-				return Error.BUSINESS("appId");
+	            return RuleError.NON_EXISTENT("organize");
 			}
 			Timestamp startTime = null;
     		Timestamp endTime = null;

@@ -49,7 +49,7 @@ public class AddressController extends BaseController{
 			String response = restRequest.restGet(url);
             JSONObject responseCode = new JSONObject(response);
             if (!responseCode.getString("code").equals("000000")) {
-            	return Error.BUSINESS("basedata");
+            	return Error.BUSINESS("district");
             }
             
 			JSONObject data = responseCode.getJSONObject("data");
@@ -133,7 +133,7 @@ public class AddressController extends BaseController{
 			String response = restRequest.restGet(url);
             JSONObject responseCode = new JSONObject(response);
             if (!responseCode.getString("code").equals("000000")) {
-            	Error.BUSINESS("basedata");
+            	Error.BUSINESS("district");
             }
             
 			JSONObject data = responseCode.getJSONObject("data");

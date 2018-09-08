@@ -60,12 +60,12 @@ public class SignUpController extends BaseController {
 			// 检查组织是否存在
 			Organize organize = organizeService.findOrganizeByAppId(form.getAppId());
 			if(organize==null) {
-				return Error.BUSINESS("appId");
+	            return RuleError.NON_EXISTENT("organize");
 			}
 			
 			User user = userService.findUserByPhone(form.getPhone(), organize.getId());
             if(user!=null){
-				return Error.BUSINESS("phone");
+				return RuleError.EXISTED("user");
             }
 			// 校验验证码
             if(!restRequest.isCaptchaValid(form.getPhone(), form.getCaptcha())) {
@@ -112,7 +112,7 @@ public class SignUpController extends BaseController {
 			// 检查组织是否存在
 			Organize organize = organizeService.findOrganizeByAppId(form.getAppId());
 			if(organize==null) {
-				return Error.BUSINESS("appId");
+	            return RuleError.NON_EXISTENT("organize");
 			}
             
             User user = new User();
@@ -155,7 +155,7 @@ public class SignUpController extends BaseController {
 			// 检查组织是否存在
 			Organize organize = organizeService.findOrganizeByAppId(form.getAppId());
 			if(organize==null) {
-				return Error.BUSINESS("appId");
+	            return RuleError.NON_EXISTENT("organize");
 			}
 			
 			// 校验验证码
@@ -173,7 +173,7 @@ public class SignUpController extends BaseController {
 			}
 			
 			if(user==null){
-				return Error.BUSINESS("user");
+	            return RuleError.NON_EXISTENT("user");
 			}
 			
 			// 修改密码
@@ -204,7 +204,7 @@ public class SignUpController extends BaseController {
 			// 检查组织是否存在
 			Organize organize = organizeService.findOrganizeByAppId(form.getAppId());
 			if(organize==null) {
-				return Error.BUSINESS("appId");
+	            return RuleError.NON_EXISTENT("organize");
 			}
             
 			User user = new User();
@@ -216,7 +216,7 @@ public class SignUpController extends BaseController {
 				return Error.BUSINESS("type");
 			}
 			if(user!=null){
-				return Error.BUSINESS("user");
+	            return RuleError.EXISTED("user");
 			}
         	return Success.SUCCESS;
 		}catch(Exception e){
