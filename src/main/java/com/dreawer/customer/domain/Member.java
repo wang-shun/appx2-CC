@@ -1,5 +1,9 @@
 package com.dreawer.customer.domain;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
+
 import java.io.Serializable;
 import java.sql.Date;
 import java.sql.Timestamp;
@@ -11,13 +15,18 @@ import java.sql.Timestamp;
  * @author fenrir
  * @Date 18-3-19
  */
+
+@Data
+@ApiModel("会员实体类")
 public class Member implements Serializable {
 
 
     private static final long serialVersionUID = 4044203951388598001L;
 
+    @ApiModelProperty(name = "id",value = "主键")
     public String id; //主键
 
+    @ApiModelProperty(name = "storeId",value = "店铺Id")
     private String storeId; //店铺Id
 
     private String phoneNumber; //电话号码

@@ -20,9 +20,7 @@ import com.dreawer.responsecode.rcdt.EntryError;
 import com.dreawer.responsecode.rcdt.ResponseCode;
 import com.dreawer.responsecode.rcdt.Success;
 import com.google.gson.Gson;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.*;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,6 +43,7 @@ import static com.dreawer.customer.DomainConstants.*;
 
 @Controller
 @RequestMapping(REQ_MEMBER)
+@Api(description = "会员管理接口",tags = "会员")
 public class MemberController extends BaseController {
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -65,9 +64,12 @@ public class MemberController extends BaseController {
      * @author kael 
      * @since 1.0
      */
+    @ApiOperation(value = "请求注册会员",notes = "请求注册会员接口",response = Member.class)
     @RequestMapping(value=REQ_REGISTER, method = RequestMethod.POST)
     public @ResponseBody
-	ResponseCode register(HttpServletRequest req, @RequestBody @Valid RegisterMemberForm form) throws Exception {
+	ResponseCode register(HttpServletRequest req,
+                          @ApiParam(value = "注册会员表单",required = true)
+                          @RequestBody @Valid RegisterMemberForm form) throws Exception {
 
         	//获取用户信息
 			String userId = req.getHeader("userid");
@@ -159,8 +161,12 @@ public class MemberController extends BaseController {
      * @author kael 
      * @since 1.0
      */
+    @ApiOperation(value = "修改会员信息")
+	@ApiResponses(value = @ApiResponse(code = 200,response = ResponseCode.class,message = "请求成功"))
     @RequestMapping(value=REQ_EDIT, method = RequestMethod.POST)
-    public @ResponseBody ResponseCode edit(HttpServletRequest req, @RequestBody @Valid EditMemberForm form) throws Exception {
+    public @ResponseBody ResponseCode edit(HttpServletRequest req,
+										   @ApiParam(value = "修改会员表单",required = true)
+										   @RequestBody @Valid EditMemberForm form) throws Exception {
 
 			//获取用户信息
 			String userId = req.getHeader("userid");

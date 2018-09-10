@@ -190,11 +190,11 @@ public final class ControllerConstants {
     
     /** 用户忘记密码*/
     public static final String REQ_PASSWORD_FORGET = "/password/forget";
-    
+
     /** 用户重设密码*/
     public static final String REQ_PASSWORD_RESET = "/password/reset";
-    
-    /** 用户登录名是否存在 */
+
+    /** 用户登录名 是否存在 */
     public static final String REQ_SIGNUP_USER_EXISTS = "/signup/isUserExists";
     
     /** 用户验证手机*/

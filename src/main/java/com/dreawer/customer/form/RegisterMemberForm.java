@@ -1,28 +1,37 @@
 package com.dreawer.customer.form;
 
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 /**
  * <CODE>AddDecorationServiceForm</CODE> 添加服务表单。
  * @author kael
  * @since Dreawer 2.0
  * @version 1.0
  */
+@ApiModel(value = "注册会员表单")
 public class RegisterMemberForm {
-    
+
+	@ApiModelProperty(value = "店铺ID",dataType = "String",required = true,notes = "店铺ID")
 	private String storeId = null; //店铺ID
-	
-    private String phoneNumber  = null; // 电话号码
-    
-    private Integer sex = null; // 性别（0-女性，1-男性，2-未知）
-	
-    private String userName = null; //用户名称
 
-    private String birthday = null; //生日（时间戳）
+	@ApiModelProperty(value = "电话号码",dataType = "String",required = true)
+	private String phoneNumber  = null; // 电话号码
 
-    private String captcha = null; //验证码
-    
-    private String mugshot = null; //验证码
-    
+	@ApiModelProperty(value = "性别",dataType = "Integer",required = true,notes = "（0-女性，1-男性，2-未知）")
+	private Integer sex = null; // 性别（0-女性，1-男性，2-未知）
+
+	@ApiModelProperty(value = "用户名称",dataType = "String",required = true)
+	private String userName = null; //用户名称
+
+	@ApiModelProperty(value = "生日",dataType = "String",required = true,notes = "时间戳")
+	private String birthday = null; //生日（时间戳）
+
+	@ApiModelProperty(value = "头像",dataType = "String",required = true)
+	private String mugshot = null; //头像
+
+	@ApiModelProperty(value = "昵称",dataType = "String",required = true)
     private String nickName = null; //昵称
 
 
@@ -60,14 +69,6 @@ public class RegisterMemberForm {
 
 	public void setUserName(String userName) {
 		this.userName = userName;
-	}
-
-	public String getCaptcha() {
-		return captcha;
-	}
-
-	public void setCaptcha(String captcha) {
-		this.captcha = captcha;
 	}
 
 	public String getMugshot() {

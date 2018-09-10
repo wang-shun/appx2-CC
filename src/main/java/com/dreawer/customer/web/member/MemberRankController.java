@@ -96,7 +96,7 @@ public class MemberRankController extends BaseController {
                 return EntryError.EMPTY(DISCOUNT_AMOUNT);
             } else {
                 //折扣为1.0-9.9之间
-                Pattern pattern = Pattern.compile("^(?=1\\.[1-9]|[1-9]\\.\\d).{3}$|^([1-9])$");
+                Pattern pattern = Pattern.compile("^(?=0\\.[1-9]|[1-9]\\.\\d).{3}$|^([1-9])$");
                 Matcher matcher = pattern.matcher(discountAmount.toString());
                 if (!matcher.matches()) {
                     return EntryError.FORMAT(DISCOUNT_AMOUNT);
@@ -216,7 +216,7 @@ public class MemberRankController extends BaseController {
                 return EntryError.EMPTY(DISCOUNT_AMOUNT);
             } else {
                 //折扣为1.0-9.9之间
-                Pattern pattern = Pattern.compile("^(?=1\\.[1-9]|[1-9]\\.\\d).{3}$|^([1-9])$");
+                Pattern pattern = Pattern.compile("^(?=0\\.[1-9]|[1-9]\\.\\d).{3}$|^([1-9])$");
                 Matcher matcher = pattern.matcher(discountAmount.toString());
                 if (!matcher.matches()) {
                     return EntryError.FORMAT(DISCOUNT_AMOUNT);

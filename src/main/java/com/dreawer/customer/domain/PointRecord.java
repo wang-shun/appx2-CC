@@ -3,6 +3,7 @@ package com.dreawer.customer.domain;
 
 import com.dreawer.customer.lang.record.Source;
 import com.dreawer.customer.lang.record.Type;
+import lombok.Data;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
@@ -14,6 +15,7 @@ import java.sql.Timestamp;
  * @author fenrir
  * @Date 18-3-26
  */
+@Data
 public class PointRecord implements Serializable {
 
     private static final long serialVersionUID = 1475885168692186914L;
@@ -32,76 +34,5 @@ public class PointRecord implements Serializable {
 
     private Timestamp createTime = null; // 创建时间
 
-    public static long getSerialVersionUID() {
-        return serialVersionUID;
-    }
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public Type getType() {
-        return type;
-    }
-
-    public void setType(Type type) {
-        this.type = type;
-    }
-
-    public String getValue() {
-        return value;
-    }
-
-    public void setValue(String value) {
-        this.value = value;
-    }
-
-    public Source getSource() {
-        return source;
-    }
-
-    public void setSource(Source source) {
-        this.source = source;
-    }
-
-    public String getCustomerId() {
-        return customerId;
-    }
-
-    public void setCustomerId(String customerId) {
-        this.customerId = customerId;
-    }
-
-    public String getStoreId() {
-        return storeId;
-    }
-
-    public void setStoreId(String storeId) {
-        this.storeId = storeId;
-    }
-
-    public Timestamp getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Timestamp createTime) {
-        this.createTime = createTime;
-    }
-
-    @Override
-    public String toString() {
-        return "PointRecord{" +
-                "id='" + id + '\'' +
-                ", type=" + type +
-                ", value='" + value + '\'' +
-                ", source=" + source +
-                ", customerId='" + customerId + '\'' +
-                ", storeId='" + storeId + '\'' +
-                ", createTime=" + createTime +
-                '}';
-    }
 }
