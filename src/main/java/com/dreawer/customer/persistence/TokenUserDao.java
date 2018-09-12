@@ -41,6 +41,15 @@ public class TokenUserDao extends MyBatisBaseDao<TokenUser>{
 		params.put("endTime", endTime);		
 		return selectList("findUsers", params);
 	}
+
+	public int findUsersCount(String organizeId, String query, Timestamp startTime, Timestamp endTime) {
+		Map<String, Object> params = new HashMap<>();
+		params.put("organizeId", organizeId);
+		params.put("query", query);		
+		params.put("startTime", startTime);		
+		params.put("endTime", endTime);		
+		return count("findUsersCount", params);
+	}
 	
 
 }

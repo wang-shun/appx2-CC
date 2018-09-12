@@ -27,7 +27,9 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.sql.Timestamp;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static com.dreawer.customer.constants.ControllerConstants.*;
 
@@ -296,7 +298,17 @@ public class UserController extends BaseController {
     		int start = (pageNo-1)*pageSize;
     		
     		List<TokenUser> users = tokenUserService.findUsers(organize.getId(), form.getQuery(), start, pageSize, startTime, endTime);
-			return Success.SUCCESS(users);
+    		Map<String, Object> pageParam = new HashMap<>();
+    		
+    		// 查询分页信息
+    		int totalSize = tokenUserService.findUsersCount(organize.getId(), form.getQuery(), startTime, endTime);
+    		int totalPage = totalSize%pageSize==0?totalSize/pageSize:(totalSize/pageSize + 1);
+    		pageParam.put("totalSize", totalSize);
+    		pageParam.put("totalPage", totalPage);
+    		Map<String, Object> resultMap = new HashMap<>();
+    		resultMap.put("pageParam", pageParam);
+    		resultMap.put("users", users);
+			return Success.SUCCESS(resultMap);
 		} catch (Exception e) {
 		    logger.error("error",e);
             
