@@ -34,6 +34,9 @@ public class RegisterMemberForm {
 	@ApiModelProperty(value = "昵称",dataType = "String",required = true)
     private String nickName = null; //昵称
 
+	@ApiModelProperty(value = "验证码",dataType = "String",required = false)
+	private String captcha = null;
+
 
     // --------------------------------------------------------------------------------
     // getter 和 setter 方法
@@ -96,4 +99,11 @@ public class RegisterMemberForm {
 	}
 
 
+	public String getCaptcha() {
+		return captcha;
+	}
+
+	public void setCaptcha(String captcha) {
+		this.captcha = captcha;
+	}
 }

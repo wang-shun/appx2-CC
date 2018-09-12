@@ -131,7 +131,7 @@ public class MemberRankController extends BaseController {
         //判断状态是否为空
         Status status = form.getStatus();
         if (status == null) {
-            return EntryError.OVERRANGE(STATUS);
+            return EntryError.EMPTY(STATUS);
         }
 
         //获取32位UUID

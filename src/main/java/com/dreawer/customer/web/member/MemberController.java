@@ -17,6 +17,7 @@ import com.dreawer.customer.service.MemberService;
 import com.dreawer.customer.web.BaseController;
 import com.dreawer.customer.web.form.GoodsInfoForm;
 import com.dreawer.responsecode.rcdt.EntryError;
+import com.dreawer.responsecode.rcdt.PermissionsError;
 import com.dreawer.responsecode.rcdt.ResponseCode;
 import com.dreawer.responsecode.rcdt.Success;
 import com.google.gson.Gson;
@@ -93,13 +94,13 @@ public class MemberController extends BaseController {
         	}
         	
         	//判断验证码是否正确
-//        	String captcha = form.getCaptcha();
-//        	if(captcha != null){
-//        		boolean verifyPhone = verifyPhone(phoneNumber, captcha);
-//        		if(!verifyPhone){
-//        			return PermissionsError.CODE_ERROR(CAPTCHA);
-//        		}
-//        	}
+        	String captcha = form.getCaptcha();
+        	if(StringUtils.isBlank(captcha)){
+        		boolean verifyPhone = restRequest.isCaptchaValid(phoneNumber, captcha);
+        		if(!verifyPhone){
+        			return PermissionsError.CODE_ERROR(CAPTCHA);
+        		}
+        	}
         	
         	//判断性别是否为空
         	Integer sex = form.getSex();

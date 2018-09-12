@@ -115,10 +115,10 @@ public class MemberManager extends BaseManager {
         List<Hierarchy> list = hierarchyService.findByStoreId(storeId);
         //如果店铺所有会员等级都被禁用则报错
         if (list==null||list.size()==0){
-            throw new ResponseCodeException(BusinessError.STATUS("未查找到会员等级列表"));
+            throw new ResponseCodeException(BusinessError.STATUS("hierarchies"));
         }
         if (list.get(0).getStatus().equals(Status.DISABLE.toString())){
-            throw new ResponseCodeException(BusinessError.STATUS("该店铺下所有等级都已禁用"));
+            throw new ResponseCodeException(BusinessError.STATUS("hierarchies"));
         }
             Member member = new Member();
             if(map.get("sex")!=null){
@@ -144,7 +144,7 @@ public class MemberManager extends BaseManager {
             }
             member.setStoreId(storeId);
             if (list.size()==0){
-                throw new ResponseCodeException(RuleError.NON_EXISTENT("该店铺下未查询到会员等级信息"));
+                throw new ResponseCodeException(RuleError.NON_EXISTENT("hierarchies"));
             }
             Hierarchy hierarchy = list.get(0);
             member = setDueDate(hierarchy,member);
@@ -184,7 +184,7 @@ public class MemberManager extends BaseManager {
 
             Member before = memberService.findById(member.getId());
             if (before==null){
-                throw new ResponseCodeException(RuleError.NON_EXISTENT("未查询到用户信息"));
+                throw new ResponseCodeException(RuleError.NON_EXISTENT("member"));
             }
             before.setSex(member.getSex());
             before.setPhoneNumber(member.getPhoneNumber());
@@ -193,7 +193,7 @@ public class MemberManager extends BaseManager {
             String hierarchyId = before.getHierarchyId();
             Hierarchy hierarchy = hierarchyService.findById(hierarchyId);
             if (hierarchy==null){
-                throw new ResponseCodeException(RuleError.NON_EXISTENT("未查询到等级信息"));
+                throw new ResponseCodeException(RuleError.NON_EXISTENT("hierarchy"));
             }
             before.setHierarchy(hierarchy);
             //缓存单条数据
@@ -208,10 +208,10 @@ public class MemberManager extends BaseManager {
 
         List<Hierarchy> hierarchies = hierarchyService.findByStoreId(storeId);
         if (hierarchies==null){
-            throw new ResponseCodeException(RuleError.NON_EXISTENT("未查询到店铺信息"));
+            throw new ResponseCodeException(RuleError.NON_EXISTENT("storeId"));
         }
         if (hierarchies.get(0).getStatus().equals(Status.DISABLE)){
-                throw new ResponseCodeException(PermissionsError.FUNCTION_NO_ALLOW("店铺无已启用的会员等级"));
+                throw new ResponseCodeException(PermissionsError.FUNCTION_NO_ALLOW("hierarchies"));
             }
             //保留整数
             pointRecord.setValue(String.valueOf(new BigDecimal(pointRecord.getValue()).intValue()));
@@ -222,7 +222,7 @@ public class MemberManager extends BaseManager {
 
             Member member = memberService.findById(customerId);
             if (member==null){
-               throw new ResponseCodeException(RuleError.NON_EXISTENT("未查询到会员信息"));
+               throw new ResponseCodeException(RuleError.NON_EXISTENT("member"));
             }
             pointRecord.setCreateTime(new Timestamp(System.currentTimeMillis()));
             pointRecordService.addPointRecord(pointRecord);

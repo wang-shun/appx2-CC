@@ -11,6 +11,7 @@ import com.dreawer.customer.service.SigninLogService;
 import com.dreawer.customer.service.TokenUserService;
 import com.dreawer.customer.utils.PinyinUtils;
 import com.dreawer.customer.utils.RedisUtil;
+import com.dreawer.customer.utils.RestRequest;
 import com.dreawer.customer.utils.SystemUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.http.HttpEntity;
@@ -29,6 +30,7 @@ import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -49,6 +51,9 @@ public class BaseController{
     
     @Autowired
     private SigninLogService signinLogService; // 登录日志服务
+
+    @Autowired
+    protected RestRequest restRequest;
     
     /**
      * 登录用户。
