@@ -69,6 +69,23 @@
 		LIMIT #{start}, #{pageSize}
     </select>
     
+    <!-- 查询用户信息 -->
+    <select id="findUsersCount" parameterType="Map" resultType="Integer">
+        SELECT COUNT(id)
+        FROM aci_user
+		WHERE org_id = #{organizeId}
+		AND status = 'ACTIVATED'
+		<if test="startTime != null">
+			AND cre_tim &gt;= #{startTime}
+		</if>
+		<if test="endTime != null">
+			AND cre_tim &lt;= #{endTime}
+		</if>
+		<if test="query != null">
+			AND phoneNumber = #{query}
+		</if>
+    </select>
+    
     <!-- ================================================================================== -->
 	<!-- 公用SQL定义																			-->
 	<!-- ================================================================================== -->

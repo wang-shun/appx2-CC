@@ -30,6 +30,10 @@ public class TokenUserService {
 			Timestamp endTime) {
 		return tokenUserDao.findUsers(organizeId, query, start, pageSize, startTime, endTime);
 	}
+
+	public int findUsersCount(String organizeId, String query, Timestamp startTime, Timestamp endTime) {
+		return tokenUserDao.findUsersCount(organizeId, query, startTime, endTime);
+	}
 	
 	
 }
