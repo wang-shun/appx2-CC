@@ -95,7 +95,7 @@ public class MemberController extends BaseController {
         	
         	//判断验证码是否正确
         	String captcha = form.getCaptcha();
-        	if(StringUtils.isBlank(captcha)){
+        	if(!StringUtils.isBlank(captcha)){
         		boolean verifyPhone = restRequest.isCaptchaValid(phoneNumber, captcha);
         		if(!verifyPhone){
         			return PermissionsError.CODE_ERROR(CAPTCHA);
