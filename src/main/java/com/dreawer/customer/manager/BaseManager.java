@@ -20,7 +20,7 @@ public class BaseManager {
     }
 
     protected Member setDueDate(Hierarchy node, Member member) {
-        if (node.getExpiration().equals(Expiration.LIMITED.toString())){
+        if (node.getExpiration().equals(Expiration.LIMITED)){
             //重新计算到期时间
             Integer period = node.getPeriod();
             Calendar calendar = Calendar.getInstance();
