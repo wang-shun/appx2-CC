@@ -417,7 +417,7 @@ public class BaseController{
      */
     protected String getMugshot(String mugshot){
     	if(StringUtils.isBlank(mugshot)){
-    		mugshot = "/images/def_photo.png";
+    		mugshot = "/images/default-photo.png";
     	}
 		return mugshot;
     }
