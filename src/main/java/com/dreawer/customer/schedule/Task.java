@@ -10,6 +10,7 @@ import com.dreawer.customer.lang.record.Type;
 import com.dreawer.customer.manager.MemberManager;
 import com.dreawer.customer.service.HierarchyService;
 import com.dreawer.customer.service.MemberService;
+import lombok.extern.java.Log;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -26,6 +27,7 @@ import java.util.List;
  */
 @Component
 @EnableScheduling
+@Log
 public class Task {
     private Logger logger = Logger.getLogger(this.getClass()); // 日志记录器
 
@@ -45,7 +47,7 @@ public class Task {
      */
     public void memberExpireHandler()  {
       try {
-
+          log.info("会员扫描开启");
           //获取所有开启会员的店铺列表
           List<String> stores = hierarchyService.findAllStores();
           if (stores==null){
@@ -63,12 +65,13 @@ public class Task {
                   if (member.getHierarchyId()!=null&&
                           hierarchy !=null&&
                           member.getDueDate()!=null&&
-                          hierarchy.getExpiration().equals(Expiration.LIMITED.toString())){
+                          hierarchy.getExpiration().equals(Expiration.LIMITED)){
                       Timestamp dueDate = member.getDueDate();
                       Timestamp current = new Timestamp(System.currentTimeMillis());
                       //如果到期日期小于等于当前时刻则扣减成长值
                       if (dueDate.compareTo(current)!=1){
                           //扣减值
+                          log.info("开始扣减成长值");
                           Integer expireDeduction = member.getHierarchy().getExpireDeduction();
                           PointRecord pointRecord = new PointRecord();
                           pointRecord.setType(Type.REDUCE);
