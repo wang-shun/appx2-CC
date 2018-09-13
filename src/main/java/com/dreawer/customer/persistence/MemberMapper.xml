@@ -11,8 +11,8 @@
         <!--<selectKey keyProperty="id" order="BEFORE" resultType="java.lang.String">
               SELECT REPLACE(UUID(), '-', '')
           </selectKey>-->
-        INSERT INTO mem_user(id,sto_id,ph_num,mug_shot,nick_nam,usr_nam,sex,birthday,hier_id)
-        VALUES (#{id},#{storeId},#{phoneNumber},#{mugshot},#{nickName},#{userName},#{sex},#{birthday},#{hierarchyId})
+        INSERT INTO mem_user(id,sto_id,ph_num,mug_shot,nick_nam,usr_nam,sex,birthday,hier_id,cre_tim)
+        VALUES (#{id},#{storeId},#{phoneNumber},#{mugshot},#{nickName},#{userName},#{sex},#{birthday},#{hierarchyId},#{createTime})
     </insert>
 
     <!-- ================================================================================== -->
