@@ -197,4 +197,22 @@ public class RedisUtil {
     	redisTemplate.delete(key);
     }
 
+    /**
+     * 数据库分布锁
+     * @return
+     */
+    public Boolean  setLock(){
+        Boolean methodLock = redisTemplate.opsForValue().setIfAbsent("PointMethodLock", System.currentTimeMillis()+"");
+       if (methodLock){
+           redisTemplate.expire("PointMethodLock",5,TimeUnit.SECONDS);
+       }
+       return methodLock;
+    }
+
+    /**
+     * 锁释放
+     */
+    public void unlock(){
+       redisTemplate.delete("PointMethodLock");
+    }
 }

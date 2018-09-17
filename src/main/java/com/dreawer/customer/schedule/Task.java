@@ -10,6 +10,7 @@ import com.dreawer.customer.lang.record.Type;
 import com.dreawer.customer.manager.MemberManager;
 import com.dreawer.customer.service.HierarchyService;
 import com.dreawer.customer.service.MemberService;
+import com.dreawer.customer.utils.RedisUtil;
 import lombok.extern.java.Log;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +43,10 @@ public class Task {
     @Autowired
     private MemberManager memberManager;
 
+
+    @Autowired
+    private RedisUtil redisUtil;
+
     /**
      * 会员到期扣减成长值方法
      */
@@ -73,13 +78,18 @@ public class Task {
                           //扣减值
                           log.info("开始扣减成长值");
                           Integer expireDeduction = member.getHierarchy().getExpireDeduction();
-                          PointRecord pointRecord = new PointRecord();
-                          pointRecord.setType(Type.REDUCE);
-                          pointRecord.setValue(expireDeduction.toString());
-                          pointRecord.setSource(Source.EXPIRE);
-                          pointRecord.setStoreId(store);
-                          pointRecord.setCustomerId(member.getId());
-                          memberManager.updateRecord(pointRecord,member.getStoreId());
+                          //加上数据库锁
+                          Boolean status = redisUtil.setLock();
+                          if (status){
+                              PointRecord pointRecord = new PointRecord();
+                              pointRecord.setType(Type.REDUCE);
+                              pointRecord.setValue(expireDeduction.toString());
+                              pointRecord.setSource(Source.EXPIRE);
+                              pointRecord.setStoreId(store);
+                              pointRecord.setCustomerId(member.getId());
+                              memberManager.updateRecord(pointRecord,member.getStoreId());
+                          }
+
 
                       }
                   }
@@ -89,6 +99,9 @@ public class Task {
           logger.error(e.getResponseCode().display()+e.getResponseCode().getCheckPoint());
       }catch (Exception e){
           logger.error(e);
+      }finally {
+          //释放锁
+          redisUtil.unlock();
       }
     }
 

@@ -22,8 +22,10 @@ public class PointRecordService extends BaseService{
     @Autowired
     private PointRecordMapper pointRecordMapper;
 
+
     public int addPointRecord(PointRecord pointRecord) {
-        return pointRecordMapper.insert(pointRecord);
+        int insert = pointRecordMapper.insert(pointRecord);
+        return insert;
     }
 
     public int recordQueryCount(String storeId, String customerId, Source source, Type type) {
