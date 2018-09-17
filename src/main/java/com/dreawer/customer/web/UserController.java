@@ -70,6 +70,9 @@ public class UserController extends BaseController {
 		try {
 			String userId = req.getHeader("userid");
 			User user = userService.findUserById(userId);
+			if(user==null) {
+				return Error.BUSINESS("user");
+			}
 	    	if(StringUtils.isNotBlank(user.getPassword())){
 	    		if(!form.getNewPassword().equals(form.getConfirmPassword())){
 					return Error.BUSINESS("confirmPassword");
