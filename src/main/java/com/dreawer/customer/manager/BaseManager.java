@@ -15,8 +15,8 @@ import java.util.Calendar;
 public class BaseManager {
 
 
-    protected static Date getNow(){
-        return new Date(System.currentTimeMillis());
+    protected static Timestamp getNow(){
+        return new Timestamp(System.currentTimeMillis());
     }
 
     protected Member setDueDate(Hierarchy node, Member member) {

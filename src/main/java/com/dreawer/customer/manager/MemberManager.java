@@ -247,11 +247,12 @@ public class MemberManager extends BaseManager {
                     member = setMemberRank(member, result, hierarchy);
                 }
             }
-            //更新缓存中会员对象
             member.setUpdateTime(getNow());
             memberService.editMember(member);
 
     }
+
+
 
     private Member setMemberRank(Member member, BigDecimal result, Hierarchy hierarchy) {
         if (hierarchy.getStatus().equals(Status.ENABLE)){

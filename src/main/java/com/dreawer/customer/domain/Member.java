@@ -39,7 +39,7 @@ public class Member implements Serializable {
 
     private Integer sex; //性别
 
-    private Date birthday;//生日
+    private Timestamp birthday;//生日
 
     private Integer growthValue; //成长值
 
@@ -49,9 +49,9 @@ public class Member implements Serializable {
 
     private Hierarchy hierarchy; //会员等级实体
 
-    private Date createTime; //创建时间
+    private Timestamp createTime; //创建时间
 
-    private Date updateTime; //更新时间
+    private Timestamp updateTime; //更新时间
 
     public static long getSerialVersionUID() {
         return serialVersionUID;
@@ -113,16 +113,16 @@ public class Member implements Serializable {
         this.mugshot = mugshot;
     }
 
-    public Date getBirthday() {
+    public Timestamp getBirthday() {
         return birthday;
     }
 
-    public void setBirthday(Date birthday) {
+    public void setBirthday(Timestamp birthday) {
         this.birthday = birthday;
     }
 
     public void setBirthday(Long birthday) {
-        this.birthday = new Date(Long.valueOf(birthday));
+        this.birthday = new Timestamp(birthday);
     }
 
     public String getHierarchyId() {
@@ -134,19 +134,19 @@ public class Member implements Serializable {
     }
 
 
-    public Date getCreateTime() {
+    public Timestamp getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Date createTime) {
+    public void setCreateTime(Timestamp createTime) {
         this.createTime = createTime;
     }
 
-    public Date getUpdateTime() {
+    public Timestamp getUpdateTime() {
         return updateTime;
     }
 
-    public void setUpdateTime(Date updateTime) {
+    public void setUpdateTime(Timestamp updateTime) {
         this.updateTime = updateTime;
     }
 

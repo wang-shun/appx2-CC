@@ -242,7 +242,6 @@ public class MemberController extends BaseController {
 											 @RequestParam(STORE_ID)String storeId,
 											 @RequestParam(TERMINAL_TYPE)String terminalType,
 											 @RequestParam(value = USER_ID,required = false)String userId
-
 	){
         	
         	//获取用户登录信息

@@ -6,6 +6,7 @@ import com.dreawer.customer.lang.member.Status;
 
 import java.io.Serializable;
 import java.sql.Date;
+import java.sql.Timestamp;
 
 /**
  * <CODE>Hierarchy</CODE>
@@ -42,9 +43,9 @@ public class Hierarchy implements Serializable {
 
     private Status status; //状态 ENABLE启用 DISABLE 禁用
 
-    private Date createTime; // 创建时间
+    private Timestamp createTime; // 创建时间
 
-    private Date updateTime; // 更新时间
+    private Timestamp updateTime; // 更新时间
 
     public static long getSerialVersionUID() {
         return serialVersionUID;
@@ -146,19 +147,19 @@ public class Hierarchy implements Serializable {
         this.status = status;
     }
 
-    public Date getCreateTime() {
+    public Timestamp getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Date createTime) {
+    public void setCreateTime(Timestamp createTime) {
         this.createTime = createTime;
     }
 
-    public Date getUpdateTime() {
+    public Timestamp getUpdateTime() {
         return updateTime;
     }
 
-    public void setUpdateTime(Date updateTime) {
+    public void setUpdateTime(Timestamp updateTime) {
         this.updateTime = updateTime;
     }
 
