@@ -249,7 +249,7 @@
 
     <!-- 基本信息 -->
     <sql id="basicFields">
-        id,sto_id,ph_num,mug_shot,nick_nam,usr_nam,sex,birthday,gro_val,due_date,hier_id,cre_tim
+        id,sto_id,ph_num,mug_shot,nick_nam,usr_nam,sex,birthday,gro_val,due_date,hier_id,cre_tim,upd_tim
     </sql>
 
     <!-- ================================================================================== -->
