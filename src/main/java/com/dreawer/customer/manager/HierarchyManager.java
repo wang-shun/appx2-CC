@@ -145,8 +145,6 @@ public class HierarchyManager extends BaseManager{
         hierarchy.setStatus(status);
         hierarchy.setUpdateTime(getNow());
         service.update(hierarchy);
-        //更新缓存中等级列表记录
-        hierarchies = service.findByStoreId(storeId);
         //更改该店铺下会员的等级
         updateMemberHierarchy(hierarchy, hierarchies);
     }

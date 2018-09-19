@@ -99,9 +99,6 @@ public class Task {
           logger.error(e.getResponseCode().display()+e.getResponseCode().getCheckPoint());
       }catch (Exception e){
           logger.error(e);
-      }finally {
-          //释放锁
-          redisUtil.unlock();
       }
     }
 

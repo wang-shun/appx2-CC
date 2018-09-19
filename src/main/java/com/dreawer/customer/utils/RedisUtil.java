@@ -5,6 +5,7 @@ import com.dreawer.customer.domain.TokenUser;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -15,6 +16,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 @Component
+@Slf4j
 public class RedisUtil {
 
 	@Autowired
@@ -202,9 +204,13 @@ public class RedisUtil {
      * @return
      */
     public Boolean  setLock(){
+        log.info("开始加锁");
         Boolean methodLock = redisTemplate.opsForValue().setIfAbsent("PointMethodLock", System.currentTimeMillis()+"");
        if (methodLock){
-           redisTemplate.expire("PointMethodLock",5,TimeUnit.SECONDS);
+           log.info("加锁成功");
+           redisTemplate.expire("PointMethodLock",10,TimeUnit.SECONDS);
+       }else {
+           log.info("未加锁");
        }
        return methodLock;
     }
