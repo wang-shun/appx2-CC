@@ -301,4 +301,6 @@ public class MemberManager extends BaseManager {
             params.put("result",pointRecords);
             return params;
    }
+
+
 }

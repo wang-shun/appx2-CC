@@ -14,6 +14,7 @@ import com.dreawer.customer.lang.record.Type;
 import com.dreawer.customer.manager.MemberManager;
 import com.dreawer.customer.service.HierarchyService;
 import com.dreawer.customer.service.MemberService;
+import com.dreawer.customer.utils.RestRequest;
 import com.dreawer.customer.web.BaseController;
 import com.dreawer.customer.web.form.GoodsInfoForm;
 import com.dreawer.responsecode.rcdt.EntryError;
@@ -50,6 +51,9 @@ public class MemberController extends BaseController {
 
 	@Autowired
 	private MemberManager memberManager;
+
+	@Autowired
+	private RestRequest restRequest;
 
 	@Autowired
 	private MemberService memberService;
@@ -134,8 +138,14 @@ public class MemberController extends BaseController {
         	
         	//获取会员生日
         	String birthday = form.getBirthday();
-        	
-        	//封装消息数据
+
+        	//判断会员注册通道是否开启
+			Boolean portStatus = restRequest.checkRegistable(form.getStoreId());
+			if (!portStatus){
+				return PermissionsError.FUNCTION_NO_ALLOW("无法注册会员");
+			}
+
+			//封装消息数据
         	Map<String, Object> data = new HashMap<>();
         	data.put(STORE_ID, storeId);
         	data.put(SEX, sex);

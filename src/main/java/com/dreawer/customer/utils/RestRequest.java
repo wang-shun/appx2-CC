@@ -1,10 +1,8 @@
 package com.dreawer.customer.utils;
 
+import com.dreawer.customer.form.Enterprise;
+import com.dreawer.responsecode.rcdt.ResponseCode;
 import com.google.gson.Gson;
-
-import java.util.HashMap;
-import java.util.Map;
-
 import org.apache.log4j.Logger;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +11,9 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Component
 public class RestRequest {
@@ -55,5 +56,16 @@ public class RestRequest {
         logger.error(response);
         return response;
 	}
+
+	public Boolean checkRegistable(String storeId){
+        String response = restGet("http://sc/enterprise/detail?id=" + storeId);
+        ResponseCode responseCode = ResponseCode.instanceOf(response);
+        logger.info("店铺信息返回:" + JsonFormatUtil.formatJson(responseCode));
+        Enterprise enterprise = new Gson().fromJson(responseCode.getData().toString(), Enterprise.class);
+        if (enterprise.getMemberRegisterPort()){
+            return true;
+        }
+        return false;
+    }
 
 }
